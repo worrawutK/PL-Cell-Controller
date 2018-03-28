@@ -1,0 +1,80 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="My" GeneratedClassName="MySettings" UseMySettingsClassName="true">
+  <Profiles />
+  <Settings>
+    <Setting Name="ProcessName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">PL</Value>
+    </Setting>
+    <Setting Name="MCType" Type="System.String" Scope="User">
+      <Value Profile="(Default)">MECO</Value>
+    </Setting>
+    <Setting Name="EquipmentIP" Type="System.String" Scope="User">
+      <Value Profile="(Default)">10.28.41.32</Value>
+    </Setting>
+    <Setting Name="EquipmentNo" Type="System.String" Scope="User">
+      <Value Profile="(Default)">M-00</Value>
+    </Setting>
+    <Setting Name="DBConnSTR" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Data Source=172.16.0.102;Initial Catalog=DBx;Persist Security Info=True;User ID=dbxuser</Value>
+    </Setting>
+    <Setting Name="SECS_nouse1" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="SECS_PortNumber" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">5040</Value>
+    </Setting>
+    <Setting Name="SECS_Enable" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="SECS_Nouse2" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="GEM_DeviceID" Type="System.UInt16" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="GEM_T3_Interval" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">45</Value>
+    </Setting>
+    <Setting Name="GEM_T5_Interval" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">10</Value>
+    </Setting>
+    <Setting Name="GEM_T6_Interval" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">20</Value>
+    </Setting>
+    <Setting Name="GEM_T7_Interval" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">5</Value>
+    </Setting>
+    <Setting Name="GEM_LinkTest_Interval" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">20</Value>
+    </Setting>
+    <Setting Name="GEM_LinkTest_Enabled" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="TDC_Enable" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="CsProtocol_Enable" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="CsProtocolPort" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">5040</Value>
+    </Setting>
+    <Setting Name="UserAuthenOP" Type="System.String" Scope="User">
+      <Value Profile="(Default)">PL-OP</Value>
+    </Setting>
+    <Setting Name="UserAuthenGL" Type="System.String" Scope="User">
+      <Value Profile="(Default)">PL-GL</Value>
+    </Setting>
+    <Setting Name="UserAdminPass" Type="System.String" Scope="User">
+      <Value Profile="(Default)">admin</Value>
+    </Setting>
+    <Setting Name="DBxConnectionString" Type="(Connection string)" Scope="Application">
+      <DesignTimeValue Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
+&lt;SerializableConnectionString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;ConnectionString&gt;Data Source=172.16.0.102;Initial Catalog=DBx;User ID=dbxuser&lt;/ConnectionString&gt;
+  &lt;ProviderName&gt;System.Data.SqlClient&lt;/ProviderName&gt;
+&lt;/SerializableConnectionString&gt;</DesignTimeValue>
+      <Value Profile="(Default)">Data Source=172.16.0.102;Initial Catalog=DBx;User ID=dbxuser</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

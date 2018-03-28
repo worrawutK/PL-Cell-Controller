@@ -1,0 +1,436 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{E4C17CCE-81FB-47EA-A75C-74158EC8D5E8}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <StartupObject>CellController.My.MyApplication</StartupObject>
+    <RootNamespace>CellController</RootNamespace>
+    <AssemblyName>PLMeco</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <MyType>WindowsForms</MyType>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DocumentationFile>PLMeco.xml</DocumentationFile>
+    <NoWarn>
+    </NoWarn>
+    <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DocumentationFile>PLMeco.xml</DocumentationFile>
+    <NoWarn>
+    </NoWarn>
+    <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionExplicit>On</OptionExplicit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionCompare>Binary</OptionCompare>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionStrict>On</OptionStrict>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionInfer>On</OptionInfer>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>My Project\app.manifest</ApplicationManifest>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>unnamed.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AuthenticationUser">
+      <HintPath>dllSource\AuthenticationUser.dll</HintPath>
+    </Reference>
+    <Reference Include="Rohm.Apcs.Tdc, Version=1.0.0.1, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>dllSource\Rohm.Apcs.Tdc.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization.Formatters.Soap" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="XtraLibrary, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\XtraLibrary.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.Data" />
+    <Import Include="System.Drawing" />
+    <Import Include="System.Diagnostics" />
+    <Import Include="System.Windows.Forms" />
+    <Import Include="System.Linq" />
+    <Import Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="clsErrorLog.vb" />
+    <Compile Include="DBxDataSet.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DBxDataSet.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="EquipmentObj\Equipment.vb" />
+    <Compile Include="Form1.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form1.Designer.vb">
+      <DependentUpon>Form1.vb</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmEditData.Designer.vb">
+      <DependentUpon>frmEditData.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmEditData.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmLotEndManual.Designer.vb">
+      <DependentUpon>frmLotEndManual.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmLotEndManual.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormConsole.Designer.vb">
+      <DependentUpon>FormConsole.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FormConsole.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmConfirm.designer.vb">
+      <DependentUpon>frmConfirm.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmConfirm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmDeleteLot.Designer.vb">
+      <DependentUpon>frmDeleteLot.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmDeleteLot.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="LoginUser.Designer.vb">
+      <DependentUpon>LoginUser.vb</DependentUpon>
+    </Compile>
+    <Compile Include="LoginUser.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MecoParameter.vb" />
+    <Compile Include="nSECs%28TempForSMLEdit%29\SECSMSG.vb" />
+    <Compile Include="SecsGeemFrmEdit.Designer.vb">
+      <DependentUpon>SecsGeemFrmEdit.vb</DependentUpon>
+    </Compile>
+    <Compile Include="SecsGeemFrmEdit.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Module\SecsGemModule.vb" />
+    <Compile Include="SecsGemFrm.Designer.vb">
+      <DependentUpon>SecsGemFrm.vb</DependentUpon>
+    </Compile>
+    <Compile Include="SecsGemFrm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SecsGemFrmView.Designer.vb">
+      <DependentUpon>SecsGemFrmView.vb</DependentUpon>
+    </Compile>
+    <Compile Include="SecsGemFrmView.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SecsMessage\S1F1.vb" />
+    <Compile Include="SecsMessage\S1F18.vb" />
+    <Compile Include="SecsMessage\S1F7.vb" />
+    <Compile Include="SecsMessage\S1F13.vb" />
+    <Compile Include="SecsMessage\S1F3.vb" />
+    <Compile Include="SecsMessage\S2F43.vb" />
+    <Compile Include="SecsMessage\S5F3.vb" />
+    <Compile Include="SecsMessage\S5F4.vb" />
+    <Compile Include="SecsMessage\S6F23.vb" />
+    <Compile Include="SecsMessage\S6F23Old.vb" />
+    <Compile Include="SecsMessage\S10F1.vb" />
+    <Compile Include="SecsMessage\S10F2.vb" />
+    <Compile Include="SecsMessage\S1F14E.vb" />
+    <Compile Include="SecsMessage\DefinedReport.vb" />
+    <Compile Include="SecsMessage\Enums.vb" />
+    <Compile Include="SecsMessage\LinkedReport.vb" />
+    <Compile Include="SecsMessage\S1F14.vb" />
+    <Compile Include="SecsMessage\S1F4.vb" />
+    <Compile Include="SecsMessage\S2F13.vb" />
+    <Compile Include="SecsMessage\S2F14.vb" />
+    <Compile Include="SecsMessage\S2F15.vb" />
+    <Compile Include="SecsMessage\S2F16.vb" />
+    <Compile Include="SecsMessage\S2F17.vb" />
+    <Compile Include="SecsMessage\S2F18.vb" />
+    <Compile Include="SecsMessage\S2F33.vb" />
+    <Compile Include="SecsMessage\S2F34.vb" />
+    <Compile Include="SecsMessage\S2F35.vb" />
+    <Compile Include="SecsMessage\S2F36.vb" />
+    <Compile Include="SecsMessage\S2F37.vb" />
+    <Compile Include="SecsMessage\S2F38.vb" />
+    <Compile Include="SecsMessage\S2F41.vb" />
+    <Compile Include="SecsMessage\S2F42.vb" />
+    <Compile Include="SecsMessage\S10F3.vb" />
+    <Compile Include="SecsMessage\S5F1.vb" />
+    <Compile Include="SecsMessage\S5F2.vb" />
+    <Compile Include="SecsMessage\S5F3Old.vb" />
+    <Compile Include="SecsMessage\S5F5.vb" />
+    <Compile Include="SecsMessage\S5F6.vb" />
+    <Compile Include="SecsMessage\S64F1.vb" />
+    <Compile Include="SecsMessage\S64F10.vb" />
+    <Compile Include="SecsMessage\S64F11.vb" />
+    <Compile Include="SecsMessage\S64F12.vb" />
+    <Compile Include="SecsMessage\S64F2.vb" />
+    <Compile Include="SecsMessage\S64F3.vb" />
+    <Compile Include="SecsMessage\S64F4.vb" />
+    <Compile Include="SecsMessage\S64F9.vb" />
+    <Compile Include="SecsMessage\S6F11.vb" />
+    <Compile Include="SecsMessage\S6F12.vb" />
+    <Compile Include="SecsMessage\S6F24.vb" />
+    <Compile Include="SecsMessage\S6F3.vb" />
+    <Compile Include="SecsMessage\S6F4.vb" />
+    <Compile Include="SecsMessage\S7F1.vb" />
+    <Compile Include="SecsMessage\S7F2.vb" />
+    <Compile Include="SecsMessage\S7F20.vb" />
+    <Compile Include="SecsMessage\S7F3.vb" />
+    <Compile Include="SecsMessage\S7F4.vb" />
+    <Compile Include="SecsMessage\S7F5.vb" />
+    <Compile Include="SecsMessage\S7F6.vb" />
+    <Compile Include="SecsMessage\SECSGEMDB.vb" />
+    <Compile Include="Setting.Designer.vb">
+      <DependentUpon>Setting.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Setting.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="LoginForm1.Designer.vb">
+      <DependentUpon>LoginForm1.vb</DependentUpon>
+    </Compile>
+    <Compile Include="LoginForm1.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MDIParent1.Designer.vb">
+      <DependentUpon>MDIParent1.vb</DependentUpon>
+    </Compile>
+    <Compile Include="MDIParent1.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Module\ModuleAppGeneral.vb" />
+    <Compile Include="My Project\AssemblyInfo.vb" />
+    <Compile Include="My Project\Application.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Application.myapp</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Resources.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Settings.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="CommonData.vb" />
+    <Compile Include="ProcessForm.Designer.vb">
+      <DependentUpon>ProcessForm.vb</DependentUpon>
+    </Compile>
+    <Compile Include="ProcessForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ProductionTable.Designer.vb">
+      <DependentUpon>ProductionTable.vb</DependentUpon>
+    </Compile>
+    <Compile Include="ProductionTable.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TcpIpClient.vb" />
+    <Compile Include="TcpIpClientTest.Designer.vb">
+      <DependentUpon>TcpIpClientTest.vb</DependentUpon>
+    </Compile>
+    <Compile Include="TcpIpClientTest.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WorkingSlipQRCode.vb" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Form1.resx">
+      <DependentUpon>Form1.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmEditData.resx">
+      <DependentUpon>frmEditData.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmLotEndManual.resx">
+      <DependentUpon>frmLotEndManual.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormConsole.resx">
+      <DependentUpon>FormConsole.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmConfirm.resx">
+      <DependentUpon>frmConfirm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmDeleteLot.resx">
+      <DependentUpon>frmDeleteLot.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LoginUser.resx">
+      <DependentUpon>LoginUser.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SecsGeemFrmEdit.resx">
+      <DependentUpon>SecsGeemFrmEdit.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LoginForm1.resx">
+      <DependentUpon>LoginForm1.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MDIParent1.resx">
+      <DependentUpon>MDIParent1.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="My Project\Resources.resx">
+      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProcessForm.resx">
+      <DependentUpon>ProcessForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProductionTable.resx">
+      <DependentUpon>ProductionTable.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SecsGemFrm.resx">
+      <DependentUpon>SecsGemFrm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SecsGemFrmView.resx">
+      <DependentUpon>SecsGemFrmView.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Setting.resx">
+      <DependentUpon>Setting.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TcpIpClientTest.resx">
+      <DependentUpon>TcpIpClientTest.vb</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="ClassDiagram1.cd" />
+    <None Include="DBxDataSet.xsc">
+      <DependentUpon>DBxDataSet.xsd</DependentUpon>
+    </None>
+    <None Include="DBxDataSet.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DBxDataSet.Designer.vb</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="DBxDataSet.xss">
+      <DependentUpon>DBxDataSet.xsd</DependentUpon>
+    </None>
+    <None Include="My Project\app.manifest" />
+    <None Include="My Project\Application.myapp">
+      <Generator>MyApplicationCodeGenerator</Generator>
+      <LastGenOutput>Application.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="My Project\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <CustomToolNamespace>My</CustomToolNamespace>
+      <LastGenOutput>Settings.Designer.vb</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.0,Profile=Client">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4 Client Profile %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\UserBlank.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\machine2.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\datatable.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AUTOMATIVEBlue.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\reliableResize1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="obj\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\inputdata5.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\HR.bmp" />
+    <None Include="Resources\blue-minimized-icon-32193.png" />
+    <Content Include="unnamed.ico" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
