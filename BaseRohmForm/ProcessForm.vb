@@ -4,7 +4,8 @@ Imports System.IO
 Imports Rohm.Apcs.Tdc
 Imports System.Runtime.Serialization.Formatters.Binary
 Imports XtraLibrary.SecsGem
-
+Imports iLibrary
+Imports Rohm.Common.Logging
 Public Class ProcessForm
 #Region "Commomn Define"
     Event E_MakeAlarmCellCon(ByVal AlarmMessage As String, ByVal Location As String, ByVal Status As String, ByVal AlarmID As String)
@@ -723,7 +724,32 @@ Dummy:
     End Function
 
     Private Sub Button1_Click_1(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btDeleteLot.Click
+        'Dim LotNo
+        'Dim c_ApcsProService As IApcsProService
+        'Dim lotInfo As iLibrary.LotInfo
+        'Dim machineInfo As MachineInfo
+        'Dim userInfo As UserInfo
+        'Dim currentServerTime As DateTimeInfo
+        'Dim strHostName As String
+        'Dim strIPAddress As String
+        'strHostName = System.Net.Dns.GetHostName()
+        'strIPAddress = System.Net.Dns.GetHostByName(strHostName).AddressList(0).ToString()
+        'Dim machineInfoArray As MachineInfo() = c_ApcsProService.GetMachineInfoArrayByCellConIp(My.Settings.EquipmentIP)
 
+        'For Each mc As MachineInfo In machineInfoArray
+        '    machineInfo = mc
+        'Next
+
+        'Dim log As New Logger
+
+        'Dim setupResult As LotUpdateInfo = Nothing
+        'lotInfo = c_ApcsProService.GetLotInfo(LotNo)
+        'machineInfo = c_ApcsProService.GetMachineInfo(machineInfo.Id)
+        'userInfo = c_ApcsProService.GetUserInfo(OPNo)
+        'currentServerTime = c_ApcsProService.Get_DateTimeInfo(log)
+        'setupResult = c_ApcsProService.LotSetup(lotInfo.Id, machineInfo.Id, userInfo.Id, "", "", 1, currentServerTime.Datetime, log)
+
+        'setupResult = c_ApcsProService.LotStart(lotInfo.Id, machineInfo.Id, userInfo.Id, "", "", 1, currentServerTime.Datetime, log)
         Dim frmDelete As New frmDeleteLot(Me)
         frmDelete.ShowDialog()
         SavePLDataTableBin()
@@ -851,6 +877,15 @@ Dummy:
             End Using
         End Using
     End Sub
+#Region "Apcs_Pro Valiable"
+    Private c_ApcsProService As IApcsProService = New ApcsProService()
+    Private lotInfo As iLibrary.LotInfo
+    Private machineInfo As MachineInfo
+    Private userInfo As UserInfo
+    Private currentServerTime As DateTimeInfo
+    Private log As New Logger
+    Private ResultApcsProService As LotUpdateInfo = Nothing
+#End Region
 
     Private Sub bgTDC_DoWork(ByVal sender As System.Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bgTDC.DoWork
         Dim TmpData As String = ""
@@ -886,6 +921,35 @@ LBL_QUEUE_LOTSET_CHECK:
         End SyncLock
 
 LBL_QUEUE_LotSet_Err:
+
+
+#Region "Apcs_Pro LotSetUp and LotStart"
+
+        Try
+            Dim machineInfoArray As MachineInfo() = c_ApcsProService.GetMachineInfoArrayByCellConIp(My.Settings.EquipmentIP)
+            For Each mc As MachineInfo In machineInfoArray
+                machineInfo = mc
+            Next
+            lotInfo = c_ApcsProService.GetLotInfo(LotNo)
+            machineInfo = c_ApcsProService.GetMachineInfo(machineInfo.Id)
+            userInfo = c_ApcsProService.GetUserInfo(OPNo)
+            currentServerTime = c_ApcsProService.Get_DateTimeInfo(log)
+
+            ResultApcsProService = c_ApcsProService.LotSetup(lotInfo.Id, machineInfo.Id, userInfo.Id, "", "", 1, currentServerTime.Datetime, log)
+            If Not ResultApcsProService.IsOk Then
+                log.OperationLogger.Write(0, "bgTDC_DoWork", "OUT", "CellCon", "iLibrary", 0, "LotSetup", ResultApcsProService.ErrorMessage, "")
+            End If
+
+            ResultApcsProService = c_ApcsProService.LotStart(lotInfo.Id, machineInfo.Id, userInfo.Id, "", "", 1, currentServerTime.Datetime, log)
+            If Not ResultApcsProService.IsOk Then
+                log.OperationLogger.Write(0, "bgTDC_DoWork", "OUT", "CellCon", "iLibrary", 0, "LotStart", ResultApcsProService.ErrorMessage, "")
+            End If
+
+        Catch ex As Exception
+            addErrLogfile("c_ApcsProService.LotSetup,LotStart:" & ex.ToString())
+
+        End Try
+#End Region
 
         Dim resSet As TdcResponse = m_TdcService.LotSet(MCNo, LotNo, CDate(StartTime), OPNo, CType(LotSetMode, RunModeType))
         If resSet.HasError Then
@@ -944,6 +1008,15 @@ LBL_QUEUE_LOTEND_CHECK:
         End SyncLock
 
 LBL_QUEUE_LotEnd_Err:
+        Try
+            currentServerTime = c_ApcsProService.Get_DateTimeInfo(log)
+            ResultApcsProService = c_ApcsProService.LotEnd(lotInfo.Id, machineInfo.Id, userInfo.Id, False, CInt(GoodQty), CInt(NGQTy), "", "", 1, currentServerTime.Datetime, log)
+            If Not ResultApcsProService.IsOk Then
+                log.OperationLogger.Write(0, "bgTDC_DoWork", "OUT", "CellCon", "iLibrary", 0, "LotEnd", ResultApcsProService.ErrorMessage, "")
+            End If
+        Catch ex As Exception
+            addErrLogfile("c_ApcsProService.LotEnd:" & ex.ToString())
+        End Try
 
         Dim resEnd As TdcResponse = m_TdcService.LotEnd(MCNo, LotNo, CDate(EndTime), CInt(GoodQty), CInt(NGQTy), CType(LotEndMode, EndModeType), OPNo)
         If resEnd.HasError Then
