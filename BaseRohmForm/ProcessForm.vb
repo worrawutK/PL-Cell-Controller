@@ -883,7 +883,7 @@ Dummy:
     Private machineInfo As MachineInfo
     Private userInfo As UserInfo
     Private currentServerTime As DateTimeInfo
-    Private log As New Logger
+    Private log As Logger
     Private ResultApcsProService As LotUpdateInfo = Nothing
 #End Region
 
@@ -923,33 +923,7 @@ LBL_QUEUE_LOTSET_CHECK:
 LBL_QUEUE_LotSet_Err:
 
 
-#Region "Apcs_Pro LotSetUp and LotStart"
 
-        Try
-            Dim machineInfoArray As MachineInfo() = c_ApcsProService.GetMachineInfoArrayByCellConIp(My.Settings.EquipmentIP)
-            For Each mc As MachineInfo In machineInfoArray
-                machineInfo = mc
-            Next
-            lotInfo = c_ApcsProService.GetLotInfo(LotNo)
-            machineInfo = c_ApcsProService.GetMachineInfo(machineInfo.Id)
-            userInfo = c_ApcsProService.GetUserInfo(OPNo)
-            currentServerTime = c_ApcsProService.Get_DateTimeInfo(log)
-
-            ResultApcsProService = c_ApcsProService.LotSetup(lotInfo.Id, machineInfo.Id, userInfo.Id, "", "", 1, currentServerTime.Datetime, log)
-            If Not ResultApcsProService.IsOk Then
-                log.OperationLogger.Write(0, "bgTDC_DoWork", "OUT", "CellCon", "iLibrary", 0, "LotSetup", ResultApcsProService.ErrorMessage, "")
-            End If
-
-            ResultApcsProService = c_ApcsProService.LotStart(lotInfo.Id, machineInfo.Id, userInfo.Id, "", "", 1, currentServerTime.Datetime, log)
-            If Not ResultApcsProService.IsOk Then
-                log.OperationLogger.Write(0, "bgTDC_DoWork", "OUT", "CellCon", "iLibrary", 0, "LotStart", ResultApcsProService.ErrorMessage, "")
-            End If
-
-        Catch ex As Exception
-            addErrLogfile("c_ApcsProService.LotSetup,LotStart:" & ex.ToString())
-
-        End Try
-#End Region
 
         Dim resSet As TdcResponse = m_TdcService.LotSet(MCNo, LotNo, CDate(StartTime), OPNo, CType(LotSetMode, RunModeType))
         If resSet.HasError Then
@@ -981,6 +955,31 @@ LBL_QUEUE_LotSet_Err:
                     GoTo LBL_QUEUE_LotSet_Err
             End Select
         End If
+#Region "Apcs_Pro LotSetUp and LotStart"
+
+        Try
+            lotInfo = c_ApcsProService.GetLotInfo(LotNo)
+            machineInfo = c_ApcsProService.GetMachineInfo(MCNo)
+            userInfo = c_ApcsProService.GetUserInfo(OPNo)
+            log = New Logger("1.0", machineInfo.Name)
+            currentServerTime = c_ApcsProService.Get_DateTimeInfo(log)
+
+            ResultApcsProService = c_ApcsProService.LotSetup(lotInfo.Id, machineInfo.Id, userInfo.Id, 0, "", 1, currentServerTime.Datetime, log)
+            If Not ResultApcsProService.IsOk Then
+                log.OperationLogger.Write(0, "bgTDC_DoWork", "OUT", "CellCon", "iLibrary", 0, "LotSetup", ResultApcsProService.ErrorMessage, LotNo)
+            End If
+
+            ResultApcsProService = c_ApcsProService.LotStart(lotInfo.Id, machineInfo.Id, userInfo.Id, 0, "", 1, currentServerTime.Datetime, log)
+            If Not ResultApcsProService.IsOk Then
+                log.OperationLogger.Write(0, "bgTDC_DoWork", "OUT", "CellCon", "iLibrary", 0, "LotStart", ResultApcsProService.ErrorMessage, LotNo)
+            End If
+
+        Catch ex As Exception
+            'addErrLogfile("c_ApcsProService.LotSetup,LotStart:" & ex.ToString())
+            log.OperationLogger.Write(0, "bgTDC_DoWork", "OUT", "CellCon", "iLibrary", 0, "LotSetup,LotStart", ex.Message.ToString(), LotNo)
+
+        End Try
+#End Region
         GoTo LBL_QUEUE_LOTSET_CHECK
 
 
@@ -1008,15 +1007,9 @@ LBL_QUEUE_LOTEND_CHECK:
         End SyncLock
 
 LBL_QUEUE_LotEnd_Err:
-        Try
-            currentServerTime = c_ApcsProService.Get_DateTimeInfo(log)
-            ResultApcsProService = c_ApcsProService.LotEnd(lotInfo.Id, machineInfo.Id, userInfo.Id, False, CInt(GoodQty), CInt(NGQTy), "", "", 1, currentServerTime.Datetime, log)
-            If Not ResultApcsProService.IsOk Then
-                log.OperationLogger.Write(0, "bgTDC_DoWork", "OUT", "CellCon", "iLibrary", 0, "LotEnd", ResultApcsProService.ErrorMessage, "")
-            End If
-        Catch ex As Exception
-            addErrLogfile("c_ApcsProService.LotEnd:" & ex.ToString())
-        End Try
+
+
+
 
         Dim resEnd As TdcResponse = m_TdcService.LotEnd(MCNo, LotNo, CDate(EndTime), CInt(GoodQty), CInt(NGQTy), CType(LotEndMode, EndModeType), OPNo)
         If resEnd.HasError Then
@@ -1057,6 +1050,17 @@ LBL_QUEUE_LotEnd_Err:
             End Select
         End If
         CountErr03 = 0
+#Region "APCS Pro LotEnd"
+        Try
+            currentServerTime = c_ApcsProService.Get_DateTimeInfo(log)
+            ResultApcsProService = c_ApcsProService.LotEnd(lotInfo.Id, machineInfo.Id, userInfo.Id, False, CInt(GoodQty), CInt(NGQTy), 0, "", 1, currentServerTime.Datetime, log)
+            If Not ResultApcsProService.IsOk Then
+                log.OperationLogger.Write(0, "bgTDC_DoWork", "OUT", "CellCon", "iLibrary", 0, "LotEnd", ResultApcsProService.ErrorMessage, LotNo)
+            End If
+        Catch ex As Exception
+            log.OperationLogger.Write(0, "bgTDC_DoWork", "OUT", "CellCon", "iLibrary", 0, "LotEnd", ex.Message, LotNo)
+        End Try
+#End Region
         GoTo LBL_QUEUE_LOTEND_CHECK
     End Sub
 
