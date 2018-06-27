@@ -62,7 +62,7 @@ Public Class ProcessForm
     Private Sub ProcessForm_FormClosed(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosedEventArgs) Handles Me.FormClosed
         OprData.FRMProductAlive = False
         SavePLDataTableBin()
-        UpdateMachineOnlineState(machineInfo, 0, log)
+        UpdateMachineOnlineState(0, log)
     End Sub
 
 
@@ -180,7 +180,7 @@ Public Class ProcessForm
         LoadPLDataTableBin()
         LoadPLAlarmInfoTable()
         XmlLoad(c_ApcsPro, c_ApcsPro.GetType())
-        UpdateMachineOnlineState(machineInfo, 1, log)
+        UpdateMachineOnlineState(1, log)
     End Sub
 
 
@@ -1285,6 +1285,8 @@ LBL_QUEUE_LotEnd_Err:
         LotSetUp = 6
     End Enum
     Private Sub UpdateMachineState(machineID As MachineInfo, runState As Integer, log As Logger, Optional userID As Integer = -1)
+
+
         Try
             c_ApcsProService.Update_MachineState(machineID.Id, runState, userID, log)
         Catch ex As Exception
@@ -1292,9 +1294,11 @@ LBL_QUEUE_LotEnd_Err:
         End Try
 
     End Sub
-    Private Sub UpdateMachineOnlineState(machineID As MachineInfo, onlineState As Integer, log As Logger, Optional userID As Integer = -1)
+    Private Sub UpdateMachineOnlineState(onlineState As Integer, log As Logger, Optional userID As Integer = -1)
+
         Try
-            c_ApcsProService.Update_MachineOnlineState(machineID.Id, onlineState, userID, log)
+            machineInfo = c_ApcsProService.GetMachineInfo("PL-" & My.Settings.EquipmentNo)
+            c_ApcsProService.Update_MachineOnlineState(machineInfo.Id, onlineState, userID, log)
         Catch ex As Exception
             'lbNotification.Text = "Update_MachineOnlineState :" & ex.ToString()
         End Try
