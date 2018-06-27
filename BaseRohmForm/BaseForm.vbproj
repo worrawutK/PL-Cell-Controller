@@ -100,9 +100,8 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="XtraLibrary, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Debug\XtraLibrary.dll</HintPath>
+    <Reference Include="XtraLibrary">
+      <HintPath>dllSource\XtraLibrary.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
