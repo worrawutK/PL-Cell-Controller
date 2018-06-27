@@ -1158,6 +1158,10 @@ LBL_QUEUE_LotEnd_Err:
     Private Sub LotSetUpAndLotStartPro(MCNo As String, LotNo As String, OPNo As String)
         Try
             log = New Logger("1.0", MCNo)
+
+            Dim ap As New DBxDataSetTableAdapters.QueriesTableAdapter
+            c_ApcsPro.Package = ap.GetPackage(LotNo)
+
             If c_ApcsProService.CheckPackageEnable(c_ApcsPro.Package, log) Then
                 If c_ApcsProService.CheckLotisExist(LotNo, log) Then
                     'lotInfo = c_ApcsProService.GetLotInfo(LotNo)
@@ -1193,7 +1197,10 @@ LBL_QUEUE_LotEnd_Err:
 #Region "APCS Pro LotEnd"
     Private Sub LotEndPro(LotNo As String, GoodQty As Integer, NGQTy As Integer)
         Try
-            If c_ApcsProService.CheckPackageEnable(m_SelfData.RecipeName, log) Then
+            Dim ap As New DBxDataSetTableAdapters.QueriesTableAdapter
+            c_ApcsPro.Package = ap.GetPackage(LotNo)
+
+            If c_ApcsProService.CheckPackageEnable(c_ApcsPro.Package, log) Then
                 If c_ApcsProService.CheckLotisExist(LotNo, log) Then
                     currentServerTime = c_ApcsProService.Get_DateTimeInfo(log)
                     ResultApcsProService = c_ApcsProService.LotEnd(lotInfo.Id, machineInfo.Id, userInfo.Id, False, GoodQty, NGQTy, 0, "", 1, currentServerTime.Datetime, log)
@@ -1284,4 +1291,5 @@ LBL_QUEUE_LotEnd_Err:
         End Property
 #End Region
     End Class
+
 End Class

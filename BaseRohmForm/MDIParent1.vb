@@ -166,9 +166,14 @@ ByPassSecs:
                 CstProtocol.Listener_Click(CStr(My.Settings.CsProtocolPort), My.Settings.EquipmentIP)
             End If
 
+            If (System.IO.File.Exists(My.Application.Info.DirectoryPath & "\UserLoginSchema.xml")) Then
+                UserTable.ReadXmlSchema(My.Application.Info.DirectoryPath & "\UserLoginSchema.xml")
+            End If
+            If (System.IO.File.Exists(My.Application.Info.DirectoryPath & "\UserLogin.xml")) Then
+                UserTable.ReadXml(My.Application.Info.DirectoryPath & "\UserLogin.xml")
+            End If
 
-            UserTable.ReadXmlSchema(My.Application.Info.DirectoryPath & "\UserLoginSchema.xml")
-            UserTable.ReadXml(My.Application.Info.DirectoryPath & "\UserLogin.xml")
+
 
         Catch ex As Exception
             SaveCatchLog(ex.ToString, "MDIParent1_Load")
