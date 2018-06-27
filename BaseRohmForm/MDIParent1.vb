@@ -167,8 +167,12 @@ ByPassSecs:
             End If
 
 
-            UserTable.ReadXmlSchema(My.Application.Info.DirectoryPath & "\UserLoginSchema.xml")
-            UserTable.ReadXml(My.Application.Info.DirectoryPath & "\UserLogin.xml")
+            If (System.IO.File.Exists(My.Application.Info.DirectoryPath & "\UserLoginSchema.xml")) Then
+                UserTable.ReadXmlSchema(My.Application.Info.DirectoryPath & "\UserLoginSchema.xml")
+            End If
+            If (System.IO.File.Exists(My.Application.Info.DirectoryPath & "\UserLogin.xml")) Then
+                UserTable.ReadXml(My.Application.Info.DirectoryPath & "\UserLogin.xml")
+            End If
 
         Catch ex As Exception
             SaveCatchLog(ex.ToString, "MDIParent1_Load")
@@ -1089,7 +1093,7 @@ FinalExeLoop:
         End If
         AlarmTimer.Enabled = True
         OprData.AlrmtimerCount = 0
-        'FrmProdTable.MakeAlarmCellCon(AlarmMessage, Location, Status, AlarmID)
+        FrmProdTable.MakeAlarmCellCon(AlarmMessage, Location, Status, AlarmID)
     End Sub
     Public Sub MDIUpdate_dgvProductionInfo1(ByVal _CarrierID As String, ByVal LotID As String, ByVal Package As String, ByVal Device As String, Optional ByVal Remark As String = "", Optional ByVal StartTime As String = "") Handles FrmProduct.E_Update_dgvProductionInfo1
         If FrmProdTable Is Nothing Then

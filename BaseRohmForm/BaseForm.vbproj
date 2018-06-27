@@ -77,14 +77,16 @@
     <Reference Include="AuthenticationUser">
       <HintPath>dllSource\AuthenticationUser.dll</HintPath>
     </Reference>
-    <Reference Include="iLibrary">
+    <Reference Include="iLibrary, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>dllSource\iLibrary.dll</HintPath>
     </Reference>
     <Reference Include="Rohm.Apcs.Tdc, Version=1.0.0.1, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>dllSource\Rohm.Apcs.Tdc.dll</HintPath>
     </Reference>
-    <Reference Include="Rohm.Common.Logging">
+    <Reference Include="Rohm.Common.Logging, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>dllSource\Rohm.Common.Logging.dll</HintPath>
     </Reference>
     <Reference Include="System" />
@@ -116,6 +118,7 @@
     <Import Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApcsPro.vb" />
     <Compile Include="clsErrorLog.vb" />
     <Compile Include="DBxDataSet.Designer.vb">
       <AutoGen>True</AutoGen>
