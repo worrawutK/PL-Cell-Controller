@@ -6,6 +6,8 @@ Imports System.Runtime.Serialization.Formatters.Binary
 Imports XtraLibrary.SecsGem
 Imports iLibrary
 Imports Rohm.Common.Logging
+Imports System.Xml.Serialization
+
 Public Class ProcessForm
 #Region "Commomn Define"
     Event E_MakeAlarmCellCon(ByVal AlarmMessage As String, ByVal Location As String, ByVal Status As String, ByVal AlarmID As String)
@@ -52,7 +54,6 @@ Public Class ProcessForm
 
 
 #End Region
-
 #Region "Form"
 
 
@@ -176,6 +177,7 @@ Public Class ProcessForm
         LoadPLDataTableBin()
         LoadPLAlarmInfoTable()
 
+        XmlLoad(c_ApcsPro, c_ApcsPro.GetType())
 
 
     End Sub
@@ -498,22 +500,22 @@ Public Class ProcessForm
         End If
         Try
 
-       
-        Using sw As StreamReader = New StreamReader(PathData)
-            Dim b As BinaryFormatter = New BinaryFormatter()
-            Dim tempTable As DBxDataSet.PLDataDataTable = CType(b.Deserialize(sw.BaseStream), DBxDataSet.PLDataDataTable)
-            For Each tempRow As DBxDataSet.PLDataRow In tempTable.Rows
-                DBxDataSet.PLData.ImportRow(tempRow)
-            Next
-        End Using
 
-        For i = 0 To PLDataDataGridView.Rows.Count - 1
-            If PLDataDataGridView.Rows(i).Cells(5).Value.ToString <> "" Then
-                PLDataDataGridView.Rows(i).DefaultCellStyle.BackColor = Color.Red
-                'Else
-                '    PLDataDataGridView.Rows(i).DefaultCellStyle.BackColor = Color.Lime
-            End If
-        Next
+            Using sw As StreamReader = New StreamReader(PathData)
+                Dim b As BinaryFormatter = New BinaryFormatter()
+                Dim tempTable As DBxDataSet.PLDataDataTable = CType(b.Deserialize(sw.BaseStream), DBxDataSet.PLDataDataTable)
+                For Each tempRow As DBxDataSet.PLDataRow In tempTable.Rows
+                    DBxDataSet.PLData.ImportRow(tempRow)
+                Next
+            End Using
+
+            For i = 0 To PLDataDataGridView.Rows.Count - 1
+                If PLDataDataGridView.Rows(i).Cells(5).Value.ToString <> "" Then
+                    PLDataDataGridView.Rows(i).DefaultCellStyle.BackColor = Color.Red
+                    'Else
+                    '    PLDataDataGridView.Rows(i).DefaultCellStyle.BackColor = Color.Lime
+                End If
+            Next
         Catch ex As Exception
             SaveCatchLog(ex.ToString, "LoadPLDataTableBin()")
         End Try
@@ -877,15 +879,7 @@ Dummy:
             End Using
         End Using
     End Sub
-#Region "Apcs_Pro Valiable"
-    Private c_ApcsProService As IApcsProService = New ApcsProService()
-    Private lotInfo As iLibrary.LotInfo
-    Private machineInfo As MachineInfo
-    Private userInfo As UserInfo
-    Private currentServerTime As DateTimeInfo
-    Private log As Logger
-    Private ResultApcsProService As LotUpdateInfo = Nothing
-#End Region
+
 
     Private Sub bgTDC_DoWork(ByVal sender As System.Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bgTDC.DoWork
         Dim TmpData As String = ""
@@ -929,6 +923,7 @@ LBL_QUEUE_LotSet_Err:
         If resSet.HasError Then
             If RepeatCountLotSet > 5 Then 'กรณีที่ Err 70,71,72 วนรันซ้ำมากกว่า 5 ครั้ง เป็น Err Log แล้วรัน Lot ต่อไป
                 addErrLogfile("TDC_LotSet : " & TmpData)
+                LotSetUpAndLotStartPro(MCNo, LotNo, OPNo)
                 GoTo LBL_QUEUE_LOTSET_CHECK
             End If
 
@@ -955,31 +950,7 @@ LBL_QUEUE_LotSet_Err:
                     GoTo LBL_QUEUE_LotSet_Err
             End Select
         End If
-#Region "Apcs_Pro LotSetUp and LotStart"
-
-        Try
-            lotInfo = c_ApcsProService.GetLotInfo(LotNo)
-            machineInfo = c_ApcsProService.GetMachineInfo(MCNo)
-            userInfo = c_ApcsProService.GetUserInfo(OPNo)
-            log = New Logger("1.0", machineInfo.Name)
-            currentServerTime = c_ApcsProService.Get_DateTimeInfo(log)
-
-            ResultApcsProService = c_ApcsProService.LotSetup(lotInfo.Id, machineInfo.Id, userInfo.Id, 0, "", 1, currentServerTime.Datetime, log)
-            If Not ResultApcsProService.IsOk Then
-                log.OperationLogger.Write(0, "bgTDC_DoWork", "OUT", "CellCon", "iLibrary", 0, "LotSetup", ResultApcsProService.ErrorMessage, LotNo)
-            End If
-
-            ResultApcsProService = c_ApcsProService.LotStart(lotInfo.Id, machineInfo.Id, userInfo.Id, 0, "", 1, currentServerTime.Datetime, log)
-            If Not ResultApcsProService.IsOk Then
-                log.OperationLogger.Write(0, "bgTDC_DoWork", "OUT", "CellCon", "iLibrary", 0, "LotStart", ResultApcsProService.ErrorMessage, LotNo)
-            End If
-
-        Catch ex As Exception
-            'addErrLogfile("c_ApcsProService.LotSetup,LotStart:" & ex.ToString())
-            log.OperationLogger.Write(0, "bgTDC_DoWork", "OUT", "CellCon", "iLibrary", 0, "LotSetup,LotStart", ex.Message.ToString(), LotNo)
-
-        End Try
-#End Region
+        LotSetUpAndLotStartPro(MCNo, LotNo, OPNo)
         GoTo LBL_QUEUE_LOTSET_CHECK
 
 
@@ -1015,6 +986,7 @@ LBL_QUEUE_LotEnd_Err:
         If resEnd.HasError Then
             If RepeatCountLotEnd > 5 Then 'กรณีที่ Err 70,71,72 วนรันซ้ำมากกว่า 5 ครั้ง เป็น Err Log แล้วรัน Lot ต่อไป
                 addErrLogfile("TDC_LotEnd : " & TmpData)
+                LotEndPro(LotNo, CInt(GoodQty), NGQTy)
                 GoTo LBL_QUEUE_LOTEND_CHECK
             End If
             Select Case resEnd.ErrorCode
@@ -1023,6 +995,7 @@ LBL_QUEUE_LotEnd_Err:
                     If CountErr03 > 10 Then '                          150923
                         addErrLogfile("LotErr03 : " & TmpData) '          150923
                         CountErr03 = 0 '                               150923
+                        LotEndPro(LotNo, CInt(GoodQty), NGQTy)
                         GoTo LBL_QUEUE_LOTEND_CHECK '                  150923
                     End If '150923
                     m_LotEndQueue.Enqueue(TmpData)
@@ -1050,17 +1023,8 @@ LBL_QUEUE_LotEnd_Err:
             End Select
         End If
         CountErr03 = 0
-#Region "APCS Pro LotEnd"
-        Try
-            currentServerTime = c_ApcsProService.Get_DateTimeInfo(log)
-            ResultApcsProService = c_ApcsProService.LotEnd(lotInfo.Id, machineInfo.Id, userInfo.Id, False, CInt(GoodQty), CInt(NGQTy), 0, "", 1, currentServerTime.Datetime, log)
-            If Not ResultApcsProService.IsOk Then
-                log.OperationLogger.Write(0, "bgTDC_DoWork", "OUT", "CellCon", "iLibrary", 0, "LotEnd", ResultApcsProService.ErrorMessage, LotNo)
-            End If
-        Catch ex As Exception
-            log.OperationLogger.Write(0, "bgTDC_DoWork", "OUT", "CellCon", "iLibrary", 0, "LotEnd", ex.Message, LotNo)
-        End Try
-#End Region
+        LotEndPro(LotNo, CInt(GoodQty), NGQTy)
+
         GoTo LBL_QUEUE_LOTEND_CHECK
     End Sub
 
@@ -1140,7 +1104,7 @@ LBL_QUEUE_LotEnd_Err:
         MDIParent1.Send_S6F23_PurgeSpool()
     End Sub
 
-   
+
 
     Public Sub TransactionCheck(ByVal _LotNo As String, ByVal _Device As String, ByVal _Package As String)
         Dim strLotData As String
@@ -1174,5 +1138,150 @@ LBL_QUEUE_LotEnd_Err:
         End If
     End Sub
 
+#Region "Apcs_Pro Valiable"
+    Private c_ApcsProService As IApcsProService = New ApcsProService()
+    Private lotInfo As iLibrary.LotInfo
+    Private machineInfo As MachineInfo
+    Private userInfo As UserInfo
+    Private currentServerTime As DateTimeInfo
+    Private log As New Logger
+    Private ResultApcsProService As LotUpdateInfo = Nothing
+    Private c_ApcsPro As New ApcsPro
+#End Region
+    Private Sub GetInfoApcsPro(LotNo As String, MCNo As String, OPNo As String)
+        lotInfo = c_ApcsProService.GetLotInfo(LotNo)
+        machineInfo = c_ApcsProService.GetMachineInfo(MCNo)
+        userInfo = c_ApcsProService.GetUserInfo(OPNo)
+    End Sub
+#Region "Apcs_Pro LotSetUp and LotStart"
 
+    Private Sub LotSetUpAndLotStartPro(MCNo As String, LotNo As String, OPNo As String)
+        Try
+            log = New Logger("1.0", MCNo)
+            If c_ApcsProService.CheckPackageEnable(c_ApcsPro.Package, log) Then
+                If c_ApcsProService.CheckLotisExist(LotNo, log) Then
+                    'lotInfo = c_ApcsProService.GetLotInfo(LotNo)
+                    'machineInfo = c_ApcsProService.GetMachineInfo(MCNo)
+                    'userInfo = c_ApcsProService.GetUserInfo(OPNo)
+                    GetInfoApcsPro(LotNo, MCNo, OPNo)
+                    currentServerTime = c_ApcsProService.Get_DateTimeInfo(log)
+
+                    ResultApcsProService = c_ApcsProService.LotSetup(lotInfo.Id, machineInfo.Id, userInfo.Id, 0, "", 1, currentServerTime.Datetime, log)
+                    If Not ResultApcsProService.IsOk Then
+                        log.OperationLogger.Write(0, "bgTDC_DoWork", "OUT", "CellCon", "iLibrary", 0, "LotSetup", ResultApcsProService.ErrorMessage, LotNo)
+                    End If
+                    c_ApcsPro.LotNo = lotInfo.Name
+                    c_ApcsPro.MachineNo = machineInfo.Name
+                    c_ApcsPro.Recipe = ResultApcsProService.Recipe1
+                    c_ApcsPro.OPNo = OPNo
+                    ResultApcsProService = c_ApcsProService.LotStart(lotInfo.Id, machineInfo.Id, userInfo.Id, 0, "", 1, c_ApcsPro.Recipe, currentServerTime.Datetime, log)
+                    If Not ResultApcsProService.IsOk Then
+                        log.OperationLogger.Write(0, "bgTDC_DoWork", "OUT", "CellCon", "iLibrary", 0, "LotStart", ResultApcsProService.ErrorMessage, LotNo)
+                    End If
+                End If
+            End If
+
+
+        Catch ex As Exception
+            'addErrLogfile("c_ApcsProService.LotSetup,LotStart:" & ex.ToString())
+            log.OperationLogger.Write(0, "bgTDC_DoWork", "OUT", "CellCon", "iLibrary", 0, "LotSetup,LotStart", ex.Message.ToString(), LotNo)
+
+        End Try
+
+    End Sub
+#End Region
+#Region "APCS Pro LotEnd"
+    Private Sub LotEndPro(LotNo As String, GoodQty As Integer, NGQTy As Integer)
+        Try
+            If c_ApcsProService.CheckPackageEnable(m_SelfData.RecipeName, log) Then
+                If c_ApcsProService.CheckLotisExist(LotNo, log) Then
+                    currentServerTime = c_ApcsProService.Get_DateTimeInfo(log)
+                    ResultApcsProService = c_ApcsProService.LotEnd(lotInfo.Id, machineInfo.Id, userInfo.Id, False, GoodQty, NGQTy, 0, "", 1, currentServerTime.Datetime, log)
+                    If Not ResultApcsProService.IsOk Then
+                        log.OperationLogger.Write(0, "bgTDC_DoWork", "OUT", "CellCon", "iLibrary", 0, "LotEnd", ResultApcsProService.ErrorMessage, LotNo)
+                    End If
+                End If
+            End If
+        Catch ex As Exception
+            log.OperationLogger.Write(0, "bgTDC_DoWork", "OUT", "CellCon", "iLibrary", 0, "LotEnd", ex.Message, LotNo)
+        End Try
+    End Sub
+
+#End Region
+    Private XmlPathDataApcsPro As String = My.Application.Info.DirectoryPath & "\ApcsPro.xml"
+    Private Sub XmlSave(data As ApcsPro)
+        Try
+            Using fs As New System.IO.FileStream(XmlPathDataApcsPro, System.IO.FileMode.Create)
+                Dim bs = New XmlSerializer(data.GetType())
+                bs.Serialize(fs, data)
+            End Using
+        Catch ex As Exception
+            log.ConnectionLogger.Write(0, "XmlSave", "OUT", "", "", 0, "XmlSave", ex.Message.ToString, "")
+        End Try
+
+    End Sub
+    Private Sub XmlLoad(ByRef data As ApcsPro, type As Type)
+        Try
+            If (File.Exists(XmlPathDataApcsPro)) Then
+                Using fs As New System.IO.FileStream(XmlPathDataApcsPro, System.IO.FileMode.Open)
+                    Dim bs = New XmlSerializer(type)
+                    data = CType(bs.Deserialize(fs), ApcsPro)
+                End Using
+                GetInfoApcsPro(data.LotNo, data.MachineNo, data.OPNo)
+                ' UpdateMachineOnlineState(c_MachineInfo.Id, 1, c_Log)
+            End If
+        Catch ex As Exception
+            log.ConnectionLogger.Write(0, "XmlLoad", "OUT", "", "", 0, "XmlLoad", ex.Message.ToString, "")
+        End Try
+
+    End Sub
+#Region "ApcsPro"
+    Public Class ApcsPro
+        Private c_Package As String
+        Public Property Package() As String
+            Get
+                Return c_Package
+            End Get
+            Set(ByVal value As String)
+                c_Package = value
+            End Set
+        End Property
+        Private c_LotNo As String
+        Public Property LotNo() As String
+            Get
+                Return c_LotNo
+            End Get
+            Set(ByVal value As String)
+                c_LotNo = value
+            End Set
+        End Property
+        Private c_MachineNo As String
+        Public Property MachineNo() As String
+            Get
+                Return c_MachineNo
+            End Get
+            Set(ByVal value As String)
+                c_MachineNo = value
+            End Set
+        End Property
+        Private c_Recipe As String
+        Public Property Recipe() As String
+            Get
+                Return c_Recipe
+            End Get
+            Set(ByVal value As String)
+                c_Recipe = value
+            End Set
+        End Property
+        Private c_OPNo As String
+        Public Property OPNo() As String
+            Get
+                Return c_OPNo
+            End Get
+            Set(ByVal value As String)
+                c_OPNo = value
+            End Set
+        End Property
+#End Region
+    End Class
 End Class
