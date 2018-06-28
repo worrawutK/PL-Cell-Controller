@@ -1164,12 +1164,12 @@ LBL_QUEUE_LotEnd_Err:
         End If
     End Sub
 
-    Private Sub Button4_Click(sender As Object, e As EventArgs) Handles Button4.Click
+    Private Sub Button4_Click(sender As Object, e As EventArgs)
         MakeAlarmCellCon("Error : 00")
         Event_LotInfo_Rohm("9999A0001V", "005678", "2XXXX")
     End Sub
 
-    Private Sub Button5_Click(sender As Object, e As EventArgs) Handles Button5.Click
+    Private Sub Button5_Click(sender As Object, e As EventArgs)
         Event_LotEnd("9999A0001V", 500, 10)
     End Sub
 
