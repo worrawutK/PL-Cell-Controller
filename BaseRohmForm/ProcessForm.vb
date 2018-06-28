@@ -177,7 +177,7 @@ Public Class ProcessForm
 
         LoadPLDataTableBin()
         LoadPLAlarmInfoTable()
-        XmlLoad(c_ApcsPro2, c_ApcsPro2.GetType())
+        ' XmlLoad(c_ApcsPro2, c_ApcsPro2.GetType())
         UpdateMachineOnlineState(1, log)
     End Sub
 
@@ -1041,7 +1041,7 @@ RepeatSendTdc:
     Private currentServerTime As DateTimeInfo
     Private log As New Logger
     Private ResultApcsProService As LotUpdateInfo = Nothing
-    Private c_ApcsPro2 As New ApcsPro
+    ' Private c_ApcsPro2 As New ApcsPro
 #End Region
     Private Sub GetInfoApcsPro(LotNo As String, MCNo As String, OPNo As String)
         Try
@@ -1062,13 +1062,8 @@ RepeatSendTdc:
             log = New Logger("1.0", MCNo)
 
             Dim ap As New DBxDataSetTableAdapters.QueriesTableAdapter
-            c_ApcsPro2.Package = ap.GetPackage(LotNo)
-
-            If c_ApcsProService.CheckPackageEnable(c_ApcsPro2.Package, log) Then
+            If c_ApcsProService.CheckPackageEnable(ap.GetPackage(LotNo), log) Then
                 If c_ApcsProService.CheckLotisExist(LotNo, log) Then
-                    'lotInfo = c_ApcsProService.GetLotInfo(LotNo)
-                    'machineInfo = c_ApcsProService.GetMachineInfo(MCNo)
-                    'userInfo = c_ApcsProService.GetUserInfo(OPNo)
                     GetInfoApcsPro(LotNo, MCNo, OPNo)
                     currentServerTime = c_ApcsProService.Get_DateTimeInfo(log)
 
@@ -1078,14 +1073,10 @@ RepeatSendTdc:
                     If Not ResultApcsProService.IsOk Then
                         log.ConnectionLogger.Write(0, "LotSetUpAndLotStartPro", "OUT", "CellCon", "iLibrary", 0, "LotSetup", ResultApcsProService.ErrorNo & ":" & ResultApcsProService.ErrorMessage, LotNo)
                     End If
-                    c_ApcsPro2.LotNo = lotInfo.Name
-                    c_ApcsPro2.MachineNo = machineInfo.Name
-                    c_ApcsPro2.Recipe = ResultApcsProService.Recipe1
-                    c_ApcsPro2.OPNo = OPNo
 
-                    log.OperationLogger.Write(0, "LotSetUpAndLotStartPro", "OUT", "CellCon", "iLibrary", 0, "LotStart", "MCNo :" & MCNo & ",OPNo :" & OPNo & ",LotNo :" & LotNo, "")
+                    log.OperationLogger.Write(0, "LotSetUpAndLotStartPro", "OUT", "CellCon", "iLibrary", 0, "LotStart", "MCNo :" & MCNo & ",OPNo :" & OPNo & ",LotNo :" & LotNo & ",Recipe1 :" & ResultApcsProService.Recipe1, "")
 
-                    ResultApcsProService = c_ApcsProService.LotStart(lotInfo.Id, machineInfo.Id, userInfo.Id, 0, "", 1, c_ApcsPro2.Recipe, currentServerTime.Datetime, log)
+                    ResultApcsProService = c_ApcsProService.LotStart(lotInfo.Id, machineInfo.Id, userInfo.Id, 0, "", 1, ResultApcsProService.Recipe1, currentServerTime.Datetime, log)
                     If Not ResultApcsProService.IsOk Then
                         log.ConnectionLogger.Write(0, "LotSetUpAndLotStartPro", "OUT", "CellCon", "iLibrary", 0, "LotStart", ResultApcsProService.ErrorNo & ":" & ResultApcsProService.ErrorMessage, LotNo)
                     End If
@@ -1105,8 +1096,7 @@ RepeatSendTdc:
     Private Sub LotEndPro(LotNo As String, GoodQty As Integer, NGQTy As Integer)
         Try
             Dim ap As New DBxDataSetTableAdapters.QueriesTableAdapter
-            c_ApcsPro2.Package = ap.GetPackage(LotNo)
-            If c_ApcsProService.CheckPackageEnable(c_ApcsPro2.Package, log) Then
+            If c_ApcsProService.CheckPackageEnable(ap.GetPackage(LotNo), log) Then
                 If c_ApcsProService.CheckLotisExist(LotNo, log) Then
                     currentServerTime = c_ApcsProService.Get_DateTimeInfo(log)
                     log.OperationLogger.Write(0, "LotEndPro", "OUT", "CellCon", "iLibrary", 0, "LotEnd", "Good :" & GoodQty & ",Ng :" & NGQTy & ",LotNo :" & LotNo, "")
@@ -1124,36 +1114,7 @@ RepeatSendTdc:
 
 #End Region
     Private XmlPathDataApcsPro As String = My.Application.Info.DirectoryPath & "\ApcsPro.xml"
-    Private Sub XmlSave(data As ApcsPro)
-        Try
-            log.OperationLogger.Write(0, "XmlSave", "", "", "", 0, "", "", "")
 
-            Using fs As New System.IO.FileStream(XmlPathDataApcsPro, System.IO.FileMode.Create)
-                Dim bs = New XmlSerializer(data.GetType())
-                bs.Serialize(fs, data)
-            End Using
-        Catch ex As Exception
-            log.ConnectionLogger.Write(0, "XmlSave", "OUT", "", "", 0, "XmlSave", ex.Message.ToString, "")
-        End Try
-
-    End Sub
-    Private Sub XmlLoad(ByRef data As ApcsPro, type As Type)
-        Try
-
-            If (File.Exists(XmlPathDataApcsPro)) Then
-                log.OperationLogger.Write(0, "XmlLoad", "", "", "", 0, "", "", "")
-                Using fs As New System.IO.FileStream(XmlPathDataApcsPro, System.IO.FileMode.Open)
-                    Dim bs = New XmlSerializer(type)
-                    data = CType(bs.Deserialize(fs), ApcsPro)
-                End Using
-                GetInfoApcsPro(data.LotNo, data.MachineNo, data.OPNo)
-                ' UpdateMachineOnlineState(c_MachineInfo.Id, 1, c_Log)
-            End If
-        Catch ex As Exception
-            log.ConnectionLogger.Write(0, "XmlLoad", "OUT", "", "", 0, "XmlLoad", ex.Message.ToString, "")
-        End Try
-
-    End Sub
     Enum MachineProcessingState
         Idle = 1
         Ready = 3
@@ -1180,106 +1141,135 @@ RepeatSendTdc:
             log.OperationLogger.Write(0, "UpdateMachineOnlineState", "OUT", "CellCon", "iLibrary", 0, "Update_MachineOnlineState", "PL-" & My.Settings.EquipmentNo, "")
             c_ApcsProService.Update_MachineOnlineState(machineInfo.Id, onlineState, userID, log)
         Catch ex As Exception
-            'lbNotification.Text = "Update_MachineOnlineState :" & ex.ToString()
             log.ConnectionLogger.Write(0, "UpdateMachineOnlineState", "OUT", "CellCon", "iLibrary", 0, "Update_MachineOnlineState", ex.Message, "")
         End Try
 
     End Sub
-    Private c_ApcsPro As List(Of ApcsPro) = New List(Of ApcsPro)
-#Region "ApcsPro"
-    Public Class ApcsPro
-        Private c_LotNo As String
-        Public Property LotNo() As String
-            Get
-                Return c_LotNo
-            End Get
-            Set(ByVal value As String)
-                c_LotNo = value
-            End Set
-        End Property
-        Private c_StartTime As DateTime?
-        Public Property StartTime() As DateTime?
-            Get
-                Return c_StartTime
-            End Get
-            Set(ByVal value As DateTime?)
-                c_StartTime = value
-            End Set
-        End Property
-        Private c_EndTime As DateTime?
-        Public Property EndTime() As DateTime?
-            Get
-                Return c_EndTime
-            End Get
-            Set(ByVal value As DateTime?)
-                c_EndTime = value
-            End Set
-        End Property
-        Private c_OPNo As String
-        Public Property OPNo() As String
-            Get
-                Return c_OPNo
-            End Get
-            Set(ByVal value As String)
-                c_OPNo = value
-            End Set
-        End Property
-        Private c_InputQty As Integer
-        Public Property InputQty() As Integer
-            Get
-                Return c_InputQty
-            End Get
-            Set(ByVal value As Integer)
-                c_InputQty = value
-            End Set
-        End Property
-        Private c_GoodQty As Integer
-        Public Property GoodQty() As Integer
-            Get
-                Return c_GoodQty
-            End Get
-            Set(ByVal value As Integer)
-                c_GoodQty = value
-            End Set
-        End Property
-        Private c_MagazineNo As String
-        Public Property MagazineNo() As String
-            Get
-                Return c_MagazineNo
-            End Get
-            Set(ByVal value As String)
-                c_MagazineNo = value
-            End Set
-        End Property
-        Private c_Recipe As String
-        Public Property Recipe() As String
-            Get
-                Return c_Recipe
-            End Get
-            Set(ByVal value As String)
-                c_Recipe = value
-            End Set
-        End Property
-        Private c_Package As String
-        Public Property Package() As String
-            Get
-                Return c_Package
-            End Get
-            Set(ByVal value As String)
-                c_Package = value
-            End Set
-        End Property
+    'Private Sub XmlSave(data As ApcsPro)
+    '    Try
+    '        log.OperationLogger.Write(0, "XmlSave", "", "", "", 0, "", "", "")
 
-        Private c_MachineNo As String
-        Public Property MachineNo() As String
-            Get
-                Return c_MachineNo
-            End Get
-            Set(ByVal value As String)
-                c_MachineNo = value
-            End Set
-        End Property
+    '        Using fs As New System.IO.FileStream(XmlPathDataApcsPro, System.IO.FileMode.Create)
+    '            Dim bs = New XmlSerializer(data.GetType())
+    '            bs.Serialize(fs, data)
+    '        End Using
+    '    Catch ex As Exception
+    '        log.ConnectionLogger.Write(0, "XmlSave", "OUT", "", "", 0, "XmlSave", ex.Message.ToString, "")
+    '    End Try
 
-#End Region
-    End Class
+    'End Sub
+    'Private Sub XmlLoad(ByRef data As ApcsPro, type As Type)
+    '    Try
+
+    '        If (File.Exists(XmlPathDataApcsPro)) Then
+    '            log.OperationLogger.Write(0, "XmlLoad", "", "", "", 0, "", "", "")
+    '            Using fs As New System.IO.FileStream(XmlPathDataApcsPro, System.IO.FileMode.Open)
+    '                Dim bs = New XmlSerializer(type)
+    '                data = CType(bs.Deserialize(fs), ApcsPro)
+    '            End Using
+    '            GetInfoApcsPro(data.LotNo, data.MachineNo, data.OPNo)
+    '            ' UpdateMachineOnlineState(c_MachineInfo.Id, 1, c_Log)
+    '        End If
+    '    Catch ex As Exception
+    '        log.ConnectionLogger.Write(0, "XmlLoad", "OUT", "", "", 0, "XmlLoad", ex.Message.ToString, "")
+    '    End Try
+
+    'End Sub
+    '    Private c_ApcsPro As List(Of ApcsPro) = New List(Of ApcsPro)
+    '#Region "ApcsPro"
+    '    Public Class ApcsPro
+    '        Private c_LotNo As String
+    '        Public Property LotNo() As String
+    '            Get
+    '                Return c_LotNo
+    '            End Get
+    '            Set(ByVal value As String)
+    '                c_LotNo = value
+    '            End Set
+    '        End Property
+    '        Private c_StartTime As DateTime?
+    '        Public Property StartTime() As DateTime?
+    '            Get
+    '                Return c_StartTime
+    '            End Get
+    '            Set(ByVal value As DateTime?)
+    '                c_StartTime = value
+    '            End Set
+    '        End Property
+    '        Private c_EndTime As DateTime?
+    '        Public Property EndTime() As DateTime?
+    '            Get
+    '                Return c_EndTime
+    '            End Get
+    '            Set(ByVal value As DateTime?)
+    '                c_EndTime = value
+    '            End Set
+    '        End Property
+    '        Private c_OPNo As String
+    '        Public Property OPNo() As String
+    '            Get
+    '                Return c_OPNo
+    '            End Get
+    '            Set(ByVal value As String)
+    '                c_OPNo = value
+    '            End Set
+    '        End Property
+    '        Private c_InputQty As Integer
+    '        Public Property InputQty() As Integer
+    '            Get
+    '                Return c_InputQty
+    '            End Get
+    '            Set(ByVal value As Integer)
+    '                c_InputQty = value
+    '            End Set
+    '        End Property
+    '        Private c_GoodQty As Integer
+    '        Public Property GoodQty() As Integer
+    '            Get
+    '                Return c_GoodQty
+    '            End Get
+    '            Set(ByVal value As Integer)
+    '                c_GoodQty = value
+    '            End Set
+    '        End Property
+    '        Private c_MagazineNo As String
+    '        Public Property MagazineNo() As String
+    '            Get
+    '                Return c_MagazineNo
+    '            End Get
+    '            Set(ByVal value As String)
+    '                c_MagazineNo = value
+    '            End Set
+    '        End Property
+    '        Private c_Recipe As String
+    '        Public Property Recipe() As String
+    '            Get
+    '                Return c_Recipe
+    '            End Get
+    '            Set(ByVal value As String)
+    '                c_Recipe = value
+    '            End Set
+    '        End Property
+    '        Private c_Package As String
+    '        Public Property Package() As String
+    '            Get
+    '                Return c_Package
+    '            End Get
+    '            Set(ByVal value As String)
+    '                c_Package = value
+    '            End Set
+    '        End Property
+
+    '        Private c_MachineNo As String
+    '        Public Property MachineNo() As String
+    '            Get
+    '                Return c_MachineNo
+    '            End Get
+    '            Set(ByVal value As String)
+    '                c_MachineNo = value
+    '            End Set
+    '        End Property
+
+    '#End Region
+    'End Class
 End Class
