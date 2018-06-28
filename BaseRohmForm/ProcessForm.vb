@@ -41,13 +41,11 @@ Public Class ProcessForm
     Private Delegate Sub SxFxxDelegate(ByVal e As SecondarySecsMessageEventArgs)
 
 
-
-
-
     Dim m_Locker As Object = New Object
     Private m_TdcService As TdcService
-    Private m_LotSetQueue As Queue(Of String) = New Queue(Of String)
-    Private m_LotEndQueue As Queue(Of String) = New Queue(Of String)
+    Private c_TdcQueue As Queue(Of TdcData) = New Queue(Of TdcData)
+
+
 
 
 
@@ -591,15 +589,21 @@ Dummy:
                         removeList.Add(strDataRow)
                         SavePLDataTableBin()
                         SavePLAlarmInfoToDbx()
+
                         'Send LotSet TDC
                         SyncLock m_Locker
-                            Dim strLotSetData As String = "PL-" & My.Settings.EquipmentNo & "," & strDataRow.LotNo & "," & strDataRow.LotStartTime & "," & strDataRow.OPNo & ",0" ' & strDataRow.LotStartMode
-                            m_LotSetQueue.Enqueue(strLotSetData)
-                        End SyncLock
+                            Dim tdc As New TdcData
+                            tdc.McNo = "PL-" & My.Settings.EquipmentNo
+                            tdc.LotNo = strDataRow.LotNo
+                            tdc.LotStartTime = strDataRow.LotStartTime
+                            tdc.LotEndTime = strDataRow.LotEndTime
+                            tdc.TdcStartMode = RunModeType.Normal
+                            tdc.TdcEndMode = EndModeType.Normal
+                            tdc.GoodPcs = strDataRow.TotalGoodAdjust
+                            tdc.NgPcs = strDataRow.TotalNGAdjust
+                            tdc.OpNo = strDataRow.OPNo
+                            c_TdcQueue.Enqueue(tdc)
 
-                        Dim tmpData As String = "PL-" & My.Settings.EquipmentNo & "," & strDataRow.LotNo & "," & CDate(strDataRow.LotEndTime) & "," & CInt(strDataRow.TotalGoodAdjust) & "," & CInt(strDataRow.TotalNGAdjust) & "," & strDataRow.OPNo & ",1" '& strDataRow.LotEndMode
-                        SyncLock m_Locker
-                            m_LotEndQueue.Enqueue(tmpData)
                         End SyncLock
 
                     End If
@@ -894,164 +898,19 @@ Dummy:
 
 
     Private Sub bgTDC_DoWork(ByVal sender As System.Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bgTDC.DoWork
-        Dim TmpData As String = ""
-        Dim ArrayData As String()
-        'LotSet
-        Dim MCNo As String
-        Dim LotNo As String
-        Dim StartTime As String
-        Dim OPNo As String
-        Dim LotSetMode As String = ""
-        'LotEnd
-        Dim EndTime As String
-        Dim GoodQty As String
-        Dim NGQTy As Integer
-        Dim CountErr03 As Integer = 0
-        Dim LotEndMode As String = ""
 
-LBL_QUEUE_LOTSET_CHECK:
-        Dim RepeatCountLotSet As Integer = 0
-        SyncLock m_Locker
-            If m_LotSetQueue.Count > 0 Then 'ทำ LotSet จนกว่าจะหมด Qeue
-                TmpData = m_LotSetQueue.Dequeue
-                ArrayData = TmpData.Split(CChar(","))
-                MCNo = ArrayData(0)
-                LotNo = ArrayData(1)
-                StartTime = ArrayData(2)
-                OPNo = ArrayData(3)
-                LotSetMode = ArrayData(4)
-                RepeatCountLotSet = 0
-            Else 'ทำ LotEnd จนกว่าจะหมด Qeue
-                GoTo LBL_QUEUE_LOTEND_CHECK
-            End If
-        End SyncLock
+RepeatSendTdc:
+        Dim tdc As TdcData = c_TdcQueue.Dequeue()
 
-LBL_QUEUE_LotSet_Err:
+        Dim resSet As TdcResponse = m_TdcService.LotSet(tdc.McNo, tdc.LotNo, tdc.LotStartTime, tdc.OpNo, tdc.TdcStartMode)
 
+        Dim resEnd As TdcResponse = m_TdcService.LotEnd(tdc.McNo, tdc.LotNo, tdc.LotEndTime, tdc.GoodPcs, tdc.NgPcs, tdc.TdcEndMode, tdc.OpNo)
 
+        LotEndPro(tdc.LotNo, tdc.GoodPcs, tdc.NgPcs)
 
-
-        Dim resSet As TdcResponse = m_TdcService.LotSet(MCNo, LotNo, CDate(StartTime), OPNo, CType(LotSetMode, RunModeType))
-        If resSet.HasError Then
-            If RepeatCountLotSet > 5 Then 'กรณีที่ Err 70,71,72 วนรันซ้ำมากกว่า 5 ครั้ง เป็น Err Log แล้วรัน Lot ต่อไป
-                addErrLogfile("TDC_LotSet : " & TmpData)
-                GoTo LBL_QUEUE_LOTSET_CHECK
-            End If
-
-            Select Case resSet.ErrorCode
-                Case "04"
-                    RepeatCountLotSet += 1
-                    Thread.Sleep(3000)
-                    GoTo LBL_QUEUE_LotSet_Err
-                Case "70"
-                    RepeatCountLotSet += 1
-                    Thread.Sleep(3000)
-                    GoTo LBL_QUEUE_LotSet_Err
-                Case "71"
-                    RepeatCountLotSet += 1
-                    Thread.Sleep(3000)
-                    GoTo LBL_QUEUE_LotSet_Err
-                Case "72"
-                    RepeatCountLotSet += 1
-                    Thread.Sleep(3000)
-                    GoTo LBL_QUEUE_LotSet_Err
-                Case "99"
-                    RepeatCountLotSet += 1
-                    Thread.Sleep(3000)
-                    GoTo LBL_QUEUE_LotSet_Err
-            End Select
+        If c_TdcQueue.Count() <> 0 Then
+            GoTo RepeatSendTdc
         End If
-
-        GoTo LBL_QUEUE_LOTSET_CHECK
-
-
-LBL_QUEUE_LOTEND_CHECK:
-        Dim RepeatCountLotEnd As Integer = 0
-        SyncLock m_Locker
-            If m_LotEndQueue.Count > 0 Then 'ทำ LotEnd จนกว่าจะหมด Qeue
-                TmpData = m_LotEndQueue.Dequeue
-                ArrayData = TmpData.Split(CChar(","))
-                MCNo = ArrayData(0)
-                LotNo = ArrayData(1)
-                EndTime = ArrayData(2)
-                GoodQty = ArrayData(3)
-                If ArrayData(4) = "" Then
-                    NGQTy = 0
-                Else
-                    NGQTy = CInt(ArrayData(4))
-                End If
-                OPNo = ArrayData(5)
-                LotEndMode = ArrayData(6)
-                RepeatCountLotEnd = 0
-            Else 'ทำ LotEnd จนกว่าจะหมด Qeue
-                Exit Sub
-            End If
-        End SyncLock
-
-LBL_QUEUE_LotEnd_Err:
-
-
-
-
-        Dim resEnd As TdcResponse = m_TdcService.LotEnd(MCNo, LotNo, CDate(EndTime), CInt(GoodQty), CInt(NGQTy), CType(LotEndMode, EndModeType), OPNo)
-        If resEnd.HasError Then
-            If RepeatCountLotEnd > 5 Then 'กรณีที่ Err 70,71,72 วนรันซ้ำมากกว่า 5 ครั้ง เป็น Err Log แล้วรัน Lot ต่อไป
-                addErrLogfile("TDC_LotEnd : " & TmpData)
-                LotEndPro(LotNo, CInt(GoodQty), CInt(NGQTy))
-                GoTo LBL_QUEUE_LOTEND_CHECK
-            End If
-            Select Case resEnd.ErrorCode
-                Case "03" 'Lot was not started or ended 150921
-                    CountErr03 += 1 '                                  150923
-                    If CountErr03 > 10 Then '                          150923
-                        addErrLogfile("LotErr03 : " & TmpData) '          150923
-                        CountErr03 = 0 '                               150923
-                        LotEndPro(LotNo, CInt(GoodQty), CInt(NGQTy))
-                        ' EndApcsPro(LotNo, MCNo, OPNo, CInt(GoodQty), CInt(NGQTy))
-                        GoTo LBL_QUEUE_LOTEND_CHECK '                  150923
-                    End If '150923
-                    m_LotEndQueue.Enqueue(TmpData)
-                    GoTo LBL_QUEUE_LOTSET_CHECK
-                Case "04" 'MC not found
-                    RepeatCountLotEnd += 1
-                    Thread.Sleep(3000)
-                    GoTo LBL_QUEUE_LotEnd_Err
-                Case "70"
-                    RepeatCountLotEnd += 1
-                    Thread.Sleep(3000)
-                    GoTo LBL_QUEUE_LotEnd_Err
-                Case "71"
-                    RepeatCountLotEnd += 1
-                    Thread.Sleep(3000)
-                    GoTo LBL_QUEUE_LotEnd_Err
-                Case "72"
-                    RepeatCountLotEnd += 1
-                    Thread.Sleep(3000)
-                    GoTo LBL_QUEUE_LotEnd_Err
-                Case "99"
-                    RepeatCountLotEnd += 1
-                    Thread.Sleep(3000)
-                    GoTo LBL_QUEUE_LotEnd_Err
-            End Select
-        End If
-        CountErr03 = 0
-        LotEndPro(LotNo, CInt(GoodQty), CInt(NGQTy))
-        'EndApcsPro(LotNo, MCNo, OPNo, CInt(GoodQty), CInt(NGQTy))
-        '#Region "APCS Pro LotEnd"
-        '        Try
-        '            If Not packageEnable Then
-        '                GoTo LBL_QUEUE_LOTEND_CHECK
-        '            End If
-        '            currentServerTime = c_ApcsProService.Get_DateTimeInfo(log)
-        '            ResultApcsProService = c_ApcsProService.LotEnd(lotInfo.Id, machineInfo.Id, userInfo.Id, False, CInt(GoodQty), CInt(NGQTy), 0, "", 1, currentServerTime.Datetime, log)
-        '            If Not ResultApcsProService.IsOk Then
-        '                log.ConnectionLogger.Write(0, "bgTDC_DoWork", "OUT", "CellCon", "iLibrary", 0, "LotEnd", ResultApcsProService.ErrorMessage, "LotNo:" & LotNo & ",MCNo:" & MCNo & ",OPNo:" & OPNo)
-        '            End If
-        '        Catch ex As Exception
-        '            log.ConnectionLogger.Write(0, "bgTDC_DoWork", "OUT", "CellCon", "iLibrary", 0, "LotEnd", ex.Message, "LotNo:" & LotNo & ",MCNo:" & MCNo & ",OPNo:" & OPNo)
-        '        End Try
-        '#End Region
-        GoTo LBL_QUEUE_LOTEND_CHECK
     End Sub
 
     Public Sub addErrLogfile(ByVal m As String)

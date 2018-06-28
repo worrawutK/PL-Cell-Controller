@@ -303,6 +303,7 @@
     <Compile Include="TcpIpClientTest.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="TdcData.vb" />
     <Compile Include="WorkingSlipQRCode.vb" />
   </ItemGroup>
   <ItemGroup>
