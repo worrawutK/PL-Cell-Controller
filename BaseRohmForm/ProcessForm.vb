@@ -1023,15 +1023,6 @@ RepeatSendTdc:
         End If
     End Sub
 
-    Private Sub Button4_Click(sender As Object, e As EventArgs)
-        MakeAlarmCellCon("Error : 00")
-        Event_LotInfo_Rohm("9999A0001V", "005678", "2XXXX")
-    End Sub
-
-    Private Sub Button5_Click(sender As Object, e As EventArgs)
-        Event_LotEnd("9999A0001V", 500, 10)
-    End Sub
-
 
 #Region "Apcs_Pro Valiable"
     Private c_ApcsProService As IApcsProService = New ApcsProService()
