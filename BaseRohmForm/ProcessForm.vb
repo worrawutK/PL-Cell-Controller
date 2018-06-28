@@ -179,7 +179,7 @@ Public Class ProcessForm
 
         LoadPLDataTableBin()
         LoadPLAlarmInfoTable()
-        XmlLoad(c_ApcsPro, c_ApcsPro.GetType())
+        XmlLoad(c_ApcsPro2, c_ApcsPro2.GetType())
         UpdateMachineOnlineState(1, log)
     End Sub
 
@@ -1182,12 +1182,19 @@ LBL_QUEUE_LotEnd_Err:
     Private currentServerTime As DateTimeInfo
     Private log As New Logger
     Private ResultApcsProService As LotUpdateInfo = Nothing
-    Private c_ApcsPro As New ApcsPro
+    Private c_ApcsPro2 As New ApcsPro
 #End Region
     Private Sub GetInfoApcsPro(LotNo As String, MCNo As String, OPNo As String)
-        lotInfo = c_ApcsProService.GetLotInfo(LotNo)
-        machineInfo = c_ApcsProService.GetMachineInfo(MCNo)
-        userInfo = c_ApcsProService.GetUserInfo(OPNo)
+        Try
+            log.OperationLogger.Write(0, "GetInfoApcsPro", "OUT", "CellCon", "iLibrary", 0, "GetLotInfo,GetMachineInfo,GetUserInfo", "MCNo :" & MCNo & ",OPNo :" & OPNo & ",LotNo :" & LotNo, "")
+
+            lotInfo = c_ApcsProService.GetLotInfo(LotNo)
+            machineInfo = c_ApcsProService.GetMachineInfo(MCNo)
+            userInfo = c_ApcsProService.GetUserInfo(OPNo)
+        Catch ex As Exception
+            log.ConnectionLogger.Write(0, "GetInfoApcsPro", "OUT", "CellCon", "iLibrary", 0, "GetLotInfo,GetMachineInfo,GetUserInfo", ex.Message.ToString(), "LotNo:" & LotNo & ",MCNo:" & MCNo & ",OPNo:" & OPNo)
+        End Try
+
     End Sub
 #Region "Apcs_Pro LotSetUp and LotStart"
 
@@ -1196,9 +1203,9 @@ LBL_QUEUE_LotEnd_Err:
             log = New Logger("1.0", MCNo)
 
             Dim ap As New DBxDataSetTableAdapters.QueriesTableAdapter
-            c_ApcsPro.Package = ap.GetPackage(LotNo)
+            c_ApcsPro2.Package = ap.GetPackage(LotNo)
 
-            If c_ApcsProService.CheckPackageEnable(c_ApcsPro.Package, log) Then
+            If c_ApcsProService.CheckPackageEnable(c_ApcsPro2.Package, log) Then
                 If c_ApcsProService.CheckLotisExist(LotNo, log) Then
                     'lotInfo = c_ApcsProService.GetLotInfo(LotNo)
                     'machineInfo = c_ApcsProService.GetMachineInfo(MCNo)
@@ -1206,17 +1213,22 @@ LBL_QUEUE_LotEnd_Err:
                     GetInfoApcsPro(LotNo, MCNo, OPNo)
                     currentServerTime = c_ApcsProService.Get_DateTimeInfo(log)
 
+                    log.OperationLogger.Write(0, "LotSetUpAndLotStartPro", "OUT", "CellCon", "iLibrary", 0, "LotSetup", "MCNo :" & MCNo & ",OPNo :" & OPNo & ",LotNo :" & LotNo, "")
+
                     ResultApcsProService = c_ApcsProService.LotSetup(lotInfo.Id, machineInfo.Id, userInfo.Id, 0, "", 1, currentServerTime.Datetime, log)
                     If Not ResultApcsProService.IsOk Then
-                        log.OperationLogger.Write(0, "bgTDC_DoWork", "OUT", "CellCon", "iLibrary", 0, "LotSetup", ResultApcsProService.ErrorMessage, LotNo)
+                        log.ConnectionLogger.Write(0, "LotSetUpAndLotStartPro", "OUT", "CellCon", "iLibrary", 0, "LotSetup", ResultApcsProService.ErrorNo & ":" & ResultApcsProService.ErrorMessage, LotNo)
                     End If
-                    c_ApcsPro.LotNo = lotInfo.Name
-                    c_ApcsPro.MachineNo = machineInfo.Name
-                    c_ApcsPro.Recipe = ResultApcsProService.Recipe1
-                    c_ApcsPro.OPNo = OPNo
-                    ResultApcsProService = c_ApcsProService.LotStart(lotInfo.Id, machineInfo.Id, userInfo.Id, 0, "", 1, c_ApcsPro.Recipe, currentServerTime.Datetime, log)
+                    c_ApcsPro2.LotNo = lotInfo.Name
+                    c_ApcsPro2.MachineNo = machineInfo.Name
+                    c_ApcsPro2.Recipe = ResultApcsProService.Recipe1
+                    c_ApcsPro2.OPNo = OPNo
+
+                    log.OperationLogger.Write(0, "LotSetUpAndLotStartPro", "OUT", "CellCon", "iLibrary", 0, "LotStart", "MCNo :" & MCNo & ",OPNo :" & OPNo & ",LotNo :" & LotNo, "")
+
+                    ResultApcsProService = c_ApcsProService.LotStart(lotInfo.Id, machineInfo.Id, userInfo.Id, 0, "", 1, c_ApcsPro2.Recipe, currentServerTime.Datetime, log)
                     If Not ResultApcsProService.IsOk Then
-                        log.OperationLogger.Write(0, "bgTDC_DoWork", "OUT", "CellCon", "iLibrary", 0, "LotStart", ResultApcsProService.ErrorMessage, LotNo)
+                        log.ConnectionLogger.Write(0, "LotSetUpAndLotStartPro", "OUT", "CellCon", "iLibrary", 0, "LotStart", ResultApcsProService.ErrorNo & ":" & ResultApcsProService.ErrorMessage, LotNo)
                     End If
                 End If
             End If
@@ -1224,7 +1236,7 @@ LBL_QUEUE_LotEnd_Err:
 
         Catch ex As Exception
             'addErrLogfile("c_ApcsProService.LotSetup,LotStart:" & ex.ToString())
-            log.OperationLogger.Write(0, "bgTDC_DoWork", "OUT", "CellCon", "iLibrary", 0, "LotSetup,LotStart", ex.Message.ToString(), LotNo)
+            log.ConnectionLogger.Write(0, "bgTDC_DoWork", "OUT", "CellCon", "iLibrary", 0, "LotSetup,LotStart", ex.Message.ToString(), LotNo)
 
         End Try
 
@@ -1234,18 +1246,20 @@ LBL_QUEUE_LotEnd_Err:
     Private Sub LotEndPro(LotNo As String, GoodQty As Integer, NGQTy As Integer)
         Try
             Dim ap As New DBxDataSetTableAdapters.QueriesTableAdapter
-            c_ApcsPro.Package = ap.GetPackage(LotNo)
-            If c_ApcsProService.CheckPackageEnable(c_ApcsPro.Package, log) Then
+            c_ApcsPro2.Package = ap.GetPackage(LotNo)
+            If c_ApcsProService.CheckPackageEnable(c_ApcsPro2.Package, log) Then
                 If c_ApcsProService.CheckLotisExist(LotNo, log) Then
                     currentServerTime = c_ApcsProService.Get_DateTimeInfo(log)
+                    log.OperationLogger.Write(0, "LotEndPro", "OUT", "CellCon", "iLibrary", 0, "LotEnd", "Good :" & GoodQty & ",Ng :" & NGQTy & ",LotNo :" & LotNo, "")
+
                     ResultApcsProService = c_ApcsProService.LotEnd(lotInfo.Id, machineInfo.Id, userInfo.Id, False, GoodQty, NGQTy, 0, "", 1, currentServerTime.Datetime, log)
                     If Not ResultApcsProService.IsOk Then
-                        log.OperationLogger.Write(0, "bgTDC_DoWork", "OUT", "CellCon", "iLibrary", 0, "LotEnd", ResultApcsProService.ErrorMessage, LotNo)
+                        log.ConnectionLogger.Write(0, "LotEndPro", "OUT", "CellCon", "iLibrary", 0, "LotEnd", ResultApcsProService.ErrorNo & ":" & ResultApcsProService.ErrorMessage, LotNo)
                     End If
                 End If
             End If
         Catch ex As Exception
-            log.OperationLogger.Write(0, "bgTDC_DoWork", "OUT", "CellCon", "iLibrary", 0, "LotEnd", ex.Message, LotNo)
+            log.ConnectionLogger.Write(0, "LotEndPro", "OUT", "CellCon", "iLibrary", 0, "LotEnd", ex.Message, LotNo)
         End Try
     End Sub
 
@@ -1253,6 +1267,8 @@ LBL_QUEUE_LotEnd_Err:
     Private XmlPathDataApcsPro As String = My.Application.Info.DirectoryPath & "\ApcsPro.xml"
     Private Sub XmlSave(data As ApcsPro)
         Try
+            log.OperationLogger.Write(0, "XmlSave", "", "", "", 0, "", "", "")
+
             Using fs As New System.IO.FileStream(XmlPathDataApcsPro, System.IO.FileMode.Create)
                 Dim bs = New XmlSerializer(data.GetType())
                 bs.Serialize(fs, data)
@@ -1264,7 +1280,9 @@ LBL_QUEUE_LotEnd_Err:
     End Sub
     Private Sub XmlLoad(ByRef data As ApcsPro, type As Type)
         Try
+
             If (File.Exists(XmlPathDataApcsPro)) Then
+                log.OperationLogger.Write(0, "XmlLoad", "", "", "", 0, "", "", "")
                 Using fs As New System.IO.FileStream(XmlPathDataApcsPro, System.IO.FileMode.Open)
                     Dim bs = New XmlSerializer(type)
                     data = CType(bs.Deserialize(fs), ApcsPro)
@@ -1285,36 +1303,32 @@ LBL_QUEUE_LotEnd_Err:
         LotSetUp = 6
     End Enum
     Private Sub UpdateMachineState(machineID As MachineInfo, runState As Integer, log As Logger, Optional userID As Integer = -1)
-
-
         Try
+
+            log.OperationLogger.Write(0, "UpdateMachineOnlineState", "OUT", "CellCon", "iLibrary", 0, "Update_MachineOnlineState", "machineID:" & machineID.Id.ToString & ",runState:" & runState & ",userID:" & userID, "")
             c_ApcsProService.Update_MachineState(machineID.Id, runState, userID, log)
         Catch ex As Exception
-            'lbNotification.Text = "Update_MachineState :" & ex.ToString()
+            log.ConnectionLogger.Write(0, "UpdateMachineState", "OUT", "CellCon", "iLibrary", 0, "Update_MachineState", ex.Message, "")
         End Try
 
     End Sub
     Private Sub UpdateMachineOnlineState(onlineState As Integer, log As Logger, Optional userID As Integer = -1)
 
         Try
+            log.OperationLogger.Write(0, "UpdateMachineOnlineState", "OUT", "CellCon", "iLibrary", 0, "GetMachineInfo", "PL-" & My.Settings.EquipmentNo, "")
             machineInfo = c_ApcsProService.GetMachineInfo("PL-" & My.Settings.EquipmentNo)
+
+            log.OperationLogger.Write(0, "UpdateMachineOnlineState", "OUT", "CellCon", "iLibrary", 0, "Update_MachineOnlineState", "PL-" & My.Settings.EquipmentNo, "")
             c_ApcsProService.Update_MachineOnlineState(machineInfo.Id, onlineState, userID, log)
         Catch ex As Exception
             'lbNotification.Text = "Update_MachineOnlineState :" & ex.ToString()
+            log.ConnectionLogger.Write(0, "UpdateMachineOnlineState", "OUT", "CellCon", "iLibrary", 0, "Update_MachineOnlineState", ex.Message, "")
         End Try
 
     End Sub
+    Private c_ApcsPro As List(Of ApcsPro) = New List(Of ApcsPro)
 #Region "ApcsPro"
     Public Class ApcsPro
-        Private c_Package As String
-        Public Property Package() As String
-            Get
-                Return c_Package
-            End Get
-            Set(ByVal value As String)
-                c_Package = value
-            End Set
-        End Property
         Private c_LotNo As String
         Public Property LotNo() As String
             Get
@@ -1324,22 +1338,22 @@ LBL_QUEUE_LotEnd_Err:
                 c_LotNo = value
             End Set
         End Property
-        Private c_MachineNo As String
-        Public Property MachineNo() As String
+        Private c_StartTime As DateTime?
+        Public Property StartTime() As DateTime?
             Get
-                Return c_MachineNo
+                Return c_StartTime
             End Get
-            Set(ByVal value As String)
-                c_MachineNo = value
+            Set(ByVal value As DateTime?)
+                c_StartTime = value
             End Set
         End Property
-        Private c_Recipe As String
-        Public Property Recipe() As String
+        Private c_EndTime As DateTime?
+        Public Property EndTime() As DateTime?
             Get
-                Return c_Recipe
+                Return c_EndTime
             End Get
-            Set(ByVal value As String)
-                c_Recipe = value
+            Set(ByVal value As DateTime?)
+                c_EndTime = value
             End Set
         End Property
         Private c_OPNo As String
@@ -1351,6 +1365,62 @@ LBL_QUEUE_LotEnd_Err:
                 c_OPNo = value
             End Set
         End Property
+        Private c_InputQty As Integer
+        Public Property InputQty() As Integer
+            Get
+                Return c_InputQty
+            End Get
+            Set(ByVal value As Integer)
+                c_InputQty = value
+            End Set
+        End Property
+        Private c_GoodQty As Integer
+        Public Property GoodQty() As Integer
+            Get
+                Return c_GoodQty
+            End Get
+            Set(ByVal value As Integer)
+                c_GoodQty = value
+            End Set
+        End Property
+        Private c_MagazineNo As String
+        Public Property MagazineNo() As String
+            Get
+                Return c_MagazineNo
+            End Get
+            Set(ByVal value As String)
+                c_MagazineNo = value
+            End Set
+        End Property
+        Private c_Recipe As String
+        Public Property Recipe() As String
+            Get
+                Return c_Recipe
+            End Get
+            Set(ByVal value As String)
+                c_Recipe = value
+            End Set
+        End Property
+        Private c_Package As String
+        Public Property Package() As String
+            Get
+                Return c_Package
+            End Get
+            Set(ByVal value As String)
+                c_Package = value
+            End Set
+        End Property
+
+        Private c_MachineNo As String
+        Public Property MachineNo() As String
+            Get
+                Return c_MachineNo
+            End Get
+            Set(ByVal value As String)
+                c_MachineNo = value
+            End Set
+        End Property
+
 #End Region
     End Class
 End Class
