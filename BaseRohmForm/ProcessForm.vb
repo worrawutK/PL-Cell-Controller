@@ -907,6 +907,9 @@ Dummy:
 RepeatSendTdc:
         Dim tdc As TdcData = c_TdcQueue.Dequeue()
 
+
+        MoveLot(tdc)
+
         Dim resSet As TdcResponse = m_TdcService.LotSet(tdc.McNo, tdc.LotNo, tdc.LotStartTime, tdc.OpNo, tdc.TdcStartMode)
 
         Dim resEnd As TdcResponse = m_TdcService.LotEnd(tdc.McNo, tdc.LotNo, tdc.LotEndTime, tdc.GoodPcs, tdc.NgPcs, tdc.TdcEndMode, tdc.OpNo)
@@ -1220,6 +1223,25 @@ RepeatSendTdc:
         End Try
     End Sub
 
+#End Region
+#Region "APCS Pro TDC Move Lot"
+    Private Sub MoveLot(tdc_data As TdcData)
+        Try
+            Dim ap As New DBxDataSetTableAdapters.QueriesTableAdapter
+            If c_ApcsProService.CheckPackageEnable(ap.GetPackage(tdc_data.LotNo), log) Then
+                If c_ApcsProService.CheckLotisExist(tdc_data.LotNo, log) Then
+                    Dim Res As TdcLotRequestResponse = m_TdcService.LotRequest(tdc_data.McNo, tdc_data.LotNo, RunModeType.Normal)
+                    If (Res.HasError) Then
+                        If Res.ErrorCode = "06" Or Res.ErrorCode = "02" Then
+                            m_TdcService.MoveLot(tdc_data.LotNo, tdc_data.McNo, tdc_data.OpNo, "0501")
+                        End If
+                    End If
+                End If
+            End If
+        Catch ex As Exception
+            log.ConnectionLogger.Write(0, "ApcsProMoveLot", "OUT", "CellCon", "iLibrary", 0, "MoveLot", ex.Message, tdc_data.LotNo)
+        End Try
+    End Sub
 #End Region
     Private XmlPathDataApcsPro As String = My.Application.Info.DirectoryPath & "\ApcsPro.xml"
 

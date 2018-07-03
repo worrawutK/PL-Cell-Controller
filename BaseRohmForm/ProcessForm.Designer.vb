@@ -79,8 +79,6 @@ Partial Class ProcessForm
         Me.PLAlarmInfoTableAdapter = New CellController.DBxDataSetTableAdapters.PLAlarmInfoTableAdapter()
         Me.QueriesTableAdapter1 = New CellController.DBxDataSetTableAdapters.QueriesTableAdapter()
         Me.TransactionDataTableAdapter1 = New CellController.DBxDataSetTableAdapters.TransactionDataTableAdapter()
-        Me.bgTdcSet = New System.ComponentModel.BackgroundWorker()
-        Me.bgTdcEnd = New System.ComponentModel.BackgroundWorker()
         Me.MenuStrip1.SuspendLayout()
         CType(Me.PLDataDataGridView, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PLDataBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -208,7 +206,7 @@ Partial Class ProcessForm
         DataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
         Me.PLDataDataGridView.DefaultCellStyle = DataGridViewCellStyle10
         Me.PLDataDataGridView.Location = New System.Drawing.Point(25, 278)
-        Me.PLDataDataGridView.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.PLDataDataGridView.Margin = New System.Windows.Forms.Padding(4)
         Me.PLDataDataGridView.Name = "PLDataDataGridView"
         Me.PLDataDataGridView.ReadOnly = True
         DataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
@@ -336,7 +334,7 @@ Partial Class ProcessForm
         Me.pbxAutoM.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.pbxAutoM.Image = Global.CellController.My.Resources.Resources.HR
         Me.pbxAutoM.Location = New System.Drawing.Point(1095, 31)
-        Me.pbxAutoM.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.pbxAutoM.Margin = New System.Windows.Forms.Padding(4)
         Me.pbxAutoM.Name = "pbxAutoM"
         Me.pbxAutoM.Size = New System.Drawing.Size(127, 80)
         Me.pbxAutoM.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
@@ -351,7 +349,7 @@ Partial Class ProcessForm
         Me.pbxLogo.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.pbxLogo.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.pbxLogo.Location = New System.Drawing.Point(1231, 31)
-        Me.pbxLogo.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.pbxLogo.Margin = New System.Windows.Forms.Padding(4)
         Me.pbxLogo.Name = "pbxLogo"
         Me.pbxLogo.Size = New System.Drawing.Size(127, 79)
         Me.pbxLogo.TabIndex = 2
@@ -389,7 +387,7 @@ Partial Class ProcessForm
         Me.btDeleteLot.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btDeleteLot.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(222, Byte))
         Me.btDeleteLot.Location = New System.Drawing.Point(1230, 278)
-        Me.btDeleteLot.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.btDeleteLot.Margin = New System.Windows.Forms.Padding(4)
         Me.btDeleteLot.Name = "btDeleteLot"
         Me.btDeleteLot.Size = New System.Drawing.Size(128, 76)
         Me.btDeleteLot.TabIndex = 55
@@ -428,7 +426,7 @@ Partial Class ProcessForm
         Me.btEndManual.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btEndManual.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(222, Byte))
         Me.btEndManual.Location = New System.Drawing.Point(1231, 557)
-        Me.btEndManual.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.btEndManual.Margin = New System.Windows.Forms.Padding(4)
         Me.btEndManual.Name = "btEndManual"
         Me.btEndManual.Size = New System.Drawing.Size(127, 76)
         Me.btEndManual.TabIndex = 55
@@ -442,7 +440,7 @@ Partial Class ProcessForm
         Me.Button1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.Button1.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(222, Byte))
         Me.Button1.Location = New System.Drawing.Point(1101, 31)
-        Me.Button1.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.Button1.Margin = New System.Windows.Forms.Padding(4)
         Me.Button1.Name = "Button1"
         Me.Button1.Size = New System.Drawing.Size(117, 80)
         Me.Button1.TabIndex = 56
@@ -472,7 +470,7 @@ Partial Class ProcessForm
         Me.Button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.Button2.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(222, Byte))
         Me.Button2.Location = New System.Drawing.Point(1231, 414)
-        Me.Button2.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.Button2.Margin = New System.Windows.Forms.Padding(4)
         Me.Button2.Name = "Button2"
         Me.Button2.Size = New System.Drawing.Size(127, 76)
         Me.Button2.TabIndex = 55
@@ -486,7 +484,7 @@ Partial Class ProcessForm
         Me.Button3.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.Button3.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(222, Byte))
         Me.Button3.Location = New System.Drawing.Point(1231, 778)
-        Me.Button3.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.Button3.Margin = New System.Windows.Forms.Padding(4)
         Me.Button3.Name = "Button3"
         Me.Button3.Size = New System.Drawing.Size(127, 76)
         Me.Button3.TabIndex = 55
@@ -541,7 +539,7 @@ Partial Class ProcessForm
         Me.Controls.Add(Me.pbxLogo)
         Me.Controls.Add(Me.MenuStrip1)
         Me.MainMenuStrip = Me.MenuStrip1
-        Me.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.Margin = New System.Windows.Forms.Padding(4)
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "ProcessForm"
@@ -603,6 +601,4 @@ Partial Class ProcessForm
     Friend WithEvents Button3 As System.Windows.Forms.Button
     Friend WithEvents QueriesTableAdapter1 As CellController.DBxDataSetTableAdapters.QueriesTableAdapter
     Friend WithEvents TransactionDataTableAdapter1 As CellController.DBxDataSetTableAdapters.TransactionDataTableAdapter
-    Friend WithEvents bgTdcSet As System.ComponentModel.BackgroundWorker
-    Friend WithEvents bgTdcEnd As System.ComponentModel.BackgroundWorker
 End Class
