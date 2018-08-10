@@ -62,15 +62,15 @@ Public Class S6F11
                                 m_SelfData.PreProcessState = CInt(CType(secsItem_V, SecsItemU1).Value(0))
                             Case 38 'MECO-ProcessState
                                 m_SelfData.ProcessState = CInt(CType(secsItem_V, SecsItemU1).Value(0))
-                            Case 1665100 'MECO-BarcodeIn
+                            Case 1665100, 1203001100 'MECO-BarcodeIn
                                 m_SelfData.BarcodeIn = CType(secsItem_V.Value, String)
-                            Case 1665200 'MECO-BarcodeOut
+                            Case 1665200, 1203001200 'MECO-BarcodeOut
                                 m_SelfData.BarcodeOut = CType(secsItem_V.Value, String)
-                            Case 1665300 'MECO-DeviceName
+                            Case 1665300, 1203001300 'MECO-DeviceName
                                 m_SelfData.DeviceName = CType(secsItem_V.Value, String)
-                            Case 1665400 'MECO-LotInfo
+                            Case 1665400, 1203001400 'MECO-LotInfo
                                 m_SelfData.LotInfo = CType(secsItem_V.Value, String)
-                            Case 1665500 'MECO-LotName
+                            Case 1665500, 1203001500 'MECO-LotName
                                 Try
                                     m_SelfData.LotName = CType(secsItem_V.Value, String)
                                 Catch ex As Exception
@@ -82,23 +82,23 @@ Public Class S6F11
                                 'Else
                                 '    m_SelfData.LotName = CType(secsItem_V.Value, String)
                                 'End If
-                            Case 1665800 'MECO-Nmagazine
+                            Case 1665800, 1203001800 'MECO-Nmagazine
                                 m_SelfData.Nmagazines = CInt(CType(secsItem_V, SecsItemI4).Value(0))
                             Case 1665900 'MECO-OPNo
                                 m_SelfData.OperatorID = CType(secsItem_V.Value, String)
-                            Case 1666000 'MECO-ProductCountIn
+                            Case 1666000, 1203002000 'MECO-ProductCountIn
                                 m_SelfData.ProductCountIn = CInt(CType(secsItem_V, SecsItemI4).Value(0))
-                            Case 1666100 'MECO-ProductCountOut
+                            Case 1666100, 1203002100 'MECO-ProductCountOut
                                 m_SelfData.ProductCountOut = CInt(CType(secsItem_V, SecsItemI4).Value(0))
-                            Case 1666200 'MECO-ProductExpected
+                            Case 1666200, 1203002400 'MECO-ProductExpected
                                 m_SelfData.ProductExpected = CInt(CType(secsItem_V, SecsItemI4).Value(0))
-                            Case 1666300 'MECO-RecipeName
+                            Case 1666300, 1203002500 'MECO-RecipeName
                                 m_SelfData.RecipeName = CType(secsItem_V.Value, String)
                             Case 1666400 'MECO-TrayNumber 
                                 m_SelfData.TrayNumber = CType(secsItem_V.Value, String)
-                            Case 1668600 'MECO-ProductCountTotalIn
+                            Case 1668600, 1203002600 'MECO-ProductCountTotalIn
                                 m_SelfData.ProductCountTotalIn = CInt(CType(secsItem_V, SecsItemI4).Value(0))
-                            Case 1668700 'MECO-ProductCountTotalOut
+                            Case 1668700, 1203002300 'MECO-ProductCountTotalOut
                                 m_SelfData.ProductCountTotalOut = CInt(CType(secsItem_V, SecsItemI4).Value(0))
                         End Select
                 Next
