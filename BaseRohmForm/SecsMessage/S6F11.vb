@@ -96,7 +96,7 @@ Public Class S6F11
                                 m_SelfData.RecipeName = CType(secsItem_V.Value, String)
                             Case 1666400 'MECO-TrayNumber 
                                 m_SelfData.TrayNumber = CType(secsItem_V.Value, String)
-                            Case 1668600, 1203002600 'MECO-ProductCountTotalIn
+                            Case 1668600, 1203002200 'MECO-ProductCountTotalIn
                                 m_SelfData.ProductCountTotalIn = CInt(CType(secsItem_V, SecsItemI4).Value(0))
                             Case 1668700, 1203002300 'MECO-ProductCountTotalOut
                                 m_SelfData.ProductCountTotalOut = CInt(CType(secsItem_V, SecsItemI4).Value(0))
