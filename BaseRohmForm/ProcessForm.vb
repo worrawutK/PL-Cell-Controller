@@ -192,7 +192,8 @@ Public Class ProcessForm
         RaiseEvent E_ConsoleShow()
     End Sub
 
-
+    Declare Function Wow64DisableWow64FsRedirection Lib "kernel32" (ByRef oldvalue As Long) As Boolean
+    Declare Function Wow64EnableWow64FsRedirection Lib "kernel32" (ByRef oldvalue As Long) As Boolean
     Private Sub BMRequestToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BMRequestToolStripMenuItem.Click
         Dim tmpStr As String
 
@@ -212,13 +213,27 @@ Public Class ProcessForm
         tmpStr = tmpStr & "&AlarmName="
 
         Call Shell("C:\Program Files\Internet Explorer\iexplore.exe http://webserv.thematrix.net/LsiPETE/LSI_Prog/Maintenance/MainloginPD.asp?" & tmpStr, vbNormalFocus)
-        Process.Start("C:\WINDOWS\system32\osk.exe")
+        ' System.Diagnostics.Process.Start("osk.exe")
+        'Process.Start("C:\WINDOWS\system32\osk.exe")
+        CallKeyboardVisual()
     End Sub
 
+    Private Sub CallKeyboardVisual()
+        Dim osk As String = "C:\WINDOWS\system32\osk.exe"
+        Dim old As Long
+        If Environment.Is64BitOperatingSystem Then
+            If Wow64DisableWow64FsRedirection(old) Then
+                Process.Start(osk)
+                Wow64EnableWow64FsRedirection(old)
+            End If
+        Else
+            Process.Start(osk)
+        End If
+    End Sub
     Private Sub PMRepairToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles PMRepairToolStripMenuItem.Click
         Dim MCNo As String = My.Settings.EquipmentNo
         Call Shell("C:\Program Files\Internet Explorer\iexplore.exe http://webserv.thematrix.net/LsiPETE/LSI_Prog/Maintenance/MainPMlogin.asp?" & "MCNo=PL-" & MCNo, vbNormalFocus)
-        Process.Start("C:\WINDOWS\system32\osk.exe")
+        CallKeyboardVisual()
     End Sub
 
     Private Sub AndonToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles AndonToolStripMenuItem.Click
@@ -561,7 +576,12 @@ Public Class ProcessForm
                         _TotalGood = strDataRow.UnloadCount
                         _LotStartTime = Format(strDataRow.LotStartTime, "yyyy/MM/dd HH:mm:ss")
                         _LotEndTime = Format(strDataRow.LotEndTime, "yyyy/MM/dd HH:mm:ss")
-                        _Magazine = strDataRow.MagazineNo
+                        If strDataRow.IsMagazineNoNull = False Then
+                            _Magazine = strDataRow.MagazineNo
+                        Else
+                            _Magazine = ""
+                        End If
+
                     End If
 
                     Dim frmCon As New frmConfirm(_LotNo, _TotalInput, _TotalGood, _LotStartTime, _LotEndTime, _Magazine)
@@ -810,6 +830,8 @@ Dummy:
                 strMC = "MECO2"
             Case "PL-M-03"
                 strMC = "MECO3"
+            Case "PL-M-04"
+                strMC = "MECO4"
             Case Else
                 Return ""
         End Select

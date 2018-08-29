@@ -82,9 +82,11 @@ Public Class S6F11
                                 'Else
                                 '    m_SelfData.LotName = CType(secsItem_V.Value, String)
                                 'End If
-                            Case 1665800, 1203001800 'MECO-Nmagazine
+                            Case 1665800, 1203001800
+                                'MECO-Nmagazine
                                 m_SelfData.Nmagazines = CInt(CType(secsItem_V, SecsItemI4).Value(0))
-                            Case 1665900 'MECO-OPNo
+                            Case 1665900, 1203001900
+                                'MECO-OPNo
                                 m_SelfData.OperatorID = CType(secsItem_V.Value, String)
                             Case 1666000, 1203002000 'MECO-ProductCountIn
                                 m_SelfData.ProductCountIn = CInt(CType(secsItem_V, SecsItemI4).Value(0))
@@ -94,7 +96,7 @@ Public Class S6F11
                                 m_SelfData.ProductExpected = CInt(CType(secsItem_V, SecsItemI4).Value(0))
                             Case 1666300, 1203002500 'MECO-RecipeName
                                 m_SelfData.RecipeName = CType(secsItem_V.Value, String)
-                            Case 1666400 'MECO-TrayNumber 
+                            Case 1666400, 1203002600 'MECO-TrayNumber 
                                 m_SelfData.TrayNumber = CType(secsItem_V.Value, String)
                             Case 1668600, 1203002200 'MECO-ProductCountTotalIn
                                 m_SelfData.ProductCountTotalIn = CInt(CType(secsItem_V, SecsItemI4).Value(0))
