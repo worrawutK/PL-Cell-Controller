@@ -4,7 +4,7 @@ Imports System.Runtime.Serialization.Formatters.Soap
 Module ModuleAppGeneral
 
 #Region "Commomn Define"
-   
+
     Public Const PathPicObj As String = "D:\RohmSystem\rCellcon" & "\Picture"
     Public m_SelfData As New MecoParameter
     Public DIR_LOG As String = My.Application.Info.DirectoryPath & "\LOG"
@@ -72,7 +72,7 @@ Module ModuleAppGeneral
         End Try
 
     End Sub
-  
+
     Public Sub WrXml(ByVal pathfile As String, ByVal TarObj As Object)
         'Dim xfile As String = SelPath & "Config.xml"
         Dim fs As New IO.FileStream(pathfile, IO.FileMode.Create)
