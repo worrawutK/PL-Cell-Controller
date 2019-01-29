@@ -4,11 +4,11 @@ Imports System.IO
 Imports Rohm.Apcs.Tdc
 Imports System.Runtime.Serialization.Formatters.Binary
 Imports XtraLibrary.SecsGem
-Imports iLibrary
+'Imports iLibrary
 Imports Rohm.Common.Logging
 Imports System.Xml.Serialization
 Imports System.Reflection
-
+Imports CellController.iLibraryService
 Public Class ProcessForm
 #Region "Commomn Define"
     Event E_MakeAlarmCellCon(ByVal AlarmMessage As String, ByVal Location As String, ByVal Status As String, ByVal AlarmID As String)
@@ -57,11 +57,16 @@ Public Class ProcessForm
 
 #Region "Form"
 
-
+    Private c_IlibraryService As CellController.iLibraryService.IServiceiLibrary
     Private Sub ProcessForm_FormClosed(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosedEventArgs) Handles Me.FormClosed
         OprData.FRMProductAlive = False
         SavePLDataTableBin()
-        UpdateMachineOnlineState(0, c_Log)
+        Try
+            c_IlibraryService.MachineOnlineState("PL-" & My.Settings.EquipmentNo, MachineOnline.Offline)
+        Catch ex As Exception
+
+        End Try
+
     End Sub
 
 
@@ -180,7 +185,13 @@ Public Class ProcessForm
         LoadPLAlarmInfoTable()
         ' XmlLoad(c_ApcsPro2, c_ApcsPro2.GetType())
 
-        UpdateMachineOnlineState(1, c_Log)
+        Try
+            c_IlibraryService = New ServiceiLibraryClient
+            Dim result = c_IlibraryService.MachineOnlineState("PL-" & My.Settings.EquipmentNo, MachineOnline.Online)
+            ' MessageBox.Show(result.IsPass.ToString())
+        Catch ex As Exception
+
+        End Try
     End Sub
 
 
@@ -371,14 +382,21 @@ Public Class ProcessForm
         RaiseEvent E_Update_dgvProductionDetail("1665500", LotNo, "MECO-LotStart", "")
     End Sub
     Public Sub Event_MachineStatus(ByVal LotNo As String)
-        Dim runstate As Integer = 0
+
+        Dim runstate As MachineProcessingState
         If m_SelfData.ProcessState = 5 Then
             runstate = MachineProcessingState.Idle
         ElseIf m_SelfData.ProcessState = 7 Then
             runstate = MachineProcessingState.Execute
         End If
         If runstate <> 0 Then
-            UpdateMachineState(machineInfo, runstate, c_Log)
+            Try
+                c_IlibraryService.UpdateMachineState("PL-" & My.Settings.EquipmentNo, runstate)
+            Catch ex As Exception
+
+            End Try
+
+            'UpdateMachineState(MachineInfo, runstate, c_Log)
         End If
 
         RaiseEvent E_Update_dgvProductionDetail("1668300", "", "MECO-MachineStatus", "")
@@ -412,7 +430,12 @@ Public Class ProcessForm
 
         SavePLDataTableBin()
         'APCS Pro
-        LotSetUpAndLotStartPro(My.Settings.ProcessName & "-" & My.Settings.EquipmentNo, LotNo, OPNo)
+        Try
+            Dim result As SetupLotResult = c_IlibraryService.SetupLot(LotNo, "PL-" & My.Settings.EquipmentNo, OPNo, "PL", "0501")
+            c_IlibraryService.StartLot(LotNo, "PL-" & My.Settings.EquipmentNo, OPNo, result.Recipe)
+        Catch ex As Exception
+
+        End Try
         RaiseEvent E_Update_dgvProductionDetail("1666700", LotNo, "MECO-LotInfo_Rohm", "")
     End Sub
 
@@ -931,13 +954,18 @@ RepeatSendTdc:
         Dim tdc As TdcData = c_TdcQueue.Dequeue()
 
 
-        MoveLot(tdc)
+        'MoveLot(tdc)
 
         Dim resSet As TdcResponse = m_TdcService.LotSet(tdc.McNo, tdc.LotNo, tdc.LotStartTime, tdc.OpNo, tdc.TdcStartMode)
 
         Dim resEnd As TdcResponse = m_TdcService.LotEnd(tdc.McNo, tdc.LotNo, tdc.LotEndTime, tdc.GoodPcs, tdc.NgPcs, tdc.TdcEndMode, tdc.OpNo)
 
-        LotEndPro(tdc.LotNo, tdc.GoodPcs, tdc.NgPcs, tdc.OpNo)
+        Try
+            c_IlibraryService.EndLot(tdc.LotNo, tdc.McNo, tdc.OpNo, tdc.GoodPcs, tdc.NgPcs)
+        Catch ex As Exception
+
+        End Try
+        'LotEndPro(tdc.LotNo, tdc.GoodPcs, tdc.NgPcs, tdc.OpNo)
 
         If c_TdcQueue.Count() <> 0 Then
             GoTo RepeatSendTdc
@@ -1055,251 +1083,251 @@ RepeatSendTdc:
     End Sub
 
 
-#Region "Apcs_Pro Valiable"
-    Private c_ApcsProService As IApcsProService = New ApcsProService()
-    Private lotInfo As iLibrary.LotInfo
-    Private machineInfo As MachineInfo
-    Private userInfo As UserInfo
-    Private currentServerTime As DateTimeInfo
-    Private c_Log As New Logger("1.00", "PL-" + My.Settings.EquipmentNo)
-    Private ResultApcsProService As LotUpdateInfo = Nothing
-    ' Private c_ApcsPro2 As New ApcsPro
-#End Region
-    'Private Sub GetInfoApcsPro(LotNo As String, MCNo As String, OPNo As String)
-    '    Try
-    '        log.OperationLogger.Write(0, "GetInfoApcsPro", "OUT", "CellCon", "iLibrary", 0, "GetLotInfo,GetMachineInfo,GetUserInfo", "MCNo :" & MCNo & ",OPNo :" & OPNo & ",LotNo :" & LotNo, "")
+    '#Region "Apcs_Pro Valiable"
+    '    Private c_ApcsProService As IApcsProService = New ApcsProService()
+    '    Private lotInfo As iLibrary.LotInfo
+    '    Private machineInfo As MachineInfo
+    '    Private userInfo As UserInfo
+    '    Private currentServerTime As DateTimeInfo
+    '    Private c_Log As New Logger("1.00", "PL-" + My.Settings.EquipmentNo)
+    '    Private ResultApcsProService As LotUpdateInfo = Nothing
+    '    ' Private c_ApcsPro2 As New ApcsPro
+    '#End Region
+    '    'Private Sub GetInfoApcsPro(LotNo As String, MCNo As String, OPNo As String)
+    '    '    Try
+    '    '        log.OperationLogger.Write(0, "GetInfoApcsPro", "OUT", "CellCon", "iLibrary", 0, "GetLotInfo,GetMachineInfo,GetUserInfo", "MCNo :" & MCNo & ",OPNo :" & OPNo & ",LotNo :" & LotNo, "")
 
-    '        lotInfo = c_ApcsProService.GetLotInfo(LotNo)
-    '        machineInfo = c_ApcsProService.GetMachineInfo(MCNo)
-    '        userInfo = c_ApcsProService.GetUserInfo(OPNo)
-    '    Catch ex As Exception
-    '        log.ConnectionLogger.Write(0, "GetInfoApcsPro", "OUT", "CellCon", "iLibrary", 0, "GetLotInfo,GetMachineInfo,GetUserInfo", ex.Message.ToString(), "LotNo:" & LotNo & ",MCNo:" & MCNo & ",OPNo:" & OPNo)
-    '    End Try
+    '    '        lotInfo = c_ApcsProService.GetLotInfo(LotNo)
+    '    '        machineInfo = c_ApcsProService.GetMachineInfo(MCNo)
+    '    '        userInfo = c_ApcsProService.GetUserInfo(OPNo)
+    '    '    Catch ex As Exception
+    '    '        log.ConnectionLogger.Write(0, "GetInfoApcsPro", "OUT", "CellCon", "iLibrary", 0, "GetLotInfo,GetMachineInfo,GetUserInfo", ex.Message.ToString(), "LotNo:" & LotNo & ",MCNo:" & MCNo & ",OPNo:" & OPNo)
+    '    '    End Try
 
-    'End Sub
-    Private Function GetLotInfo(LotNo As String) As iLibrary.LotInfo
-        Try
-            c_Log.OperationLogger.Write(0, "GetLotInfo", "OUT", "CellCon", "iLibrary", 0, "GetLotInfo", "LotNo :" & LotNo, "")
+    '    'End Sub
+    '    Private Function GetLotInfo(LotNo As String) As iLibrary.LotInfo
+    '        Try
+    '            c_Log.OperationLogger.Write(0, "GetLotInfo", "OUT", "CellCon", "iLibrary", 0, "GetLotInfo", "LotNo :" & LotNo, "")
 
-            Return c_ApcsProService.GetLotInfo(LotNo, c_Log, Date.Now)
-        Catch ex As Exception
-            c_Log.ConnectionLogger.Write(0, "GetLotInfo", "OUT", "CellCon", "iLibrary", 0, "GetLotInfo", ex.Message.ToString(), "LotNo :" & LotNo)
-            Return Nothing
-        End Try
-    End Function
-    Private Function GetMachineInfo(MCNo As String) As MachineInfo
-        Try
-            c_Log.OperationLogger.Write(0, "GetMachineInfo", "OUT", "CellCon", "iLibrary", 0, "GetMachineInfo", "MCNo :" & MCNo, "")
-            Return c_ApcsProService.GetMachineInfo(MCNo, c_Log, Date.Now)
-        Catch ex As Exception
-            c_Log.ConnectionLogger.Write(0, "GetMachineInfo", "OUT", "CellCon", "iLibrary", 0, "GetMachineInfo", ex.Message.ToString(), "MCNo :" & MCNo)
-            Return Nothing
-        End Try
-    End Function
-    Private Function GetUserInfo(OpNo As String) As UserInfo
-        Try
-            c_Log.OperationLogger.Write(0, "GetUserInfo", "OUT", "CellCon", "iLibrary", 0, "GetUserInfo", "OpNo :" & OpNo, "")
-            Return c_ApcsProService.GetUserInfo(OpNo, c_Log, Date.Now)
-        Catch ex As Exception
-            c_Log.ConnectionLogger.Write(0, "GetUserInfo", "OUT", "CellCon", "iLibrary", 0, "GetUserInfo", ex.Message.ToString(), "OpNo :" & OpNo)
-            Return Nothing
-        End Try
-    End Function
-#Region "Apcs_Pro LotSetUp and LotStart"
-    Private Function ToXml(source As Object) As String
-        Try
-            Dim xs As XmlSerializer = New XmlSerializer(source.GetType())
-            Dim writer As StringWriter = New StringWriter()
-            xs.Serialize(writer, source)
-            Return writer.ToString()
-        Catch ex As Exception
-            Return ""
-        End Try
+    '            Return c_ApcsProService.GetLotInfo(LotNo, c_Log, Date.Now)
+    '        Catch ex As Exception
+    '            c_Log.ConnectionLogger.Write(0, "GetLotInfo", "OUT", "CellCon", "iLibrary", 0, "GetLotInfo", ex.Message.ToString(), "LotNo :" & LotNo)
+    '            Return Nothing
+    '        End Try
+    '    End Function
+    '    Private Function GetMachineInfo(MCNo As String) As MachineInfo
+    '        Try
+    '            c_Log.OperationLogger.Write(0, "GetMachineInfo", "OUT", "CellCon", "iLibrary", 0, "GetMachineInfo", "MCNo :" & MCNo, "")
+    '            Return c_ApcsProService.GetMachineInfo(MCNo, c_Log, Date.Now)
+    '        Catch ex As Exception
+    '            c_Log.ConnectionLogger.Write(0, "GetMachineInfo", "OUT", "CellCon", "iLibrary", 0, "GetMachineInfo", ex.Message.ToString(), "MCNo :" & MCNo)
+    '            Return Nothing
+    '        End Try
+    '    End Function
+    '    Private Function GetUserInfo(OpNo As String) As UserInfo
+    '        Try
+    '            c_Log.OperationLogger.Write(0, "GetUserInfo", "OUT", "CellCon", "iLibrary", 0, "GetUserInfo", "OpNo :" & OpNo, "")
+    '            Return c_ApcsProService.GetUserInfo(OpNo, c_Log, Date.Now)
+    '        Catch ex As Exception
+    '            c_Log.ConnectionLogger.Write(0, "GetUserInfo", "OUT", "CellCon", "iLibrary", 0, "GetUserInfo", ex.Message.ToString(), "OpNo :" & OpNo)
+    '            Return Nothing
+    '        End Try
+    '    End Function
+    '#Region "Apcs_Pro LotSetUp and LotStart"
+    '    Private Function ToXml(source As Object) As String
+    '        Try
+    '            Dim xs As XmlSerializer = New XmlSerializer(source.GetType())
+    '            Dim writer As StringWriter = New StringWriter()
+    '            xs.Serialize(writer, source)
+    '            Return writer.ToString()
+    '        Catch ex As Exception
+    '            Return ""
+    '        End Try
 
-    End Function
-    Private Function CreateTableToXml(LotNo As String) As String
-        Try
-            Dim table As New DBxDataSet.PLDataDataTable
-            Dim newRow As DBxDataSet.PLDataRow = table.NewPLDataRow
+    '    End Function
+    '    Private Function CreateTableToXml(LotNo As String) As String
+    '        Try
+    '            Dim table As New DBxDataSet.PLDataDataTable
+    '            Dim newRow As DBxDataSet.PLDataRow = table.NewPLDataRow
 
-            For Each row As DBxDataSet.PLDataRow In DBxDataSet.PLData
-                If row.LotNo = LotNo Then
-                    newRow.LotNo = row.LotNo
-                    newRow.LotStartTime = row.LotStartTime
-                    newRow.MCNo = row.MCNo
-                    If Not row.IsABNormalNull Then
-                        newRow.ABNormal = row.ABNormal
-                    End If
-                    If Not row.IsDummyQtyNull Then
-                        newRow.DummyQty = row.DummyQty
-                    End If
-                    If Not row.IsInputQtyAdjustNull Then
-                        newRow.InputQtyAdjust = row.InputQtyAdjust
-                    End If
-                    If Not row.IsLoadCountNull Then
-                        newRow.LoadCount = row.LoadCount
-                    End If
-                    If Not row.IsLotEndTimeNull Then
-                        newRow.LotEndTime = row.LotEndTime
-                    End If
-                    If Not row.IsMagazineNoNull Then
-                        newRow.MagazineNo = row.MagazineNo
-                    End If
-                    If Not row.IsMaterialNull Then
-                        newRow.Material = row.Material
-                    End If
-                    If Not row.IsNetVersionNull Then
-                        newRow.NetVersion = row.NetVersion
-                    End If
-                    If Not row.IsOPJudgementNull Then
-                        newRow.OPJudgement = row.OPJudgement
-                    End If
-                    If Not row.IsOPNoNull Then
-                        newRow.OPNo = row.OPNo
-                    End If
-                    If Not row.IsRemarkNull Then
-                        newRow.Remark = row.Remark
-                    End If
-                    If Not row.IsSelfConVersionNull Then
-                        newRow.SelfConVersion = row.SelfConVersion
-                    End If
-                    If Not row.IsTotalGoodAdjustNull Then
-                        newRow.TotalGoodAdjust = row.TotalGoodAdjust
-                    End If
-                    If Not row.IsTotalNGAdjustNull Then
-                        newRow.TotalNGAdjust = row.TotalNGAdjust
-                    End If
-                    If Not row.IsUnloadCountNull Then
-                        newRow.UnloadCount = row.UnloadCount
-                    End If
-                    Exit For
-                End If
-            Next
-            table.Rows.Add(newRow)
-            Return ToXml(table)
+    '            For Each row As DBxDataSet.PLDataRow In DBxDataSet.PLData
+    '                If row.LotNo = LotNo Then
+    '                    newRow.LotNo = row.LotNo
+    '                    newRow.LotStartTime = row.LotStartTime
+    '                    newRow.MCNo = row.MCNo
+    '                    If Not row.IsABNormalNull Then
+    '                        newRow.ABNormal = row.ABNormal
+    '                    End If
+    '                    If Not row.IsDummyQtyNull Then
+    '                        newRow.DummyQty = row.DummyQty
+    '                    End If
+    '                    If Not row.IsInputQtyAdjustNull Then
+    '                        newRow.InputQtyAdjust = row.InputQtyAdjust
+    '                    End If
+    '                    If Not row.IsLoadCountNull Then
+    '                        newRow.LoadCount = row.LoadCount
+    '                    End If
+    '                    If Not row.IsLotEndTimeNull Then
+    '                        newRow.LotEndTime = row.LotEndTime
+    '                    End If
+    '                    If Not row.IsMagazineNoNull Then
+    '                        newRow.MagazineNo = row.MagazineNo
+    '                    End If
+    '                    If Not row.IsMaterialNull Then
+    '                        newRow.Material = row.Material
+    '                    End If
+    '                    If Not row.IsNetVersionNull Then
+    '                        newRow.NetVersion = row.NetVersion
+    '                    End If
+    '                    If Not row.IsOPJudgementNull Then
+    '                        newRow.OPJudgement = row.OPJudgement
+    '                    End If
+    '                    If Not row.IsOPNoNull Then
+    '                        newRow.OPNo = row.OPNo
+    '                    End If
+    '                    If Not row.IsRemarkNull Then
+    '                        newRow.Remark = row.Remark
+    '                    End If
+    '                    If Not row.IsSelfConVersionNull Then
+    '                        newRow.SelfConVersion = row.SelfConVersion
+    '                    End If
+    '                    If Not row.IsTotalGoodAdjustNull Then
+    '                        newRow.TotalGoodAdjust = row.TotalGoodAdjust
+    '                    End If
+    '                    If Not row.IsTotalNGAdjustNull Then
+    '                        newRow.TotalNGAdjust = row.TotalNGAdjust
+    '                    End If
+    '                    If Not row.IsUnloadCountNull Then
+    '                        newRow.UnloadCount = row.UnloadCount
+    '                    End If
+    '                    Exit For
+    '                End If
+    '            Next
+    '            table.Rows.Add(newRow)
+    '            Return ToXml(table)
 
-        Catch ex As Exception
-            Return ""
-        End Try
+    '        Catch ex As Exception
+    '            Return ""
+    '        End Try
 
-    End Function
-    Private Sub LotSetUpAndLotStartPro(MCNo As String, LotNo As String, OPNo As String)
-        Try
-            'log = New Logger("1.0", MCNo)
-            'log.OperationLogger.Write(0, "LotSetUpAndLotStartPro", "OUT", "CellCon", "iLibrary", 0, "LotSetup", "MCNo :" & MCNo & ",OPNo :" & OPNo & ",LotNo :" & LotNo, "")
+    '    End Function
+    '    Private Sub LotSetUpAndLotStartPro(MCNo As String, LotNo As String, OPNo As String)
+    '        Try
+    '            'log = New Logger("1.0", MCNo)
+    '            'log.OperationLogger.Write(0, "LotSetUpAndLotStartPro", "OUT", "CellCon", "iLibrary", 0, "LotSetup", "MCNo :" & MCNo & ",OPNo :" & OPNo & ",LotNo :" & LotNo, "")
 
-            Dim recipe As String = ""
-            Dim ap As New DBxDataSetTableAdapters.QueriesTableAdapter
-            If c_ApcsProService.CheckPackageEnable(ap.GetPackage(LotNo), c_Log) Then
-                If c_ApcsProService.CheckLotisExist(LotNo, c_Log) Then
-                    'GetInfoApcsPro(LotNo, MCNo, OPNo)
-                    currentServerTime = c_ApcsProService.Get_DateTimeInfo(c_Log)
+    '            Dim recipe As String = ""
+    '            Dim ap As New DBxDataSetTableAdapters.QueriesTableAdapter
+    '            If c_ApcsProService.CheckPackageEnable(ap.GetPackage(LotNo), c_Log) Then
+    '                If c_ApcsProService.CheckLotisExist(LotNo, c_Log) Then
+    '                    'GetInfoApcsPro(LotNo, MCNo, OPNo)
+    '                    currentServerTime = c_ApcsProService.Get_DateTimeInfo(c_Log)
 
-                    c_Log.OperationLogger.Write(0, "LotSetUpAndLotStartPro", "OUT", "CellCon", "iLibrary", 0, "LotSetup", "MCNo :" & MCNo & ",OPNo :" & OPNo & ",LotNo :" & LotNo, "")
-                    Dim userId As Integer = GetUserInfo(OPNo).Id
-                    Dim lotId As Integer = GetLotInfo(LotNo).Id
-                    ResultApcsProService = c_ApcsProService.LotSetup(lotId, machineInfo.Id, userId, 0, "", 1, currentServerTime.Datetime, c_Log)
-                    If Not ResultApcsProService.IsOk Then
-                        c_Log.ConnectionLogger.Write(0, "LotSetUpAndLotStartPro", "OUT", "CellCon", "iLibrary", 0, "LotSetup", ResultApcsProService.ErrorNo & ":" & ResultApcsProService.ErrorMessage, LotNo)
-                    End If
-                    recipe = ResultApcsProService.Recipe1
-                    c_Log.OperationLogger.Write(0, "LotSetUpAndLotStartPro", "OUT", "CellCon", "iLibrary", 0, "OnlineStart", "MCNo :" & MCNo & ",OPNo :" & OPNo & ",LotNo :" & LotNo & ",Recipe1 :" & ResultApcsProService.Recipe1, "")
-                    ResultApcsProService = c_ApcsProService.OnlineStart(lotId, machineInfo.Id, userId, 0, CreateTableToXml(LotNo), 1, currentServerTime.Datetime, c_Log)
-                    If Not ResultApcsProService.IsOk Then
-                        c_Log.ConnectionLogger.Write(0, "LotSetUpAndLotStartPro", "OUT", "CellCon", "iLibrary", 0, "LotStart", ResultApcsProService.ErrorNo & ":" & ResultApcsProService.ErrorMessage, LotNo)
-                    End If
-                    c_Log.OperationLogger.Write(0, "LotSetUpAndLotStartPro", "OUT", "CellCon", "iLibrary", 0, "OnlineStart", "MCNo :" & MCNo & ",OPNo :" & OPNo & ",LotNo :" & LotNo & ",Recipe1 :" & recipe, "")
-                    ResultApcsProService = c_ApcsProService.LotStart(lotId, machineInfo.Id, userId, 0, CreateTableToXml(LotNo), 1, recipe, currentServerTime.Datetime, c_Log)
-                    If Not ResultApcsProService.IsOk Then
-                        c_Log.ConnectionLogger.Write(0, "LotSetUpAndLotStartPro", "OUT", "CellCon", "iLibrary", 0, "LotStart", ResultApcsProService.ErrorNo & ":" & ResultApcsProService.ErrorMessage, LotNo)
-                    End If
-                End If
-            End If
+    '                    c_Log.OperationLogger.Write(0, "LotSetUpAndLotStartPro", "OUT", "CellCon", "iLibrary", 0, "LotSetup", "MCNo :" & MCNo & ",OPNo :" & OPNo & ",LotNo :" & LotNo, "")
+    '                    Dim userId As Integer = GetUserInfo(OPNo).Id
+    '                    Dim lotId As Integer = GetLotInfo(LotNo).Id
+    '                    ResultApcsProService = c_ApcsProService.LotSetup(lotId, machineInfo.Id, userId, 0, "", 1, currentServerTime.Datetime, c_Log)
+    '                    If Not ResultApcsProService.IsOk Then
+    '                        c_Log.ConnectionLogger.Write(0, "LotSetUpAndLotStartPro", "OUT", "CellCon", "iLibrary", 0, "LotSetup", ResultApcsProService.ErrorNo & ":" & ResultApcsProService.ErrorMessage, LotNo)
+    '                    End If
+    '                    recipe = ResultApcsProService.Recipe1
+    '                    c_Log.OperationLogger.Write(0, "LotSetUpAndLotStartPro", "OUT", "CellCon", "iLibrary", 0, "OnlineStart", "MCNo :" & MCNo & ",OPNo :" & OPNo & ",LotNo :" & LotNo & ",Recipe1 :" & ResultApcsProService.Recipe1, "")
+    '                    ResultApcsProService = c_ApcsProService.OnlineStart(lotId, machineInfo.Id, userId, 0, CreateTableToXml(LotNo), 1, currentServerTime.Datetime, c_Log)
+    '                    If Not ResultApcsProService.IsOk Then
+    '                        c_Log.ConnectionLogger.Write(0, "LotSetUpAndLotStartPro", "OUT", "CellCon", "iLibrary", 0, "LotStart", ResultApcsProService.ErrorNo & ":" & ResultApcsProService.ErrorMessage, LotNo)
+    '                    End If
+    '                    c_Log.OperationLogger.Write(0, "LotSetUpAndLotStartPro", "OUT", "CellCon", "iLibrary", 0, "OnlineStart", "MCNo :" & MCNo & ",OPNo :" & OPNo & ",LotNo :" & LotNo & ",Recipe1 :" & recipe, "")
+    '                    ResultApcsProService = c_ApcsProService.LotStart(lotId, machineInfo.Id, userId, 0, CreateTableToXml(LotNo), 1, recipe, currentServerTime.Datetime, c_Log)
+    '                    If Not ResultApcsProService.IsOk Then
+    '                        c_Log.ConnectionLogger.Write(0, "LotSetUpAndLotStartPro", "OUT", "CellCon", "iLibrary", 0, "LotStart", ResultApcsProService.ErrorNo & ":" & ResultApcsProService.ErrorMessage, LotNo)
+    '                    End If
+    '                End If
+    '            End If
 
 
-        Catch ex As Exception
-            'addErrLogfile("c_ApcsProService.LotSetup,LotStart:" & ex.ToString())
-            c_Log.ConnectionLogger.Write(0, "bgTDC_DoWork", "OUT", "CellCon", "iLibrary", 0, "LotSetup,LotStart", ex.Message.ToString(), LotNo)
+    '        Catch ex As Exception
+    '            'addErrLogfile("c_ApcsProService.LotSetup,LotStart:" & ex.ToString())
+    '            c_Log.ConnectionLogger.Write(0, "bgTDC_DoWork", "OUT", "CellCon", "iLibrary", 0, "LotSetup,LotStart", ex.Message.ToString(), LotNo)
 
-        End Try
+    '        End Try
 
-    End Sub
-#End Region
-#Region "APCS Pro LotEnd"
-    Private Sub LotEndPro(LotNo As String, GoodQty As Integer, NGQTy As Integer, OpNo As String)
-        Try
-            Dim ap As New DBxDataSetTableAdapters.QueriesTableAdapter
-            If c_ApcsProService.CheckPackageEnable(ap.GetPackage(LotNo), c_Log) Then
-                If c_ApcsProService.CheckLotisExist(LotNo, c_Log) Then
-                    currentServerTime = c_ApcsProService.Get_DateTimeInfo(c_Log)
+    '    End Sub
+    '#End Region
+    '#Region "APCS Pro LotEnd"
+    '    Private Sub LotEndPro(LotNo As String, GoodQty As Integer, NGQTy As Integer, OpNo As String)
+    '        Try
+    '            Dim ap As New DBxDataSetTableAdapters.QueriesTableAdapter
+    '            If c_ApcsProService.CheckPackageEnable(ap.GetPackage(LotNo), c_Log) Then
+    '                If c_ApcsProService.CheckLotisExist(LotNo, c_Log) Then
+    '                    currentServerTime = c_ApcsProService.Get_DateTimeInfo(c_Log)
 
-                    c_Log.OperationLogger.Write(0, "LotEndPro", "OUT", "CellCon", "iLibrary", 0, "OnlineEnd", "Good :" & GoodQty & ",Ng :" & NGQTy & ",LotNo :" & LotNo, "")
-                    ResultApcsProService = c_ApcsProService.OnlineEnd(GetLotInfo(LotNo).Id, machineInfo.Id, GetUserInfo(OpNo).Id, False, GoodQty, NGQTy, 0, CreateTableToXml(LotNo), 1, currentServerTime.Datetime, c_Log)
+    '                    c_Log.OperationLogger.Write(0, "LotEndPro", "OUT", "CellCon", "iLibrary", 0, "OnlineEnd", "Good :" & GoodQty & ",Ng :" & NGQTy & ",LotNo :" & LotNo, "")
+    '                    ResultApcsProService = c_ApcsProService.OnlineEnd(GetLotInfo(LotNo).Id, machineInfo.Id, GetUserInfo(OpNo).Id, False, GoodQty, NGQTy, 0, CreateTableToXml(LotNo), 1, currentServerTime.Datetime, c_Log)
 
-                    c_Log.OperationLogger.Write(0, "LotEndPro", "OUT", "CellCon", "iLibrary", 0, "LotEnd", "Good :" & GoodQty & ",Ng :" & NGQTy & ",LotNo :" & LotNo, "")
-                    ResultApcsProService = c_ApcsProService.LotEnd(GetLotInfo(LotNo).Id, machineInfo.Id, GetUserInfo(OpNo).Id, False, GoodQty, NGQTy, 0, CreateTableToXml(LotNo), 1, currentServerTime.Datetime, c_Log)
-                    If Not ResultApcsProService.IsOk Then
-                        c_Log.ConnectionLogger.Write(0, "LotEndPro", "OUT", "CellCon", "iLibrary", 0, "LotEnd", ResultApcsProService.ErrorNo & ":" & ResultApcsProService.ErrorMessage, LotNo)
-                    End If
-                End If
-            End If
-        Catch ex As Exception
-            c_Log.ConnectionLogger.Write(0, "LotEndPro", "OUT", "CellCon", "iLibrary", 0, "LotEnd", ex.Message, LotNo)
-        End Try
-    End Sub
+    '                    c_Log.OperationLogger.Write(0, "LotEndPro", "OUT", "CellCon", "iLibrary", 0, "LotEnd", "Good :" & GoodQty & ",Ng :" & NGQTy & ",LotNo :" & LotNo, "")
+    '                    ResultApcsProService = c_ApcsProService.LotEnd(GetLotInfo(LotNo).Id, machineInfo.Id, GetUserInfo(OpNo).Id, False, GoodQty, NGQTy, 0, CreateTableToXml(LotNo), 1, currentServerTime.Datetime, c_Log)
+    '                    If Not ResultApcsProService.IsOk Then
+    '                        c_Log.ConnectionLogger.Write(0, "LotEndPro", "OUT", "CellCon", "iLibrary", 0, "LotEnd", ResultApcsProService.ErrorNo & ":" & ResultApcsProService.ErrorMessage, LotNo)
+    '                    End If
+    '                End If
+    '            End If
+    '        Catch ex As Exception
+    '            c_Log.ConnectionLogger.Write(0, "LotEndPro", "OUT", "CellCon", "iLibrary", 0, "LotEnd", ex.Message, LotNo)
+    '        End Try
+    '    End Sub
 
-#End Region
-#Region "APCS Pro TDC Move Lot"
-    Private Sub MoveLot(tdc_data As TdcData)
-        Try
-            Dim ap As New DBxDataSetTableAdapters.QueriesTableAdapter
-            If c_ApcsProService.CheckPackageEnable(ap.GetPackage(tdc_data.LotNo), c_Log) Then
-                If c_ApcsProService.CheckLotisExist(tdc_data.LotNo, c_Log) Then
-                    Dim Res As TdcLotRequestResponse = m_TdcService.LotRequest(tdc_data.McNo, tdc_data.LotNo, RunModeType.Normal)
-                    If (Res.HasError) Then
-                        If Res.ErrorCode = "06" Or Res.ErrorCode = "02" Then
-                            m_TdcService.MoveLot(tdc_data.LotNo, tdc_data.McNo, tdc_data.OpNo, "0501")
-                        End If
-                    End If
-                End If
-            End If
-        Catch ex As Exception
-            c_Log.ConnectionLogger.Write(0, "ApcsProMoveLot", "OUT", "CellCon", "iLibrary", 0, "MoveLot", ex.Message, tdc_data.LotNo)
-        End Try
-    End Sub
-#End Region
-    Private XmlPathDataApcsPro As String = My.Application.Info.DirectoryPath & "\ApcsPro.xml"
+    '#End Region
+    '#Region "APCS Pro TDC Move Lot"
+    '    Private Sub MoveLot(tdc_data As TdcData)
+    '        Try
+    '            Dim ap As New DBxDataSetTableAdapters.QueriesTableAdapter
+    '            If c_ApcsProService.CheckPackageEnable(ap.GetPackage(tdc_data.LotNo), c_Log) Then
+    '                If c_ApcsProService.CheckLotisExist(tdc_data.LotNo, c_Log) Then
+    '                    Dim Res As TdcLotRequestResponse = m_TdcService.LotRequest(tdc_data.McNo, tdc_data.LotNo, RunModeType.Normal)
+    '                    If (Res.HasError) Then
+    '                        If Res.ErrorCode = "06" Or Res.ErrorCode = "02" Then
+    '                            m_TdcService.MoveLot(tdc_data.LotNo, tdc_data.McNo, tdc_data.OpNo, "0501")
+    '                        End If
+    '                    End If
+    '                End If
+    '            End If
+    '        Catch ex As Exception
+    '            c_Log.ConnectionLogger.Write(0, "ApcsProMoveLot", "OUT", "CellCon", "iLibrary", 0, "MoveLot", ex.Message, tdc_data.LotNo)
+    '        End Try
+    '    End Sub
+    '#End Region
+    '    Private XmlPathDataApcsPro As String = My.Application.Info.DirectoryPath & "\ApcsPro.xml"
 
-    Enum MachineProcessingState
-        Idle = 1
-        Ready = 3
-        Execute = 4
-        Pause = 5
-        LotSetUp = 6
-    End Enum
-    Private Sub UpdateMachineState(machineID As MachineInfo, runState As Integer, log As Logger, Optional userID As Integer = -1)
-        Try
-            log.OperationLogger.Write(0, "UpdateMachineOnlineState", "OUT", "CellCon", "iLibrary", 0, "Update_MachineOnlineState", "machineID:" & machineID.Id.ToString & ",runState:" & runState & ",userID:" & userID, "")
-            c_ApcsProService.Update_MachineState(machineID.Id, runState, userID, log)
-        Catch ex As Exception
-            log.ConnectionLogger.Write(0, "UpdateMachineState", "OUT", "CellCon", "iLibrary", 0, "Update_MachineState", ex.Message, "")
-        End Try
+    '    Enum MachineProcessingState
+    '        Idle = 1
+    '        Ready = 3
+    '        Execute = 4
+    '        Pause = 5
+    '        LotSetUp = 6
+    '    End Enum
+    '    Private Sub UpdateMachineState(machineID As MachineInfo, runState As Integer, log As Logger, Optional userID As Integer = -1)
+    '        Try
+    '            log.OperationLogger.Write(0, "UpdateMachineOnlineState", "OUT", "CellCon", "iLibrary", 0, "Update_MachineOnlineState", "machineID:" & machineID.Id.ToString & ",runState:" & runState & ",userID:" & userID, "")
+    '            c_ApcsProService.Update_MachineState(machineID.Id, runState, userID, log)
+    '        Catch ex As Exception
+    '            log.ConnectionLogger.Write(0, "UpdateMachineState", "OUT", "CellCon", "iLibrary", 0, "Update_MachineState", ex.Message, "")
+    '        End Try
 
-    End Sub
-    Private Sub UpdateMachineOnlineState(onlineState As Integer, log As Logger, Optional userID As Integer = -1)
+    '    End Sub
+    '    Private Sub UpdateMachineOnlineState(onlineState As Integer, log As Logger, Optional userID As Integer = -1)
 
-        Try
+    '        Try
 
-            'log = New Logger("1.0", "PL-" & My.Settings.EquipmentNo)
-            log.OperationLogger.Write(0, "UpdateMachineOnlineState", "OUT", "CellCon", "iLibrary", 0, "GetMachineInfo", "PL-" & My.Settings.EquipmentNo, "")
-            machineInfo = GetMachineInfo("PL-" & My.Settings.EquipmentNo)
-            log.OperationLogger.Write(0, "UpdateMachineOnlineState", "OUT", "CellCon", "iLibrary", 0, "Update_MachineOnlineState", "PL-" & My.Settings.EquipmentNo, "")
-            c_ApcsProService.Update_MachineOnlineState(machineInfo.Id, onlineState, userID, log)
-        Catch ex As Exception
-            log.ConnectionLogger.Write(0, "UpdateMachineOnlineState", "OUT", "CellCon", "iLibrary", 0, "Update_MachineOnlineState", ex.Message, "")
-        End Try
+    '            'log = New Logger("1.0", "PL-" & My.Settings.EquipmentNo)
+    '            log.OperationLogger.Write(0, "UpdateMachineOnlineState", "OUT", "CellCon", "iLibrary", 0, "GetMachineInfo", "PL-" & My.Settings.EquipmentNo, "")
+    '            machineInfo = GetMachineInfo("PL-" & My.Settings.EquipmentNo)
+    '            log.OperationLogger.Write(0, "UpdateMachineOnlineState", "OUT", "CellCon", "iLibrary", 0, "Update_MachineOnlineState", "PL-" & My.Settings.EquipmentNo, "")
+    '            c_ApcsProService.Update_MachineOnlineState(machineInfo.Id, onlineState, userID, log)
+    '        Catch ex As Exception
+    '            log.ConnectionLogger.Write(0, "UpdateMachineOnlineState", "OUT", "CellCon", "iLibrary", 0, "Update_MachineOnlineState", ex.Message, "")
+    '        End Try
 
-    End Sub
+    '    End Sub
 
     Private Sub bgTDC_RunWorkerCompleted(sender As Object, e As RunWorkerCompletedEventArgs) Handles bgTDC.RunWorkerCompleted
         For Each removeDataRow As DataRow In removeList
