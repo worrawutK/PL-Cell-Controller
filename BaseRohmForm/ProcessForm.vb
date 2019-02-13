@@ -429,13 +429,13 @@ Public Class ProcessForm
 
 
         SavePLDataTableBin()
-        'APCS Pro
-        Try
-            Dim result As SetupLotResult = c_IlibraryService.SetupLot(LotNo, "PL-" & My.Settings.EquipmentNo, OPNo, "PL", "0501")
-            c_IlibraryService.StartLot(LotNo, "PL-" & My.Settings.EquipmentNo, OPNo, result.Recipe)
-        Catch ex As Exception
+        ''APCS Pro
+        'Try
+        '    Dim result As SetupLotResult = c_IlibraryService.SetupLotNoCheckLicenser(LotNo, "PL-" & My.Settings.EquipmentNo, OPNo, "PL", "0501")
+        '    c_IlibraryService.StartLot(LotNo, "PL-" & My.Settings.EquipmentNo, OPNo, result.Recipe)
+        'Catch ex As Exception
 
-        End Try
+        'End Try
         RaiseEvent E_Update_dgvProductionDetail("1666700", LotNo, "MECO-LotInfo_Rohm", "")
     End Sub
 
@@ -956,12 +956,18 @@ RepeatSendTdc:
 
         'MoveLot(tdc)
 
-        Dim resSet As TdcResponse = m_TdcService.LotSet(tdc.McNo, tdc.LotNo, tdc.LotStartTime, tdc.OpNo, tdc.TdcStartMode)
+        'Dim resSet As TdcResponse = m_TdcService.LotSet(tdc.McNo, tdc.LotNo, tdc.LotStartTime, tdc.OpNo, tdc.TdcStartMode)
 
-        Dim resEnd As TdcResponse = m_TdcService.LotEnd(tdc.McNo, tdc.LotNo, tdc.LotEndTime, tdc.GoodPcs, tdc.NgPcs, tdc.TdcEndMode, tdc.OpNo)
-
+        'Dim resEnd As TdcResponse = m_TdcService.LotEnd(tdc.McNo, tdc.LotNo, tdc.LotEndTime, tdc.GoodPcs, tdc.NgPcs, tdc.TdcEndMode, tdc.OpNo)
+        'APCS Pro
         Try
-            c_IlibraryService.EndLot(tdc.LotNo, tdc.McNo, tdc.OpNo, tdc.GoodPcs, tdc.NgPcs)
+            Dim result As SetupLotResult = c_IlibraryService.SetupLotNoCheckLicenser(tdc.LotNo, "PL-" & My.Settings.EquipmentNo, tdc.OpNo, "PL", "0501")
+            c_IlibraryService.StartLot(tdc.LotNo, "PL-" & My.Settings.EquipmentNo, tdc.OpNo, result.Recipe)
+        Catch ex As Exception
+
+        End Try
+        Try
+            c_IlibraryService.EndLotNoCheckLicenser(tdc.LotNo, tdc.McNo, tdc.OpNo, tdc.GoodPcs, tdc.NgPcs)
         Catch ex As Exception
 
         End Try
