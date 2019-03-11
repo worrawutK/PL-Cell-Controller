@@ -83,6 +83,8 @@ Partial Class frmConfirm
         Me.gbMessage = New System.Windows.Forms.GroupBox()
         Me.lbMessageDevice = New System.Windows.Forms.Label()
         Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
+        Me.SerialPort1 = New System.IO.Ports.SerialPort(Me.components)
+        Me.PanelDummy = New System.Windows.Forms.Panel()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.GroupBox4.SuspendLayout()
@@ -91,6 +93,7 @@ Partial Class frmConfirm
         CType(Me.DBxDataSet, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.FrameTableBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.gbMessage.SuspendLayout()
+        Me.PanelDummy.SuspendLayout()
         Me.SuspendLayout()
         '
         'Label1
@@ -561,16 +564,11 @@ Partial Class frmConfirm
         'GroupBox3
         '
         Me.GroupBox3.BackColor = System.Drawing.Color.Wheat
+        Me.GroupBox3.Controls.Add(Me.PanelDummy)
         Me.GroupBox3.Controls.Add(Me.Label10)
-        Me.GroupBox3.Controls.Add(Me.Button13)
-        Me.GroupBox3.Controls.Add(Me.Button14)
-        Me.GroupBox3.Controls.Add(Me.Button15)
-        Me.GroupBox3.Controls.Add(Me.Button16)
-        Me.GroupBox3.Controls.Add(Me.Button17)
-        Me.GroupBox3.Controls.Add(Me.Button19)
-        Me.GroupBox3.Controls.Add(Me.Button18)
         Me.GroupBox3.Controls.Add(Me.tbDummy)
         Me.GroupBox3.Controls.Add(Me.Label7)
+        Me.GroupBox3.Controls.Add(Me.Button19)
         Me.GroupBox3.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(222, Byte))
         Me.GroupBox3.Location = New System.Drawing.Point(10, 238)
         Me.GroupBox3.Name = "GroupBox3"
@@ -593,7 +591,7 @@ Partial Class frmConfirm
         '
         Me.Button13.BackColor = System.Drawing.Color.GreenYellow
         Me.Button13.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(222, Byte))
-        Me.Button13.Location = New System.Drawing.Point(529, 58)
+        Me.Button13.Location = New System.Drawing.Point(438, 16)
         Me.Button13.Name = "Button13"
         Me.Button13.Size = New System.Drawing.Size(54, 48)
         Me.Button13.TabIndex = 6
@@ -604,7 +602,7 @@ Partial Class frmConfirm
         '
         Me.Button14.BackColor = System.Drawing.Color.GreenYellow
         Me.Button14.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(222, Byte))
-        Me.Button14.Location = New System.Drawing.Point(274, 58)
+        Me.Button14.Location = New System.Drawing.Point(183, 16)
         Me.Button14.Name = "Button14"
         Me.Button14.Size = New System.Drawing.Size(54, 48)
         Me.Button14.TabIndex = 7
@@ -615,7 +613,7 @@ Partial Class frmConfirm
         '
         Me.Button15.BackColor = System.Drawing.Color.GreenYellow
         Me.Button15.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(222, Byte))
-        Me.Button15.Location = New System.Drawing.Point(445, 58)
+        Me.Button15.Location = New System.Drawing.Point(354, 16)
         Me.Button15.Name = "Button15"
         Me.Button15.Size = New System.Drawing.Size(54, 48)
         Me.Button15.TabIndex = 8
@@ -626,7 +624,7 @@ Partial Class frmConfirm
         '
         Me.Button16.BackColor = System.Drawing.Color.GreenYellow
         Me.Button16.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(222, Byte))
-        Me.Button16.Location = New System.Drawing.Point(360, 58)
+        Me.Button16.Location = New System.Drawing.Point(269, 16)
         Me.Button16.Name = "Button16"
         Me.Button16.Size = New System.Drawing.Size(54, 48)
         Me.Button16.TabIndex = 3
@@ -637,7 +635,7 @@ Partial Class frmConfirm
         '
         Me.Button17.BackColor = System.Drawing.Color.GreenYellow
         Me.Button17.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(222, Byte))
-        Me.Button17.Location = New System.Drawing.Point(188, 58)
+        Me.Button17.Location = New System.Drawing.Point(97, 16)
         Me.Button17.Name = "Button17"
         Me.Button17.Size = New System.Drawing.Size(54, 48)
         Me.Button17.TabIndex = 4
@@ -648,7 +646,7 @@ Partial Class frmConfirm
         '
         Me.Button19.BackColor = System.Drawing.Color.GreenYellow
         Me.Button19.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(222, Byte))
-        Me.Button19.Location = New System.Drawing.Point(18, 58)
+        Me.Button19.Location = New System.Drawing.Point(25, 61)
         Me.Button19.Name = "Button19"
         Me.Button19.Size = New System.Drawing.Size(54, 48)
         Me.Button19.TabIndex = 5
@@ -659,7 +657,7 @@ Partial Class frmConfirm
         '
         Me.Button18.BackColor = System.Drawing.Color.GreenYellow
         Me.Button18.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(222, Byte))
-        Me.Button18.Location = New System.Drawing.Point(104, 58)
+        Me.Button18.Location = New System.Drawing.Point(13, 16)
         Me.Button18.Name = "Button18"
         Me.Button18.Size = New System.Drawing.Size(54, 48)
         Me.Button18.TabIndex = 5
@@ -729,6 +727,22 @@ Partial Class frmConfirm
         '
         Me.Timer1.Interval = 1000
         '
+        'SerialPort1
+        '
+        '
+        'PanelDummy
+        '
+        Me.PanelDummy.Controls.Add(Me.Button13)
+        Me.PanelDummy.Controls.Add(Me.Button18)
+        Me.PanelDummy.Controls.Add(Me.Button14)
+        Me.PanelDummy.Controls.Add(Me.Button17)
+        Me.PanelDummy.Controls.Add(Me.Button16)
+        Me.PanelDummy.Controls.Add(Me.Button15)
+        Me.PanelDummy.Location = New System.Drawing.Point(96, 41)
+        Me.PanelDummy.Name = "PanelDummy"
+        Me.PanelDummy.Size = New System.Drawing.Size(510, 74)
+        Me.PanelDummy.TabIndex = 10
+        '
         'frmConfirm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -759,6 +773,7 @@ Partial Class frmConfirm
         CType(Me.DBxDataSet, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.FrameTableBindingSource, System.ComponentModel.ISupportInitialize).EndInit()
         Me.gbMessage.ResumeLayout(False)
+        Me.PanelDummy.ResumeLayout(False)
         Me.ResumeLayout(False)
 
     End Sub
@@ -822,4 +837,6 @@ Partial Class frmConfirm
     Friend WithEvents gbMessage As System.Windows.Forms.GroupBox
     Friend WithEvents lbMessageDevice As System.Windows.Forms.Label
     Friend WithEvents Timer1 As System.Windows.Forms.Timer
+    Friend WithEvents SerialPort1 As IO.Ports.SerialPort
+    Friend WithEvents PanelDummy As Panel
 End Class

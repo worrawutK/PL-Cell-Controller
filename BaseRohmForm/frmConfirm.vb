@@ -7,7 +7,8 @@
     Dim _LotEndTime As String
     Dim _Magazine As String
     Dim _FramePCS As Integer
-
+    Dim c_CountDummy As Integer = 0
+    Dim c_Buffer As String
     Dim TragetTextbox As TextBox
     Private Sub frmConfirm_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         lbLotNo.Text = _LotNo
@@ -45,6 +46,22 @@
             Timer1.Enabled = False
         End If
         tbOPJudge.Focus()
+
+        If My.Settings.DummySensor = True Then
+            PanelDummy.Visible = False
+            SerialPort1.PortName = My.Settings.PortNo
+            Try
+                SerialPort1.Open()
+                If SerialPort1.IsOpen() = False Then
+                    MsgBox("กรุณาเลือกพอร์ตให้ถูกต้อง")
+                    Me.Close()
+                End If
+            Catch ex As Exception
+                MsgBox("กรุณาเลือกพอร์ตให้ถูกต้อง")
+                Me.Close()
+            End Try
+
+        End If
     End Sub
 
     Function CalFrameTypeToPcs(ByVal LotNo As String, ByVal FrameCount As Integer) As Integer
@@ -148,6 +165,7 @@
     Private Sub Button19_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button19.Click, Button18.Click, Button17.Click, Button16.Click, Button15.Click, Button14.Click, Button13.Click
         Dim bt As Button = CType(sender, Button)
         tbDummy.Text = bt.Text
+        c_CountDummy = 0
         tbOPJudge.Focus()
     End Sub
 
@@ -201,5 +219,30 @@
         Else
             gbMessage.BackColor = Color.Wheat
         End If
+    End Sub
+
+    Private Delegate Sub ProcessCmdDelegate(ByVal buff As String)
+    Private Sub SerialPort1_DataReceived(sender As Object, e As IO.Ports.SerialDataReceivedEventArgs) Handles SerialPort1.DataReceived
+        Dim iret As Integer
+        c_Buffer = c_Buffer & SerialPort1.ReadExisting.ToString
+        iret = InStr(1, c_Buffer, vbCr)
+        If iret <> 0 Then
+            ProcessCmdThreadSafe(c_Buffer)
+        End If
+    End Sub
+
+    Private Sub ProcessCmdThreadSafe(ByVal buff As String)
+
+        If Me.InvokeRequired Then
+            Me.Invoke(New ProcessCmdDelegate(AddressOf ProcessCmdThreadSafe), buff)
+            Exit Sub
+        End If
+        buff = buff.Replace(vbCrLf, "")
+        Select Case buff
+            Case "1"
+                c_CountDummy += 1
+                tbDummy.Text = c_CountDummy.ToString
+        End Select
+        c_Buffer = ""
     End Sub
 End Class

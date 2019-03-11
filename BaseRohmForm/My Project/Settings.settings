@@ -76,5 +76,11 @@
 &lt;/SerializableConnectionString&gt;</DesignTimeValue>
       <Value Profile="(Default)">Data Source=10.28.33.11;Initial Catalog=DBx;User ID=dbxuser</Value>
     </Setting>
+    <Setting Name="DummySensor" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="PortNo" Type="System.String" Scope="User">
+      <Value Profile="(Default)">COM9</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

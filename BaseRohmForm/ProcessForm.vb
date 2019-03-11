@@ -928,6 +928,11 @@ Dummy:
     Private Sub bgTDC_DoWork(ByVal sender As System.Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bgTDC.DoWork
 
 RepeatSendTdc:
+
+        If c_TdcQueue.Count = 0 Then
+            Exit Sub
+        End If
+
         Dim tdc As TdcData = c_TdcQueue.Dequeue()
 
 
