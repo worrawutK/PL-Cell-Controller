@@ -43,6 +43,12 @@
   <wsdl:message name="IServiceiLibrary_SetupLotCustomModeNoCheckLicenser_OutputMessage">
     <wsdl:part name="parameters" element="tns:SetupLotCustomModeNoCheckLicenserResponse" />
   </wsdl:message>
+  <wsdl:message name="IServiceiLibrary_SetupLotOven_InputMessage">
+    <wsdl:part name="parameters" element="tns:SetupLotOven" />
+  </wsdl:message>
+  <wsdl:message name="IServiceiLibrary_SetupLotOven_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SetupLotOvenResponse" />
+  </wsdl:message>
   <wsdl:message name="IServiceiLibrary_StartLot_InputMessage">
     <wsdl:part name="parameters" element="tns:StartLot" />
   </wsdl:message>
@@ -54,6 +60,12 @@
   </wsdl:message>
   <wsdl:message name="IServiceiLibrary_StartLotCustomMode_OutputMessage">
     <wsdl:part name="parameters" element="tns:StartLotCustomModeResponse" />
+  </wsdl:message>
+  <wsdl:message name="IServiceiLibrary_StartLotOven_InputMessage">
+    <wsdl:part name="parameters" element="tns:StartLotOven" />
+  </wsdl:message>
+  <wsdl:message name="IServiceiLibrary_StartLotOven_OutputMessage">
+    <wsdl:part name="parameters" element="tns:StartLotOvenResponse" />
   </wsdl:message>
   <wsdl:message name="IServiceiLibrary_OnlineStart_InputMessage">
     <wsdl:part name="parameters" element="tns:OnlineStart" />
@@ -85,6 +97,12 @@
   <wsdl:message name="IServiceiLibrary_EndLotNoCheckLicenser_OutputMessage">
     <wsdl:part name="parameters" element="tns:EndLotNoCheckLicenserResponse" />
   </wsdl:message>
+  <wsdl:message name="IServiceiLibrary_EndLotOven_InputMessage">
+    <wsdl:part name="parameters" element="tns:EndLotOven" />
+  </wsdl:message>
+  <wsdl:message name="IServiceiLibrary_EndLotOven_OutputMessage">
+    <wsdl:part name="parameters" element="tns:EndLotOvenResponse" />
+  </wsdl:message>
   <wsdl:message name="IServiceiLibrary_UpdateFinalinspection_InputMessage">
     <wsdl:part name="parameters" element="tns:UpdateFinalinspection" />
   </wsdl:message>
@@ -115,11 +133,23 @@
   <wsdl:message name="IServiceiLibrary_ReinputAndHoldLot_OutputMessage">
     <wsdl:part name="parameters" element="tns:ReinputAndHoldLotResponse" />
   </wsdl:message>
+  <wsdl:message name="IServiceiLibrary_ReinputOven_InputMessage">
+    <wsdl:part name="parameters" element="tns:ReinputOven" />
+  </wsdl:message>
+  <wsdl:message name="IServiceiLibrary_ReinputOven_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ReinputOvenResponse" />
+  </wsdl:message>
   <wsdl:message name="IServiceiLibrary_CheckLotApcsProManual_InputMessage">
     <wsdl:part name="parameters" element="tns:CheckLotApcsProManual" />
   </wsdl:message>
   <wsdl:message name="IServiceiLibrary_CheckLotApcsProManual_OutputMessage">
     <wsdl:part name="parameters" element="tns:CheckLotApcsProManualResponse" />
+  </wsdl:message>
+  <wsdl:message name="IServiceiLibrary_IRePortCheck_InputMessage">
+    <wsdl:part name="parameters" element="tns:IRePortCheck" />
+  </wsdl:message>
+  <wsdl:message name="IServiceiLibrary_IRePortCheck_OutputMessage">
+    <wsdl:part name="parameters" element="tns:IRePortCheckResponse" />
   </wsdl:message>
   <wsdl:portType name="IServiceiLibrary">
     <wsdl:operation name="MachineOnlineState">
@@ -146,6 +176,10 @@
       <wsdl:input wsaw:Action="http://tempuri.org/IServiceiLibrary/SetupLotCustomModeNoCheckLicenser" message="tns:IServiceiLibrary_SetupLotCustomModeNoCheckLicenser_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IServiceiLibrary/SetupLotCustomModeNoCheckLicenserResponse" message="tns:IServiceiLibrary_SetupLotCustomModeNoCheckLicenser_OutputMessage" />
     </wsdl:operation>
+    <wsdl:operation name="SetupLotOven">
+      <wsdl:input wsaw:Action="http://tempuri.org/IServiceiLibrary/SetupLotOven" message="tns:IServiceiLibrary_SetupLotOven_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IServiceiLibrary/SetupLotOvenResponse" message="tns:IServiceiLibrary_SetupLotOven_OutputMessage" />
+    </wsdl:operation>
     <wsdl:operation name="StartLot">
       <wsdl:input wsaw:Action="http://tempuri.org/IServiceiLibrary/StartLot" message="tns:IServiceiLibrary_StartLot_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IServiceiLibrary/StartLotResponse" message="tns:IServiceiLibrary_StartLot_OutputMessage" />
@@ -153,6 +187,10 @@
     <wsdl:operation name="StartLotCustomMode">
       <wsdl:input wsaw:Action="http://tempuri.org/IServiceiLibrary/StartLotCustomMode" message="tns:IServiceiLibrary_StartLotCustomMode_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IServiceiLibrary/StartLotCustomModeResponse" message="tns:IServiceiLibrary_StartLotCustomMode_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="StartLotOven">
+      <wsdl:input wsaw:Action="http://tempuri.org/IServiceiLibrary/StartLotOven" message="tns:IServiceiLibrary_StartLotOven_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IServiceiLibrary/StartLotOvenResponse" message="tns:IServiceiLibrary_StartLotOven_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="OnlineStart">
       <wsdl:input wsaw:Action="http://tempuri.org/IServiceiLibrary/OnlineStart" message="tns:IServiceiLibrary_OnlineStart_InputMessage" />
@@ -174,6 +212,10 @@
       <wsdl:input wsaw:Action="http://tempuri.org/IServiceiLibrary/EndLotNoCheckLicenser" message="tns:IServiceiLibrary_EndLotNoCheckLicenser_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IServiceiLibrary/EndLotNoCheckLicenserResponse" message="tns:IServiceiLibrary_EndLotNoCheckLicenser_OutputMessage" />
     </wsdl:operation>
+    <wsdl:operation name="EndLotOven">
+      <wsdl:input wsaw:Action="http://tempuri.org/IServiceiLibrary/EndLotOven" message="tns:IServiceiLibrary_EndLotOven_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IServiceiLibrary/EndLotOvenResponse" message="tns:IServiceiLibrary_EndLotOven_OutputMessage" />
+    </wsdl:operation>
     <wsdl:operation name="UpdateFinalinspection">
       <wsdl:input wsaw:Action="http://tempuri.org/IServiceiLibrary/UpdateFinalinspection" message="tns:IServiceiLibrary_UpdateFinalinspection_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IServiceiLibrary/UpdateFinalinspectionResponse" message="tns:IServiceiLibrary_UpdateFinalinspection_OutputMessage" />
@@ -194,9 +236,17 @@
       <wsdl:input wsaw:Action="http://tempuri.org/IServiceiLibrary/ReinputAndHoldLot" message="tns:IServiceiLibrary_ReinputAndHoldLot_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IServiceiLibrary/ReinputAndHoldLotResponse" message="tns:IServiceiLibrary_ReinputAndHoldLot_OutputMessage" />
     </wsdl:operation>
+    <wsdl:operation name="ReinputOven">
+      <wsdl:input wsaw:Action="http://tempuri.org/IServiceiLibrary/ReinputOven" message="tns:IServiceiLibrary_ReinputOven_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IServiceiLibrary/ReinputOvenResponse" message="tns:IServiceiLibrary_ReinputOven_OutputMessage" />
+    </wsdl:operation>
     <wsdl:operation name="CheckLotApcsProManual">
       <wsdl:input wsaw:Action="http://tempuri.org/IServiceiLibrary/CheckLotApcsProManual" message="tns:IServiceiLibrary_CheckLotApcsProManual_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IServiceiLibrary/CheckLotApcsProManualResponse" message="tns:IServiceiLibrary_CheckLotApcsProManual_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="IRePortCheck">
+      <wsdl:input wsaw:Action="http://tempuri.org/IServiceiLibrary/IRePortCheck" message="tns:IServiceiLibrary_IRePortCheck_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IServiceiLibrary/IRePortCheckResponse" message="tns:IServiceiLibrary_IRePortCheck_OutputMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="BasicHttpBinding_IServiceiLibrary" type="tns:IServiceiLibrary">
@@ -255,6 +305,15 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="SetupLotOven">
+      <soap:operation soapAction="http://tempuri.org/IServiceiLibrary/SetupLotOven" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
     <wsdl:operation name="StartLot">
       <soap:operation soapAction="http://tempuri.org/IServiceiLibrary/StartLot" style="document" />
       <wsdl:input>
@@ -266,6 +325,15 @@
     </wsdl:operation>
     <wsdl:operation name="StartLotCustomMode">
       <soap:operation soapAction="http://tempuri.org/IServiceiLibrary/StartLotCustomMode" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="StartLotOven">
+      <soap:operation soapAction="http://tempuri.org/IServiceiLibrary/StartLotOven" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -318,6 +386,15 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="EndLotOven">
+      <soap:operation soapAction="http://tempuri.org/IServiceiLibrary/EndLotOven" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
     <wsdl:operation name="UpdateFinalinspection">
       <soap:operation soapAction="http://tempuri.org/IServiceiLibrary/UpdateFinalinspection" style="document" />
       <wsdl:input>
@@ -363,8 +440,26 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="ReinputOven">
+      <soap:operation soapAction="http://tempuri.org/IServiceiLibrary/ReinputOven" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
     <wsdl:operation name="CheckLotApcsProManual">
       <soap:operation soapAction="http://tempuri.org/IServiceiLibrary/CheckLotApcsProManual" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="IRePortCheck">
+      <soap:operation soapAction="http://tempuri.org/IServiceiLibrary/IRePortCheck" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

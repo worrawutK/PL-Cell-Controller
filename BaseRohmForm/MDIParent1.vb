@@ -1041,11 +1041,11 @@ FinalExeLoop:
     End Sub
     Private Sub ForceClose(ByVal Reflag As Integer) Handles FrmSetting.E_FormClosing
 
-        If Not My.Settings.TDC_Enable Then
-            If OprData.FRMProductAlive Then
-                FrmProduct.lbSpMode.Text = "!!! TDC DISABLE !!!"
-            End If
-        End If
+        'If Not My.Settings.TDC_Enable Then
+        '    If OprData.FRMProductAlive Then
+        '        FrmProduct.lbSpMode.Text = "!!! TDC DISABLE !!!"
+        '    End If
+        'End If
 
         Select Case Reflag
             Case Setting.SecsSettingCloseFlag.Normal

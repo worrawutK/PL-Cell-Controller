@@ -125,10 +125,11 @@ Public Class ProcessForm
     Private Sub ProcessForm_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Me.FormBorderStyle = Windows.Forms.FormBorderStyle.None
         lbProcess.Text = My.Settings.ProcessName & " " & My.Settings.MCType
+        LabelIReportMessage.Text = ""
         OprData.FRMProductAlive = True
-        If Not My.Settings.TDC_Enable Then
-            lbSpMode.Text = "!!! TDC DISABLE !!!"
-        End If
+        'If Not My.Settings.TDC_Enable Then
+        '    lbSpMode.Text = "!!! TDC DISABLE !!!"
+        'End If
 
         Dim permission As New AuthenticationUser.AuthenUser
         If OprData.CSConnect = "Disconnect" And My.Settings.CsProtocol_Enable Then
@@ -429,6 +430,13 @@ Public Class ProcessForm
 
 
         SavePLDataTableBin()
+        Try
+            Dim syncContext As SynchronizationContext = WindowsFormsSynchronizationContext.Current
+            syncContext.Post(New Threading.SendOrPostCallback(Sub() IReportCheck("PL-" & My.Settings.EquipmentNo)), Nothing)
+        Catch ex As Exception
+
+        End Try
+
         'APCS Pro
         Try
             Dim result As SetupLotResult = c_IlibraryService.SetupLotNoCheckLicenser(LotNo, "PL-" & My.Settings.EquipmentNo, OPNo, "PL", "0501")
@@ -438,8 +446,27 @@ Public Class ProcessForm
         End Try
         RaiseEvent E_Update_dgvProductionDetail("1666700", LotNo, "MECO-LotInfo_Rohm", "")
     End Sub
+    Private Sub IReportCheck(mcNo As String)
+        Dim result As iReportResponse = c_IlibraryService.IRePortCheck(mcNo)
+        If result.HasError Then
+            LabelIReportMessage.Text = "iReport error:" & result.ErrorMessage
+            TimerIReport.Start()
+        Else
+            LabelIReportMessage.Text = ""
+            TimerIReport.Stop()
+        End If
+    End Sub
+    Private c_IReportTimer As Boolean
+    Private Sub TimerIReport_Tick(sender As Object, e As EventArgs) Handles TimerIReport.Tick
+        If c_IReportTimer Then
+            c_IReportTimer = False
+            LabelIReportMessage.Visible = False
+        Else
+            c_IReportTimer = True
+            LabelIReportMessage.Visible = True
+        End If
 
-
+    End Sub
     Public Sub Event_MgzStartLoading(ByVal LotNo As String)
 
         Dim strLotNo As String
@@ -654,16 +681,16 @@ Dummy:
                             c_TdcQueue.Enqueue(tdc)
 
                         End SyncLock
-
+                        bgTDC.RunWorkerAsync()
                     End If
                 End If
 
             End If
         Next
 
-        If bgTDC.IsBusy = False Then
-            bgTDC.RunWorkerAsync()
-        End If
+        'If bgTDC.IsBusy = False Then
+        '    bgTDC.RunWorkerAsync()
+        'End If
 
         'For Each removeDataRow As DataRow In removeList
         '    DBxDataSet.PLData.Rows.Remove(removeDataRow)
@@ -1340,5 +1367,6 @@ RepeatSendTdc:
             DBxDataSet.PLData.Rows.Remove(removeDataRow)
         Next
     End Sub
+
 
 End Class

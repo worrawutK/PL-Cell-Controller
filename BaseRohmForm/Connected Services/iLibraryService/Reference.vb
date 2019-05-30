@@ -313,7 +313,13 @@ Namespace iLibraryService
         Private FunctionNameField As String
         
         <System.Runtime.Serialization.OptionalFieldAttribute()>  _
+        Private GoodQtyField As Integer
+        
+        <System.Runtime.Serialization.OptionalFieldAttribute()>  _
         Private IsPassField As iLibraryService.SetupLotResult.Status
+        
+        <System.Runtime.Serialization.OptionalFieldAttribute()>  _
+        Private NgQtyField As Integer
         
         <System.Runtime.Serialization.OptionalFieldAttribute()>  _
         Private RecipeField As String
@@ -374,6 +380,19 @@ Namespace iLibraryService
         End Property
         
         <System.Runtime.Serialization.DataMemberAttribute()>  _
+        Public Property GoodQty() As Integer
+            Get
+                Return Me.GoodQtyField
+            End Get
+            Set
+                If (Me.GoodQtyField.Equals(value) <> true) Then
+                    Me.GoodQtyField = value
+                    Me.RaisePropertyChanged("GoodQty")
+                End If
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute()>  _
         Public Property IsPass() As iLibraryService.SetupLotResult.Status
             Get
                 Return Me.IsPassField
@@ -382,6 +401,19 @@ Namespace iLibraryService
                 If (Me.IsPassField.Equals(value) <> true) Then
                     Me.IsPassField = value
                     Me.RaisePropertyChanged("IsPass")
+                End If
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute()>  _
+        Public Property NgQty() As Integer
+            Get
+                Return Me.NgQtyField
+            End Get
+            Set
+                If (Me.NgQtyField.Equals(value) <> true) Then
+                    Me.NgQtyField = value
+                    Me.RaisePropertyChanged("NgQty")
                 End If
             End Set
         End Property
@@ -1612,6 +1644,116 @@ Namespace iLibraryService
         End Sub
     End Class
     
+    <System.Diagnostics.DebuggerStepThroughAttribute(),  _
+     System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0"),  _
+     System.Runtime.Serialization.DataContractAttribute(Name:="iReportResponse", [Namespace]:="http://tempuri.org/"),  _
+     System.SerializableAttribute()>  _
+    Partial Public Class iReportResponse
+        Inherits Object
+        Implements System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged
+        
+        <System.NonSerializedAttribute()>  _
+        Private extensionDataField As System.Runtime.Serialization.ExtensionDataObject
+        
+        <System.Runtime.Serialization.OptionalFieldAttribute()>  _
+        Private MessageField As String
+        
+        Private HasErrorField As Boolean
+        
+        <System.Runtime.Serialization.OptionalFieldAttribute()>  _
+        Private ErrorCodeField As String
+        
+        <System.Runtime.Serialization.OptionalFieldAttribute()>  _
+        Private ErrorMessageField As String
+        
+        <System.Runtime.Serialization.OptionalFieldAttribute()>  _
+        Private MCNoField As String
+        
+        <Global.System.ComponentModel.BrowsableAttribute(false)>  _
+        Public Property ExtensionData() As System.Runtime.Serialization.ExtensionDataObject Implements System.Runtime.Serialization.IExtensibleDataObject.ExtensionData
+            Get
+                Return Me.extensionDataField
+            End Get
+            Set
+                Me.extensionDataField = value
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue:=false)>  _
+        Public Property Message() As String
+            Get
+                Return Me.MessageField
+            End Get
+            Set
+                If (Object.ReferenceEquals(Me.MessageField, value) <> true) Then
+                    Me.MessageField = value
+                    Me.RaisePropertyChanged("Message")
+                End If
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute(IsRequired:=true, Order:=1)>  _
+        Public Property HasError() As Boolean
+            Get
+                Return Me.HasErrorField
+            End Get
+            Set
+                If (Me.HasErrorField.Equals(value) <> true) Then
+                    Me.HasErrorField = value
+                    Me.RaisePropertyChanged("HasError")
+                End If
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue:=false, Order:=2)>  _
+        Public Property ErrorCode() As String
+            Get
+                Return Me.ErrorCodeField
+            End Get
+            Set
+                If (Object.ReferenceEquals(Me.ErrorCodeField, value) <> true) Then
+                    Me.ErrorCodeField = value
+                    Me.RaisePropertyChanged("ErrorCode")
+                End If
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue:=false, Order:=3)>  _
+        Public Property ErrorMessage() As String
+            Get
+                Return Me.ErrorMessageField
+            End Get
+            Set
+                If (Object.ReferenceEquals(Me.ErrorMessageField, value) <> true) Then
+                    Me.ErrorMessageField = value
+                    Me.RaisePropertyChanged("ErrorMessage")
+                End If
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue:=false, Order:=4)>  _
+        Public Property MCNo() As String
+            Get
+                Return Me.MCNoField
+            End Get
+            Set
+                If (Object.ReferenceEquals(Me.MCNoField, value) <> true) Then
+                    Me.MCNoField = value
+                    Me.RaisePropertyChanged("MCNo")
+                End If
+            End Set
+        End Property
+        
+        Public Event PropertyChanged As System.ComponentModel.PropertyChangedEventHandler Implements System.ComponentModel.INotifyPropertyChanged.PropertyChanged
+        
+        Protected Sub RaisePropertyChanged(ByVal propertyName As String)
+            Dim propertyChanged As System.ComponentModel.PropertyChangedEventHandler = Me.PropertyChangedEvent
+            If (Not (propertyChanged) Is Nothing) Then
+                propertyChanged(Me, New System.ComponentModel.PropertyChangedEventArgs(propertyName))
+            End If
+        End Sub
+    End Class
+    
     <System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0"),  _
      System.ServiceModel.ServiceContractAttribute(ConfigurationName:="iLibraryService.IServiceiLibrary")>  _
     Public Interface IServiceiLibrary
@@ -1634,11 +1776,17 @@ Namespace iLibraryService
         <System.ServiceModel.OperationContractAttribute(Action:="http://tempuri.org/IServiceiLibrary/SetupLotCustomModeNoCheckLicenser", ReplyAction:="http://tempuri.org/IServiceiLibrary/SetupLotCustomModeNoCheckLicenserResponse")>  _
         Function SetupLotCustomModeNoCheckLicenser(ByVal lotNo As String, ByVal mcNo As String, ByVal opNo As String, ByVal processName As String, ByVal layerNo As String, ByVal runMode As iLibraryService.RunMode) As iLibraryService.SetupLotResult
         
+        <System.ServiceModel.OperationContractAttribute(Action:="http://tempuri.org/IServiceiLibrary/SetupLotOven", ReplyAction:="http://tempuri.org/IServiceiLibrary/SetupLotOvenResponse")>  _
+        Function SetupLotOven(ByVal lotNo As String, ByVal mcNoApcsPro As String, ByVal mcNoApcs As String, ByVal opNo As String, ByVal processName As String, ByVal layerNo As String) As iLibraryService.SetupLotResult
+        
         <System.ServiceModel.OperationContractAttribute(Action:="http://tempuri.org/IServiceiLibrary/StartLot", ReplyAction:="http://tempuri.org/IServiceiLibrary/StartLotResponse")>  _
         Function StartLot(ByVal lotNo As String, ByVal mcNo As String, ByVal opNo As String, ByVal recipe As String) As iLibraryService.StartLotResult
         
         <System.ServiceModel.OperationContractAttribute(Action:="http://tempuri.org/IServiceiLibrary/StartLotCustomMode", ReplyAction:="http://tempuri.org/IServiceiLibrary/StartLotCustomModeResponse")>  _
         Function StartLotCustomMode(ByVal lotNo As String, ByVal mcNo As String, ByVal opNo As String, ByVal recipe As String, ByVal runMode As iLibraryService.RunMode) As iLibraryService.StartLotResult
+        
+        <System.ServiceModel.OperationContractAttribute(Action:="http://tempuri.org/IServiceiLibrary/StartLotOven", ReplyAction:="http://tempuri.org/IServiceiLibrary/StartLotOvenResponse")>  _
+        Function StartLotOven(ByVal lotNo As String, ByVal mcNoApcsPro As String, ByVal mcNoApcs As String, ByVal opNo As String, ByVal recipe As String) As iLibraryService.StartLotResult
         
         <System.ServiceModel.OperationContractAttribute(Action:="http://tempuri.org/IServiceiLibrary/OnlineStart", ReplyAction:="http://tempuri.org/IServiceiLibrary/OnlineStartResponse")>  _
         Function OnlineStart(ByVal lotNo As String, ByVal mcNo As String, ByVal opNo As String) As iLibraryService.OnlineStartResult
@@ -1655,6 +1803,9 @@ Namespace iLibraryService
         <System.ServiceModel.OperationContractAttribute(Action:="http://tempuri.org/IServiceiLibrary/EndLotNoCheckLicenser", ReplyAction:="http://tempuri.org/IServiceiLibrary/EndLotNoCheckLicenserResponse")>  _
         Function EndLotNoCheckLicenser(ByVal lotNo As String, ByVal mcNo As String, ByVal opNo As String, ByVal good As Integer, ByVal ng As Integer) As iLibraryService.EndLotResult
         
+        <System.ServiceModel.OperationContractAttribute(Action:="http://tempuri.org/IServiceiLibrary/EndLotOven", ReplyAction:="http://tempuri.org/IServiceiLibrary/EndLotOvenResponse")>  _
+        Function EndLotOven(ByVal lotNo As String, ByVal mcNoApcs As String, ByVal mcNoApcsPro As String, ByVal opNo As String, ByVal good As Integer, ByVal ng As Integer) As iLibraryService.EndLotResult
+        
         <System.ServiceModel.OperationContractAttribute(Action:="http://tempuri.org/IServiceiLibrary/UpdateFinalinspection", ReplyAction:="http://tempuri.org/IServiceiLibrary/UpdateFinalinspectionResponse")>  _
         Function UpdateFinalinspection(ByVal lotNo As String, ByVal opNo As String, ByVal judge As iLibraryService.Judge, ByVal mcNo As String) As iLibraryService.UpdateFinalinspectionResult
         
@@ -1670,8 +1821,14 @@ Namespace iLibraryService
         <System.ServiceModel.OperationContractAttribute(Action:="http://tempuri.org/IServiceiLibrary/ReinputAndHoldLot", ReplyAction:="http://tempuri.org/IServiceiLibrary/ReinputAndHoldLotResponse")>  _
         Function ReinputAndHoldLot(ByVal lotNo As String, ByVal mcNo As String, ByVal opNo As String, ByVal good As Integer, ByVal ng As Integer, ByVal endMode As iLibraryService.EndMode) As iLibraryService.ReinputResult
         
+        <System.ServiceModel.OperationContractAttribute(Action:="http://tempuri.org/IServiceiLibrary/ReinputOven", ReplyAction:="http://tempuri.org/IServiceiLibrary/ReinputOvenResponse")>  _
+        Function ReinputOven(ByVal lotNo As String, ByVal mcNoApcsPro As String, ByVal mcNoApcs As String, ByVal opNo As String, ByVal good As Integer, ByVal ng As Integer, ByVal endMode As iLibraryService.EndMode) As iLibraryService.ReinputResult
+        
         <System.ServiceModel.OperationContractAttribute(Action:="http://tempuri.org/IServiceiLibrary/CheckLotApcsProManual", ReplyAction:="http://tempuri.org/IServiceiLibrary/CheckLotApcsProManualResponse")>  _
         Function CheckLotApcsProManual(ByVal lotNo As String, ByVal mcNo As String, ByVal package As String) As iLibraryService.CheckLotApcsProResult
+        
+        <System.ServiceModel.OperationContractAttribute(Action:="http://tempuri.org/IServiceiLibrary/IRePortCheck", ReplyAction:="http://tempuri.org/IServiceiLibrary/IRePortCheckResponse")>  _
+        Function IRePortCheck(ByVal mcNo As String) As iLibraryService.iReportResponse
     End Interface
     
     <System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")>  _
@@ -1729,12 +1886,20 @@ Namespace iLibraryService
             Return MyBase.Channel.SetupLotCustomModeNoCheckLicenser(lotNo, mcNo, opNo, processName, layerNo, runMode)
         End Function
         
+        Public Function SetupLotOven(ByVal lotNo As String, ByVal mcNoApcsPro As String, ByVal mcNoApcs As String, ByVal opNo As String, ByVal processName As String, ByVal layerNo As String) As iLibraryService.SetupLotResult Implements iLibraryService.IServiceiLibrary.SetupLotOven
+            Return MyBase.Channel.SetupLotOven(lotNo, mcNoApcsPro, mcNoApcs, opNo, processName, layerNo)
+        End Function
+        
         Public Function StartLot(ByVal lotNo As String, ByVal mcNo As String, ByVal opNo As String, ByVal recipe As String) As iLibraryService.StartLotResult Implements iLibraryService.IServiceiLibrary.StartLot
             Return MyBase.Channel.StartLot(lotNo, mcNo, opNo, recipe)
         End Function
         
         Public Function StartLotCustomMode(ByVal lotNo As String, ByVal mcNo As String, ByVal opNo As String, ByVal recipe As String, ByVal runMode As iLibraryService.RunMode) As iLibraryService.StartLotResult Implements iLibraryService.IServiceiLibrary.StartLotCustomMode
             Return MyBase.Channel.StartLotCustomMode(lotNo, mcNo, opNo, recipe, runMode)
+        End Function
+        
+        Public Function StartLotOven(ByVal lotNo As String, ByVal mcNoApcsPro As String, ByVal mcNoApcs As String, ByVal opNo As String, ByVal recipe As String) As iLibraryService.StartLotResult Implements iLibraryService.IServiceiLibrary.StartLotOven
+            Return MyBase.Channel.StartLotOven(lotNo, mcNoApcsPro, mcNoApcs, opNo, recipe)
         End Function
         
         Public Function OnlineStart(ByVal lotNo As String, ByVal mcNo As String, ByVal opNo As String) As iLibraryService.OnlineStartResult Implements iLibraryService.IServiceiLibrary.OnlineStart
@@ -1757,6 +1922,10 @@ Namespace iLibraryService
             Return MyBase.Channel.EndLotNoCheckLicenser(lotNo, mcNo, opNo, good, ng)
         End Function
         
+        Public Function EndLotOven(ByVal lotNo As String, ByVal mcNoApcs As String, ByVal mcNoApcsPro As String, ByVal opNo As String, ByVal good As Integer, ByVal ng As Integer) As iLibraryService.EndLotResult Implements iLibraryService.IServiceiLibrary.EndLotOven
+            Return MyBase.Channel.EndLotOven(lotNo, mcNoApcs, mcNoApcsPro, opNo, good, ng)
+        End Function
+        
         Public Function UpdateFinalinspection(ByVal lotNo As String, ByVal opNo As String, ByVal judge As iLibraryService.Judge, ByVal mcNo As String) As iLibraryService.UpdateFinalinspectionResult Implements iLibraryService.IServiceiLibrary.UpdateFinalinspection
             Return MyBase.Channel.UpdateFinalinspection(lotNo, opNo, judge, mcNo)
         End Function
@@ -1777,8 +1946,16 @@ Namespace iLibraryService
             Return MyBase.Channel.ReinputAndHoldLot(lotNo, mcNo, opNo, good, ng, endMode)
         End Function
         
+        Public Function ReinputOven(ByVal lotNo As String, ByVal mcNoApcsPro As String, ByVal mcNoApcs As String, ByVal opNo As String, ByVal good As Integer, ByVal ng As Integer, ByVal endMode As iLibraryService.EndMode) As iLibraryService.ReinputResult Implements iLibraryService.IServiceiLibrary.ReinputOven
+            Return MyBase.Channel.ReinputOven(lotNo, mcNoApcsPro, mcNoApcs, opNo, good, ng, endMode)
+        End Function
+        
         Public Function CheckLotApcsProManual(ByVal lotNo As String, ByVal mcNo As String, ByVal package As String) As iLibraryService.CheckLotApcsProResult Implements iLibraryService.IServiceiLibrary.CheckLotApcsProManual
             Return MyBase.Channel.CheckLotApcsProManual(lotNo, mcNo, package)
+        End Function
+        
+        Public Function IRePortCheck(ByVal mcNo As String) As iLibraryService.iReportResponse Implements iLibraryService.IServiceiLibrary.IRePortCheck
+            Return MyBase.Channel.IRePortCheck(mcNo)
         End Function
     End Class
 End Namespace

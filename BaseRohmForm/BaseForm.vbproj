@@ -384,6 +384,9 @@
     <None Include="Connected Services\iLibraryService\CellController.iLibraryService.EndLotResult.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
+    <None Include="Connected Services\iLibraryService\CellController.iLibraryService.iReportResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
     <None Include="Connected Services\iLibraryService\CellController.iLibraryService.MachineAlarmResult.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
