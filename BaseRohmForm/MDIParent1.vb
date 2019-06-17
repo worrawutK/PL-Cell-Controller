@@ -3,6 +3,7 @@ Imports System.Threading
 Imports XtraLibrary.SecsGem
 Imports Rohm.Apcs.Tdc
 Imports System.ComponentModel
+Imports System.IO
 
 Public Class MDIParent1
 #Region "Commomn Define"
@@ -106,73 +107,77 @@ Public Class MDIParent1
             Dim factory As SecsHostFactory = New SecsHostFactory()
             m_Host = CType(factory.Create(equipmentModel), XtraLibrary.SecsGem.HsmsHost)
 
-            m_Host.LogDirectory = DIR_LOG
-            m_Host.HsmsLogEnabled = True
-
-            'Dim hsmsHost As HsmsHost = CType(m_Host, HsmsHost)
-
-            AddHandler m_Host.ReceivedPrimaryMessage, AddressOf m_Host_ReceivedPrimaryMessage
-            AddHandler m_Host.ReceivedSecondaryMessage, AddressOf m_Host_ReceivedSecondaryMessage
-            AddHandler m_Host.HsmsStateChanged, AddressOf m_Host_HsmsStateChanged
-            AddHandler m_Host.ErrorNotification, AddressOf m_Host_ErrorNotification
-            AddHandler m_Host.ConversionErrored, AddressOf m_Host_ConversionErrored
-
-            Dim secsParser As SecsMessageParserBase = m_Host.MessageParser
-
-            ''Example ==='
-            'Dim msg As SecsMessageBase = m_Host.MessageParser.ToSecsMessage(Nothing)
-            'Dim smlText As String = SmlBuilder.ToSmlString(msg)
-            'm_Host.Send(msg)
-            '============
-
-
-
-            secsParser.RegisterCustomSecsMessage(GetType(S1F4))
-            secsParser.RegisterCustomSecsMessage(GetType(S1F14E))      ' Regis in Recive data from eqiptment for change to class format. 
-            secsParser.RegisterCustomSecsMessage(GetType(S1F18))        '160630 \783 AutoLoad Revise
-            secsParser.RegisterCustomSecsMessage(GetType(S2F34))
-            secsParser.RegisterCustomSecsMessage(GetType(S2F36))
-            secsParser.RegisterCustomSecsMessage(GetType(S2F38))
-            secsParser.RegisterCustomSecsMessage(GetType(S2F14))
-            secsParser.RegisterCustomSecsMessage(GetType(S2F16))
-            secsParser.RegisterCustomSecsMessage(GetType(S2F17))
-            'secsParser.RegisterCustomSecsMessage(GetType(S2F42))
-
-            secsParser.RegisterCustomSecsMessage(GetType(S5F1))
-            secsParser.RegisterCustomSecsMessage(GetType(S5F4))
-            secsParser.RegisterCustomSecsMessage(GetType(S6F11))
-            secsParser.RegisterCustomSecsMessage(GetType(S6F24))
-            secsParser.RegisterCustomSecsMessage(GetType(S7F20))
-            secsParser.RegisterCustomSecsMessage(GetType(S10F1))
-
-
-
-            If DownloadReportSetting() Like "False*" Then      'Load Define Report from server
-                LoadFrFile()                                   'Load Define Report from file
+            If Not Directory.Exists(DIR_LOG) Then
+                Directory.CreateDirectory(DIR_LOG)
             End If
 
-            m_Host.Connect()
-            '---------
+            m_Host.LogDirectory = DIR_LOG
+                m_Host.HsmsLogEnabled = True
+
+                'Dim hsmsHost As HsmsHost = CType(m_Host, HsmsHost)
+
+                AddHandler m_Host.ReceivedPrimaryMessage, AddressOf m_Host_ReceivedPrimaryMessage
+                AddHandler m_Host.ReceivedSecondaryMessage, AddressOf m_Host_ReceivedSecondaryMessage
+                AddHandler m_Host.HsmsStateChanged, AddressOf m_Host_HsmsStateChanged
+                AddHandler m_Host.ErrorNotification, AddressOf m_Host_ErrorNotification
+                AddHandler m_Host.ConversionErrored, AddressOf m_Host_ConversionErrored
+
+                Dim secsParser As SecsMessageParserBase = m_Host.MessageParser
+
+                ''Example ==='
+                'Dim msg As SecsMessageBase = m_Host.MessageParser.ToSecsMessage(Nothing)
+                'Dim smlText As String = SmlBuilder.ToSmlString(msg)
+                'm_Host.Send(msg)
+                '============
+
+
+
+                secsParser.RegisterCustomSecsMessage(GetType(S1F4))
+                secsParser.RegisterCustomSecsMessage(GetType(S1F14E))      ' Regis in Recive data from eqiptment for change to class format. 
+                secsParser.RegisterCustomSecsMessage(GetType(S1F18))        '160630 \783 AutoLoad Revise
+                secsParser.RegisterCustomSecsMessage(GetType(S2F34))
+                secsParser.RegisterCustomSecsMessage(GetType(S2F36))
+                secsParser.RegisterCustomSecsMessage(GetType(S2F38))
+                secsParser.RegisterCustomSecsMessage(GetType(S2F14))
+                secsParser.RegisterCustomSecsMessage(GetType(S2F16))
+                secsParser.RegisterCustomSecsMessage(GetType(S2F17))
+                'secsParser.RegisterCustomSecsMessage(GetType(S2F42))
+
+                secsParser.RegisterCustomSecsMessage(GetType(S5F1))
+                secsParser.RegisterCustomSecsMessage(GetType(S5F4))
+                secsParser.RegisterCustomSecsMessage(GetType(S6F11))
+                secsParser.RegisterCustomSecsMessage(GetType(S6F24))
+                secsParser.RegisterCustomSecsMessage(GetType(S7F20))
+                secsParser.RegisterCustomSecsMessage(GetType(S10F1))
+
+
+
+                If DownloadReportSetting() Like "False*" Then      'Load Define Report from server
+                    LoadFrFile()                                   'Load Define Report from file
+                End If
+
+                m_Host.Connect()
+                '---------
 
 ByPassSecs:
-            If My.Settings.TDC_Enable Then      'TDC ---
-                m_TdcService = TdcService.GetInstance()
-                m_TdcService.LogFolder = "Log"
-            End If
+                If My.Settings.TDC_Enable Then      'TDC ---
+                    m_TdcService = TdcService.GetInstance()
+                    m_TdcService.LogFolder = "Log"
+                End If
 
-            If My.Settings.CsProtocol_Enable Then     'Custom Protocol
-                CstProtocol = New TcpIpClient
-                CstProtocol.ReadContinue = True
-                CstProtocol.Listener_Click(CStr(My.Settings.CsProtocolPort), My.Settings.EquipmentIP)
-            End If
+                If My.Settings.CsProtocol_Enable Then     'Custom Protocol
+                    CstProtocol = New TcpIpClient
+                    CstProtocol.ReadContinue = True
+                    CstProtocol.Listener_Click(CStr(My.Settings.CsProtocolPort), My.Settings.EquipmentIP)
+                End If
 
 
-            If (System.IO.File.Exists(My.Application.Info.DirectoryPath & "\UserLoginSchema.xml")) Then
-                UserTable.ReadXmlSchema(My.Application.Info.DirectoryPath & "\UserLoginSchema.xml")
-            End If
-            If (System.IO.File.Exists(My.Application.Info.DirectoryPath & "\UserLogin.xml")) Then
-                UserTable.ReadXml(My.Application.Info.DirectoryPath & "\UserLogin.xml")
-            End If
+                If (System.IO.File.Exists(My.Application.Info.DirectoryPath & "\UserLoginSchema.xml")) Then
+                    UserTable.ReadXmlSchema(My.Application.Info.DirectoryPath & "\UserLoginSchema.xml")
+                End If
+                If (System.IO.File.Exists(My.Application.Info.DirectoryPath & "\UserLogin.xml")) Then
+                    UserTable.ReadXml(My.Application.Info.DirectoryPath & "\UserLogin.xml")
+                End If
 
         Catch ex As Exception
             SaveCatchLog(ex.ToString, "MDIParent1_Load")
@@ -234,7 +239,7 @@ ByPassSecs:
         If e.Source Is Nothing Then
             UpdateInformationThreadSafe(e.Message & " TID:= " & e.TransactionId.ToString())
         Else
-            UpdateInformationThreadSafe(e.Message & " S" & e.Source.ToString() & "F" & _
+            UpdateInformationThreadSafe(e.Message & " S" & e.Source.ToString() & "F" &
                                 e.Source.Function.ToString() & " TID:= " & e.TransactionId.ToString())
         End If
     End Sub
@@ -282,136 +287,136 @@ ByPassSecs:
         Dim sndMsg As SecsMessageBase = e.Secondary
         Try
 
-       
-        Select Case priMsg.Stream
-            Case 1
-                Select Case priMsg.Function
-                    Case 13
-                        Dim reply As S1F14E = DirectCast(sndMsg, S1F14E)
-                        If reply.COMMACK = COMMACK.OK Then
+
+            Select Case priMsg.Stream
+                Case 1
+                    Select Case priMsg.Function
+                        Case 13
+                            Dim reply As S1F14E = DirectCast(sndMsg, S1F14E)
+                            If reply.COMMACK = COMMACK.OK Then
                                 GoOnline()     ' Eq Communication Revise  160627 \783
                                 UpdateStateThreadSafe("COMMUNICATING (Host Init)", StatusLabel.FrmSecs_slblCnnState)
-                        End If
+                            End If
 
                         Case 3
                             Dim reply As S1F4 = DirectCast(sndMsg, S1F4)
                             If FrmSecs IsNot Nothing Then
                                 FrmSecs.ReplyS1F3(reply.SV)
                             End If
-                    Case 17
+                        Case 17
                             Dim reply As S1F18 = DirectCast(sndMsg, S1F18)   '160630 \783 AutoLoad revise
-                        If reply.ONLACK = ONLACK.Refused Then
-                            CurDefFlow = AutoDefineReportFlow.Idle
-                            UpdateStateThreadSafe("Go OnLine Error : " & reply.ONLACK.ToString, StatusLabel.FrmSecs_sblStatus)
-                            GoTo FinalExeLoop
-                        End If
-                        If CurDefFlow = AutoDefineReportFlow.GoOnline Then
-                            CurDefFlow = AutoDefineReportFlow.Spooling_Purge
-                            Dim SF As New S6F23(SpoolCode.Purge)
-                            HostSend(SF)
-                        End If
-
-
-
-
-                End Select
-
-            Case 2
-                Select Case priMsg.Function
-
-                    Case 13
-                        Dim reply As S2F14 = DirectCast(sndMsg, S2F14)
-                        Dim ECV As New List(Of String)
-                        For Each Val As String In reply.GetECVs
-                            FrmSecs.lbS2F13.Text += " ECV " & " = " & Val & "   "
-                            ECV.Add(Val)
-                        Next
-
-                    Case 15
-                        Dim reply As S2F16 = DirectCast(sndMsg, S2F16)
-
-                        FrmSecs.lbS2F15.Text = "S2F15 Reply  :  " & reply.EAC.ToString
-
-                    Case 33
-                        Dim reply As S2F34 = DirectCast(sndMsg, S2F34)
-
-
-                        If reply.DRACK = DRACK.OK Then
-
-                            'AutoDefineReport -------------------------------------
-                            If CurDefFlow = AutoDefineReportFlow.DeleteAllReport Then
-                                CurDefFlow = AutoDefineReportFlow.DefineReport
-                                Send_S2F33_DefineReport()
-                                GoTo ExitLoop1
-                            End If
-
-                            If CurDefFlow = AutoDefineReportFlow.DefineReport Then
-                                CurDefFlow = AutoDefineReportFlow.LinkReport
-                                Send_S2F35_LinkReport()
-                                GoTo ExitLoop1
-                            End If
-
-                            '---------------------------------------------------------
-
-                        Else
-
-                            'AutoDefineReport -------------------------------------
-                            If CurDefFlow = AutoDefineReportFlow.DeleteAllReport Then
-                                UpdateStateThreadSafe("DeleteAllReport Reply : " & reply.DRACK.ToString, StatusLabel.FrmSecs_sblStatus)
+                            If reply.ONLACK = ONLACK.Refused Then
                                 CurDefFlow = AutoDefineReportFlow.Idle
-                                GoTo ExitLoop1
+                                UpdateStateThreadSafe("Go OnLine Error : " & reply.ONLACK.ToString, StatusLabel.FrmSecs_sblStatus)
+                                GoTo FinalExeLoop
                             End If
-                            If CurDefFlow = AutoDefineReportFlow.DefineReport Then
-                                UpdateStateThreadSafe("DefineReport Reply : " & reply.DRACK.ToString, StatusLabel.FrmSecs_sblStatus)
-                                CurDefFlow = AutoDefineReportFlow.Idle
-                                GoTo ExitLoop1
+                            If CurDefFlow = AutoDefineReportFlow.GoOnline Then
+                                CurDefFlow = AutoDefineReportFlow.Spooling_Purge
+                                Dim SF As New S6F23(SpoolCode.Purge)
+                                HostSend(SF)
                             End If
-                            '---------------------------------------------------------
 
-                        End If
+
+
+
+                    End Select
+
+                Case 2
+                    Select Case priMsg.Function
+
+                        Case 13
+                            Dim reply As S2F14 = DirectCast(sndMsg, S2F14)
+                            Dim ECV As New List(Of String)
+                            For Each Val As String In reply.GetECVs
+                                FrmSecs.lbS2F13.Text += " ECV " & " = " & Val & "   "
+                                ECV.Add(Val)
+                            Next
+
+                        Case 15
+                            Dim reply As S2F16 = DirectCast(sndMsg, S2F16)
+
+                            FrmSecs.lbS2F15.Text = "S2F15 Reply  :  " & reply.EAC.ToString
+
+                        Case 33
+                            Dim reply As S2F34 = DirectCast(sndMsg, S2F34)
+
+
+                            If reply.DRACK = DRACK.OK Then
+
+                                'AutoDefineReport -------------------------------------
+                                If CurDefFlow = AutoDefineReportFlow.DeleteAllReport Then
+                                    CurDefFlow = AutoDefineReportFlow.DefineReport
+                                    Send_S2F33_DefineReport()
+                                    GoTo ExitLoop1
+                                End If
+
+                                If CurDefFlow = AutoDefineReportFlow.DefineReport Then
+                                    CurDefFlow = AutoDefineReportFlow.LinkReport
+                                    Send_S2F35_LinkReport()
+                                    GoTo ExitLoop1
+                                End If
+
+                                '---------------------------------------------------------
+
+                            Else
+
+                                'AutoDefineReport -------------------------------------
+                                If CurDefFlow = AutoDefineReportFlow.DeleteAllReport Then
+                                    UpdateStateThreadSafe("DeleteAllReport Reply : " & reply.DRACK.ToString, StatusLabel.FrmSecs_sblStatus)
+                                    CurDefFlow = AutoDefineReportFlow.Idle
+                                    GoTo ExitLoop1
+                                End If
+                                If CurDefFlow = AutoDefineReportFlow.DefineReport Then
+                                    UpdateStateThreadSafe("DefineReport Reply : " & reply.DRACK.ToString, StatusLabel.FrmSecs_sblStatus)
+                                    CurDefFlow = AutoDefineReportFlow.Idle
+                                    GoTo ExitLoop1
+                                End If
+                                '---------------------------------------------------------
+
+                            End If
 ExitLoop1:
 
 
-                    Case 35
-                        Dim reply As S2F36 = DirectCast(sndMsg, S2F36)
+                        Case 35
+                            Dim reply As S2F36 = DirectCast(sndMsg, S2F36)
 
-                        If reply.LRACK = LRACK.OK Then
-                            If CurDefFlow = AutoDefineReportFlow.LinkReport Then
-                                CurDefFlow = AutoDefineReportFlow.EnableAllReport
-                                Send_S2F37_EnableAllReport()
-                                Send_S5F3_EnableAllAlarm()
-                            End If
+                            If reply.LRACK = LRACK.OK Then
+                                If CurDefFlow = AutoDefineReportFlow.LinkReport Then
+                                    CurDefFlow = AutoDefineReportFlow.EnableAllReport
+                                    Send_S2F37_EnableAllReport()
+                                    Send_S5F3_EnableAllAlarm()
+                                End If
 
-                        Else
-                            If CurDefFlow = AutoDefineReportFlow.LinkReport Then
-                                UpdateStateThreadSafe("LinkReport Reply : " & reply.LRACK.ToString, StatusLabel.FrmSecs_sblStatus)
-                                CurDefFlow = AutoDefineReportFlow.Idle
-                            End If
-
-
-                        End If
+                            Else
+                                If CurDefFlow = AutoDefineReportFlow.LinkReport Then
+                                    UpdateStateThreadSafe("LinkReport Reply : " & reply.LRACK.ToString, StatusLabel.FrmSecs_sblStatus)
+                                    CurDefFlow = AutoDefineReportFlow.Idle
+                                End If
 
 
-
-                    Case 37
-
-                        Dim reply As S2F38 = DirectCast(sndMsg, S2F38)
-
-                        If reply.ERACK = ERACK.OK Then
-                            If CurDefFlow = AutoDefineReportFlow.EnableAllReport Then
-                                UpdateStateThreadSafe("Auto Define Report Success", StatusLabel.FrmSecs_sblStatus)
-                                CurDefFlow = AutoDefineReportFlow.Idle
                             End If
 
 
-                        Else
 
-                            If CurDefFlow = AutoDefineReportFlow.EnableAllReport Then
-                                UpdateStateThreadSafe("EnableAllReport Reply : " & reply.ERACK.ToString, StatusLabel.FrmSecs_sblStatus)
-                                CurDefFlow = AutoDefineReportFlow.Idle
+                        Case 37
+
+                            Dim reply As S2F38 = DirectCast(sndMsg, S2F38)
+
+                            If reply.ERACK = ERACK.OK Then
+                                If CurDefFlow = AutoDefineReportFlow.EnableAllReport Then
+                                    UpdateStateThreadSafe("Auto Define Report Success", StatusLabel.FrmSecs_sblStatus)
+                                    CurDefFlow = AutoDefineReportFlow.Idle
+                                End If
+
+
+                            Else
+
+                                If CurDefFlow = AutoDefineReportFlow.EnableAllReport Then
+                                    UpdateStateThreadSafe("EnableAllReport Reply : " & reply.ERACK.ToString, StatusLabel.FrmSecs_sblStatus)
+                                    CurDefFlow = AutoDefineReportFlow.Idle
+                                End If
+
                             End If
-
-                        End If
 
 
                             'Case 41 'Host Command Send
@@ -448,7 +453,7 @@ ExitLoop1:
                 Case 5
                     Select Case priMsg.Function
                         Case 3
-                            Dim reply As S5f4 = DirectCast(sndMsg, S5f4)
+                            Dim reply As S5F4 = DirectCast(sndMsg, S5F4)
                             If reply.ACKC5 = ACKC5.OK Then
                                 If CurDefFlow = AutoDefineReportFlow.EnableAllAlarm Then
                                     UpdateStateThreadSafe("Auto Define Report Success", StatusLabel.FrmSecs_sblStatus)
@@ -882,7 +887,7 @@ FinalExeLoop:
                 Dim res As TdcLotRequestResponse = m_TdcService.LotRequest(agr.EqNo, agr.LotNo, agr.StartMode)
                 e.Result = res
             End SyncLock
-          
+
 
         Catch ex As Exception
             SaveCatchLog(ex.ToString, "LotRequest()")

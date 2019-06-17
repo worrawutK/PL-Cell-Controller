@@ -1102,8 +1102,6 @@ Partial Public Class DBxDataSet
         
         Private columnOPNo As Global.System.Data.DataColumn
         
-        Private columnMagazineNo As Global.System.Data.DataColumn
-        
         Private columnSelfConVersion As Global.System.Data.DataColumn
         
         Private columnNetVersion As Global.System.Data.DataColumn
@@ -1119,6 +1117,12 @@ Partial Public Class DBxDataSet
         Private columnOPJudgement As Global.System.Data.DataColumn
         
         Private columnRemark As Global.System.Data.DataColumn
+        
+        Private columnInputQtyFrameAdjust As Global.System.Data.DataColumn
+        
+        Private columnTotalGoodFrameAdjust As Global.System.Data.DataColumn
+        
+        Private columnMagazineNo As Global.System.Data.DataColumn
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")>  _
@@ -1229,14 +1233,6 @@ Partial Public Class DBxDataSet
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")>  _
-        Public ReadOnly Property MagazineNoColumn() As Global.System.Data.DataColumn
-            Get
-                Return Me.columnMagazineNo
-            End Get
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")>  _
         Public ReadOnly Property SelfConVersionColumn() As Global.System.Data.DataColumn
             Get
                 Return Me.columnSelfConVersion
@@ -1300,6 +1296,30 @@ Partial Public Class DBxDataSet
         End Property
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")>  _
+        Public ReadOnly Property InputQtyFrameAdjustColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnInputQtyFrameAdjust
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")>  _
+        Public ReadOnly Property TotalGoodFrameAdjustColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnTotalGoodFrameAdjust
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")>  _
+        Public ReadOnly Property MagazineNoColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnMagazineNo
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0"),  _
          Global.System.ComponentModel.Browsable(false)>  _
         Public ReadOnly Property Count() As Integer
@@ -1346,7 +1366,6 @@ Partial Public Class DBxDataSet
                     ByVal LoadCount As Integer,  _
                     ByVal UnloadCount As Integer,  _
                     ByVal OPNo As String,  _
-                    ByVal MagazineNo As String,  _
                     ByVal SelfConVersion As String,  _
                     ByVal NetVersion As String,  _
                     ByVal InputQtyAdjust As Integer,  _
@@ -1354,9 +1373,12 @@ Partial Public Class DBxDataSet
                     ByVal TotalNGAdjust As Integer,  _
                     ByVal DummyQty As Integer,  _
                     ByVal OPJudgement As String,  _
-                    ByVal Remark As String) As PLDataRow
+                    ByVal Remark As String,  _
+                    ByVal InputQtyFrameAdjust As Integer,  _
+                    ByVal TotalGoodFrameAdjust As Integer,  _
+                    ByVal MagazineNo As String) As PLDataRow
             Dim rowPLDataRow As PLDataRow = CType(Me.NewRow,PLDataRow)
-            Dim columnValuesArray() As Object = New Object() {MCNo, Nothing, LotStartTime, LotEndTime, Material, ABNormal, LoadCount, UnloadCount, OPNo, MagazineNo, SelfConVersion, NetVersion, InputQtyAdjust, TotalGoodAdjust, TotalNGAdjust, DummyQty, OPJudgement, Remark}
+            Dim columnValuesArray() As Object = New Object() {MCNo, Nothing, LotStartTime, LotEndTime, Material, ABNormal, LoadCount, UnloadCount, OPNo, SelfConVersion, NetVersion, InputQtyAdjust, TotalGoodAdjust, TotalNGAdjust, DummyQty, OPJudgement, Remark, InputQtyFrameAdjust, TotalGoodFrameAdjust, MagazineNo}
             If (Not (parentTransactionDataRowByFK_PLData_TransactionData) Is Nothing) Then
                 columnValuesArray(1) = parentTransactionDataRowByFK_PLData_TransactionData(0)
             End If
@@ -1397,7 +1419,6 @@ Partial Public Class DBxDataSet
             Me.columnLoadCount = MyBase.Columns("LoadCount")
             Me.columnUnloadCount = MyBase.Columns("UnloadCount")
             Me.columnOPNo = MyBase.Columns("OPNo")
-            Me.columnMagazineNo = MyBase.Columns("MagazineNo")
             Me.columnSelfConVersion = MyBase.Columns("SelfConVersion")
             Me.columnNetVersion = MyBase.Columns("NetVersion")
             Me.columnInputQtyAdjust = MyBase.Columns("InputQtyAdjust")
@@ -1406,6 +1427,9 @@ Partial Public Class DBxDataSet
             Me.columnDummyQty = MyBase.Columns("DummyQty")
             Me.columnOPJudgement = MyBase.Columns("OPJudgement")
             Me.columnRemark = MyBase.Columns("Remark")
+            Me.columnInputQtyFrameAdjust = MyBase.Columns("InputQtyFrameAdjust")
+            Me.columnTotalGoodFrameAdjust = MyBase.Columns("TotalGoodFrameAdjust")
+            Me.columnMagazineNo = MyBase.Columns("MagazineNo")
         End Sub
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
@@ -1429,8 +1453,6 @@ Partial Public Class DBxDataSet
             MyBase.Columns.Add(Me.columnUnloadCount)
             Me.columnOPNo = New Global.System.Data.DataColumn("OPNo", GetType(String), Nothing, Global.System.Data.MappingType.Element)
             MyBase.Columns.Add(Me.columnOPNo)
-            Me.columnMagazineNo = New Global.System.Data.DataColumn("MagazineNo", GetType(String), Nothing, Global.System.Data.MappingType.Element)
-            MyBase.Columns.Add(Me.columnMagazineNo)
             Me.columnSelfConVersion = New Global.System.Data.DataColumn("SelfConVersion", GetType(String), Nothing, Global.System.Data.MappingType.Element)
             MyBase.Columns.Add(Me.columnSelfConVersion)
             Me.columnNetVersion = New Global.System.Data.DataColumn("NetVersion", GetType(String), Nothing, Global.System.Data.MappingType.Element)
@@ -1447,6 +1469,12 @@ Partial Public Class DBxDataSet
             MyBase.Columns.Add(Me.columnOPJudgement)
             Me.columnRemark = New Global.System.Data.DataColumn("Remark", GetType(String), Nothing, Global.System.Data.MappingType.Element)
             MyBase.Columns.Add(Me.columnRemark)
+            Me.columnInputQtyFrameAdjust = New Global.System.Data.DataColumn("InputQtyFrameAdjust", GetType(Integer), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnInputQtyFrameAdjust)
+            Me.columnTotalGoodFrameAdjust = New Global.System.Data.DataColumn("TotalGoodFrameAdjust", GetType(Integer), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnTotalGoodFrameAdjust)
+            Me.columnMagazineNo = New Global.System.Data.DataColumn("MagazineNo", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnMagazineNo)
             Me.Constraints.Add(New Global.System.Data.UniqueConstraint("Constraint1", New Global.System.Data.DataColumn() {Me.columnMCNo, Me.columnLotNo, Me.columnLotStartTime}, true))
             Me.columnMCNo.AllowDBNull = false
             Me.columnMCNo.MaxLength = 10
@@ -1456,11 +1484,11 @@ Partial Public Class DBxDataSet
             Me.columnMaterial.MaxLength = 20
             Me.columnABNormal.MaxLength = 20
             Me.columnOPNo.MaxLength = 8
-            Me.columnMagazineNo.MaxLength = 10
             Me.columnSelfConVersion.MaxLength = 50
             Me.columnNetVersion.MaxLength = 50
             Me.columnOPJudgement.MaxLength = 8
             Me.columnRemark.MaxLength = 255
+            Me.columnMagazineNo.MaxLength = 20
         End Sub
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
@@ -2827,21 +2855,6 @@ Partial Public Class DBxDataSet
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")>  _
-        Public Property MagazineNo() As String
-            Get
-                Try 
-                    Return CType(Me(Me.tablePLData.MagazineNoColumn),String)
-                Catch e As Global.System.InvalidCastException
-                    Throw New Global.System.Data.StrongTypingException("The value for column 'MagazineNo' in table 'PLData' is DBNull.", e)
-                End Try
-            End Get
-            Set
-                Me(Me.tablePLData.MagazineNoColumn) = value
-            End Set
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")>  _
         Public Property SelfConVersion() As String
             Get
                 Try 
@@ -2962,6 +2975,51 @@ Partial Public Class DBxDataSet
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")>  _
+        Public Property InputQtyFrameAdjust() As Integer
+            Get
+                Try 
+                    Return CType(Me(Me.tablePLData.InputQtyFrameAdjustColumn),Integer)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'InputQtyFrameAdjust' in table 'PLData' is DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tablePLData.InputQtyFrameAdjustColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")>  _
+        Public Property TotalGoodFrameAdjust() As Integer
+            Get
+                Try 
+                    Return CType(Me(Me.tablePLData.TotalGoodFrameAdjustColumn),Integer)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'TotalGoodFrameAdjust' in table 'PLData' is DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tablePLData.TotalGoodFrameAdjustColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")>  _
+        Public Property MagazineNo() As String
+            Get
+                Try 
+                    Return CType(Me(Me.tablePLData.MagazineNoColumn),String)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'MagazineNo' in table 'PLData' is DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tablePLData.MagazineNoColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")>  _
         Public Property TransactionDataRow() As TransactionDataRow
             Get
                 Return CType(Me.GetParentRow(Me.Table.ParentRelations("FK_PLData_TransactionData")),TransactionDataRow)
@@ -3041,18 +3099,6 @@ Partial Public Class DBxDataSet
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")>  _
         Public Sub SetOPNoNull()
             Me(Me.tablePLData.OPNoColumn) = Global.System.Convert.DBNull
-        End Sub
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")>  _
-        Public Function IsMagazineNoNull() As Boolean
-            Return Me.IsNull(Me.tablePLData.MagazineNoColumn)
-        End Function
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")>  _
-        Public Sub SetMagazineNoNull()
-            Me(Me.tablePLData.MagazineNoColumn) = Global.System.Convert.DBNull
         End Sub
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
@@ -3149,6 +3195,42 @@ Partial Public Class DBxDataSet
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")>  _
         Public Sub SetRemarkNull()
             Me(Me.tablePLData.RemarkColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")>  _
+        Public Function IsInputQtyFrameAdjustNull() As Boolean
+            Return Me.IsNull(Me.tablePLData.InputQtyFrameAdjustColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")>  _
+        Public Sub SetInputQtyFrameAdjustNull()
+            Me(Me.tablePLData.InputQtyFrameAdjustColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")>  _
+        Public Function IsTotalGoodFrameAdjustNull() As Boolean
+            Return Me.IsNull(Me.tablePLData.TotalGoodFrameAdjustColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")>  _
+        Public Sub SetTotalGoodFrameAdjustNull()
+            Me(Me.tablePLData.TotalGoodFrameAdjustColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")>  _
+        Public Function IsMagazineNoNull() As Boolean
+            Return Me.IsNull(Me.tablePLData.MagazineNoColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")>  _
+        Public Sub SetMagazineNoNull()
+            Me(Me.tablePLData.MagazineNoColumn) = Global.System.Convert.DBNull
         End Sub
     End Class
     
@@ -5124,7 +5206,6 @@ Namespace DBxDataSetTableAdapters
             tableMapping.ColumnMappings.Add("LoadCount", "LoadCount")
             tableMapping.ColumnMappings.Add("UnloadCount", "UnloadCount")
             tableMapping.ColumnMappings.Add("OPNo", "OPNo")
-            tableMapping.ColumnMappings.Add("MagazineNo", "MagazineNo")
             tableMapping.ColumnMappings.Add("SelfConVersion", "SelfConVersion")
             tableMapping.ColumnMappings.Add("NetVersion", "NetVersion")
             tableMapping.ColumnMappings.Add("InputQtyAdjust", "InputQtyAdjust")
@@ -5133,29 +5214,36 @@ Namespace DBxDataSetTableAdapters
             tableMapping.ColumnMappings.Add("DummyQty", "DummyQty")
             tableMapping.ColumnMappings.Add("OPJudgement", "OPJudgement")
             tableMapping.ColumnMappings.Add("Remark", "Remark")
+            tableMapping.ColumnMappings.Add("InputQtyFrameAdjust", "InputQtyFrameAdjust")
+            tableMapping.ColumnMappings.Add("TotalGoodFrameAdjust", "TotalGoodFrameAdjust")
+            tableMapping.ColumnMappings.Add("MagazineNo", "MagazineNo")
             Me._adapter.TableMappings.Add(tableMapping)
             Me._adapter.DeleteCommand = New Global.System.Data.SqlClient.SqlCommand()
             Me._adapter.DeleteCommand.Connection = Me.Connection
-            Me._adapter.DeleteCommand.CommandText = "DELETE FROM [dbo].[PLData] WHERE (([MCNo] = @Original_MCNo) AND ([LotNo] = @Origi"& _ 
-                "nal_LotNo) AND ([LotStartTime] = @Original_LotStartTime) AND ((@IsNull_LotEndTim"& _ 
-                "e = 1 AND [LotEndTime] IS NULL) OR ([LotEndTime] = @Original_LotEndTime)) AND (("& _ 
-                "@IsNull_Material = 1 AND [Material] IS NULL) OR ([Material] = @Original_Material"& _ 
-                ")) AND ((@IsNull_ABNormal = 1 AND [ABNormal] IS NULL) OR ([ABNormal] = @Original"& _ 
-                "_ABNormal)) AND ((@IsNull_LoadCount = 1 AND [LoadCount] IS NULL) OR ([LoadCount]"& _ 
-                " = @Original_LoadCount)) AND ((@IsNull_UnloadCount = 1 AND [UnloadCount] IS NULL"& _ 
-                ") OR ([UnloadCount] = @Original_UnloadCount)) AND ((@IsNull_OPNo = 1 AND [OPNo] "& _ 
-                "IS NULL) OR ([OPNo] = @Original_OPNo)) AND ((@IsNull_MagazineNo = 1 AND [Magazin"& _ 
-                "eNo] IS NULL) OR ([MagazineNo] = @Original_MagazineNo)) AND ((@IsNull_SelfConVer"& _ 
-                "sion = 1 AND [SelfConVersion] IS NULL) OR ([SelfConVersion] = @Original_SelfConV"& _ 
-                "ersion)) AND ((@IsNull_NetVersion = 1 AND [NetVersion] IS NULL) OR ([NetVersion]"& _ 
-                " = @Original_NetVersion)) AND ((@IsNull_InputQtyAdjust = 1 AND [InputQtyAdjust] "& _ 
-                "IS NULL) OR ([InputQtyAdjust] = @Original_InputQtyAdjust)) AND ((@IsNull_TotalGo"& _ 
-                "odAdjust = 1 AND [TotalGoodAdjust] IS NULL) OR ([TotalGoodAdjust] = @Original_To"& _ 
-                "talGoodAdjust)) AND ((@IsNull_TotalNGAdjust = 1 AND [TotalNGAdjust] IS NULL) OR "& _ 
-                "([TotalNGAdjust] = @Original_TotalNGAdjust)) AND ((@IsNull_DummyQty = 1 AND [Dum"& _ 
-                "myQty] IS NULL) OR ([DummyQty] = @Original_DummyQty)) AND ((@IsNull_OPJudgement "& _ 
-                "= 1 AND [OPJudgement] IS NULL) OR ([OPJudgement] = @Original_OPJudgement)) AND ("& _ 
-                "(@IsNull_Remark = 1 AND [Remark] IS NULL) OR ([Remark] = @Original_Remark)))"
+            Me._adapter.DeleteCommand.CommandText = "DELETE FROM [PLData] WHERE (([MCNo] = @Original_MCNo) AND ([LotNo] = @Original_Lo"& _ 
+                "tNo) AND ([LotStartTime] = @Original_LotStartTime) AND ((@IsNull_LotEndTime = 1 "& _ 
+                "AND [LotEndTime] IS NULL) OR ([LotEndTime] = @Original_LotEndTime)) AND ((@IsNul"& _ 
+                "l_Material = 1 AND [Material] IS NULL) OR ([Material] = @Original_Material)) AND"& _ 
+                " ((@IsNull_ABNormal = 1 AND [ABNormal] IS NULL) OR ([ABNormal] = @Original_ABNor"& _ 
+                "mal)) AND ((@IsNull_LoadCount = 1 AND [LoadCount] IS NULL) OR ([LoadCount] = @Or"& _ 
+                "iginal_LoadCount)) AND ((@IsNull_UnloadCount = 1 AND [UnloadCount] IS NULL) OR ("& _ 
+                "[UnloadCount] = @Original_UnloadCount)) AND ((@IsNull_OPNo = 1 AND [OPNo] IS NUL"& _ 
+                "L) OR ([OPNo] = @Original_OPNo)) AND ((@IsNull_SelfConVersion = 1 AND [SelfConVe"& _ 
+                "rsion] IS NULL) OR ([SelfConVersion] = @Original_SelfConVersion)) AND ((@IsNull_"& _ 
+                "NetVersion = 1 AND [NetVersion] IS NULL) OR ([NetVersion] = @Original_NetVersion"& _ 
+                ")) AND ((@IsNull_InputQtyAdjust = 1 AND [InputQtyAdjust] IS NULL) OR ([InputQtyA"& _ 
+                "djust] = @Original_InputQtyAdjust)) AND ((@IsNull_TotalGoodAdjust = 1 AND [Total"& _ 
+                "GoodAdjust] IS NULL) OR ([TotalGoodAdjust] = @Original_TotalGoodAdjust)) AND ((@"& _ 
+                "IsNull_TotalNGAdjust = 1 AND [TotalNGAdjust] IS NULL) OR ([TotalNGAdjust] = @Ori"& _ 
+                "ginal_TotalNGAdjust)) AND ((@IsNull_DummyQty = 1 AND [DummyQty] IS NULL) OR ([Du"& _ 
+                "mmyQty] = @Original_DummyQty)) AND ((@IsNull_OPJudgement = 1 AND [OPJudgement] I"& _ 
+                "S NULL) OR ([OPJudgement] = @Original_OPJudgement)) AND ((@IsNull_Remark = 1 AND"& _ 
+                " [Remark] IS NULL) OR ([Remark] = @Original_Remark)) AND ((@IsNull_InputQtyFrame"& _ 
+                "Adjust = 1 AND [InputQtyFrameAdjust] IS NULL) OR ([InputQtyFrameAdjust] = @Origi"& _ 
+                "nal_InputQtyFrameAdjust)) AND ((@IsNull_TotalGoodFrameAdjust = 1 AND [TotalGoodF"& _ 
+                "rameAdjust] IS NULL) OR ([TotalGoodFrameAdjust] = @Original_TotalGoodFrameAdjust"& _ 
+                ")) AND ((@IsNull_MagazineNo = 1 AND [MagazineNo] IS NULL) OR ([MagazineNo] = @Or"& _ 
+                "iginal_MagazineNo)))"
             Me._adapter.DeleteCommand.CommandType = Global.System.Data.CommandType.Text
             Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_MCNo", Global.System.Data.SqlDbType.VarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "MCNo", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
             Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_LotNo", Global.System.Data.SqlDbType.VarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "LotNo", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
@@ -5172,8 +5260,6 @@ Namespace DBxDataSetTableAdapters
             Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_UnloadCount", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "UnloadCount", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
             Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_OPNo", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "OPNo", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
             Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_OPNo", Global.System.Data.SqlDbType.VarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "OPNo", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
-            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_MagazineNo", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "MagazineNo", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
-            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_MagazineNo", Global.System.Data.SqlDbType.VarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "MagazineNo", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
             Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_SelfConVersion", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "SelfConVersion", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
             Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_SelfConVersion", Global.System.Data.SqlDbType.VarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "SelfConVersion", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
             Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_NetVersion", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "NetVersion", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
@@ -5190,19 +5276,26 @@ Namespace DBxDataSetTableAdapters
             Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_OPJudgement", Global.System.Data.SqlDbType.VarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "OPJudgement", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
             Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_Remark", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "Remark", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
             Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_Remark", Global.System.Data.SqlDbType.VarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "Remark", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_InputQtyFrameAdjust", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "InputQtyFrameAdjust", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_InputQtyFrameAdjust", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "InputQtyFrameAdjust", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_TotalGoodFrameAdjust", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "TotalGoodFrameAdjust", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_TotalGoodFrameAdjust", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "TotalGoodFrameAdjust", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_MagazineNo", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "MagazineNo", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_MagazineNo", Global.System.Data.SqlDbType.VarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "MagazineNo", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
             Me._adapter.InsertCommand = New Global.System.Data.SqlClient.SqlCommand()
             Me._adapter.InsertCommand.Connection = Me.Connection
-            Me._adapter.InsertCommand.CommandText = "INSERT INTO [dbo].[PLData] ([MCNo], [LotNo], [LotStartTime], [LotEndTime], [Mater"& _ 
-                "ial], [ABNormal], [LoadCount], [UnloadCount], [OPNo], [MagazineNo], [SelfConVers"& _ 
-                "ion], [NetVersion], [InputQtyAdjust], [TotalGoodAdjust], [TotalNGAdjust], [Dummy"& _ 
-                "Qty], [OPJudgement], [Remark]) VALUES (@MCNo, @LotNo, @LotStartTime, @LotEndTime"& _ 
-                ", @Material, @ABNormal, @LoadCount, @UnloadCount, @OPNo, @MagazineNo, @SelfConVe"& _ 
-                "rsion, @NetVersion, @InputQtyAdjust, @TotalGoodAdjust, @TotalNGAdjust, @DummyQty"& _ 
-                ", @OPJudgement, @Remark);"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"SELECT MCNo, LotNo, LotStartTime, LotEndTime, Materia"& _ 
-                "l, ABNormal, LoadCount, UnloadCount, OPNo, MagazineNo, SelfConVersion, NetVersio"& _ 
-                "n, InputQtyAdjust, TotalGoodAdjust, TotalNGAdjust, DummyQty, OPJudgement, Remark"& _ 
-                " FROM PLData WHERE (LotNo = @LotNo) AND (LotStartTime = @LotStartTime) AND (MCNo"& _ 
-                " = @MCNo)"
+            Me._adapter.InsertCommand.CommandText = "INSERT INTO [PLData] ([MCNo], [LotNo], [LotStartTime], [LotEndTime], [Material], "& _ 
+                "[ABNormal], [LoadCount], [UnloadCount], [OPNo], [SelfConVersion], [NetVersion], "& _ 
+                "[InputQtyAdjust], [TotalGoodAdjust], [TotalNGAdjust], [DummyQty], [OPJudgement],"& _ 
+                " [Remark], [InputQtyFrameAdjust], [TotalGoodFrameAdjust], [MagazineNo]) VALUES ("& _ 
+                "@MCNo, @LotNo, @LotStartTime, @LotEndTime, @Material, @ABNormal, @LoadCount, @Un"& _ 
+                "loadCount, @OPNo, @SelfConVersion, @NetVersion, @InputQtyAdjust, @TotalGoodAdjus"& _ 
+                "t, @TotalNGAdjust, @DummyQty, @OPJudgement, @Remark, @InputQtyFrameAdjust, @Tota"& _ 
+                "lGoodFrameAdjust, @MagazineNo);"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"SELECT MCNo, LotNo, LotStartTime, LotEndTime, M"& _ 
+                "aterial, ABNormal, LoadCount, UnloadCount, OPNo, SelfConVersion, NetVersion, Inp"& _ 
+                "utQtyAdjust, TotalGoodAdjust, TotalNGAdjust, DummyQty, OPJudgement, Remark, Inpu"& _ 
+                "tQtyFrameAdjust, TotalGoodFrameAdjust, MagazineNo FROM PLData WHERE (LotNo = @Lo"& _ 
+                "tNo) AND (LotStartTime = @LotStartTime) AND (MCNo = @MCNo)"
             Me._adapter.InsertCommand.CommandType = Global.System.Data.CommandType.Text
             Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@MCNo", Global.System.Data.SqlDbType.VarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "MCNo", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
             Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@LotNo", Global.System.Data.SqlDbType.VarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "LotNo", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
@@ -5213,7 +5306,6 @@ Namespace DBxDataSetTableAdapters
             Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@LoadCount", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "LoadCount", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
             Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@UnloadCount", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "UnloadCount", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
             Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@OPNo", Global.System.Data.SqlDbType.VarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "OPNo", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
-            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@MagazineNo", Global.System.Data.SqlDbType.VarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "MagazineNo", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
             Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@SelfConVersion", Global.System.Data.SqlDbType.VarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "SelfConVersion", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
             Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@NetVersion", Global.System.Data.SqlDbType.VarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "NetVersion", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
             Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@InputQtyAdjust", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "InputQtyAdjust", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
@@ -5222,38 +5314,46 @@ Namespace DBxDataSetTableAdapters
             Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@DummyQty", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "DummyQty", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
             Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@OPJudgement", Global.System.Data.SqlDbType.VarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "OPJudgement", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
             Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Remark", Global.System.Data.SqlDbType.VarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "Remark", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@InputQtyFrameAdjust", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "InputQtyFrameAdjust", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@TotalGoodFrameAdjust", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "TotalGoodFrameAdjust", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@MagazineNo", Global.System.Data.SqlDbType.VarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "MagazineNo", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
             Me._adapter.UpdateCommand = New Global.System.Data.SqlClient.SqlCommand()
             Me._adapter.UpdateCommand.Connection = Me.Connection
-            Me._adapter.UpdateCommand.CommandText = "UPDATE [dbo].[PLData] SET [MCNo] = @MCNo, [LotNo] = @LotNo, [LotStartTime] = @Lot"& _ 
-                "StartTime, [LotEndTime] = @LotEndTime, [Material] = @Material, [ABNormal] = @ABN"& _ 
-                "ormal, [LoadCount] = @LoadCount, [UnloadCount] = @UnloadCount, [OPNo] = @OPNo, ["& _ 
-                "MagazineNo] = @MagazineNo, [SelfConVersion] = @SelfConVersion, [NetVersion] = @N"& _ 
-                "etVersion, [InputQtyAdjust] = @InputQtyAdjust, [TotalGoodAdjust] = @TotalGoodAdj"& _ 
-                "ust, [TotalNGAdjust] = @TotalNGAdjust, [DummyQty] = @DummyQty, [OPJudgement] = @"& _ 
-                "OPJudgement, [Remark] = @Remark WHERE (([MCNo] = @Original_MCNo) AND ([LotNo] = "& _ 
-                "@Original_LotNo) AND ([LotStartTime] = @Original_LotStartTime) AND ((@IsNull_Lot"& _ 
-                "EndTime = 1 AND [LotEndTime] IS NULL) OR ([LotEndTime] = @Original_LotEndTime)) "& _ 
-                "AND ((@IsNull_Material = 1 AND [Material] IS NULL) OR ([Material] = @Original_Ma"& _ 
-                "terial)) AND ((@IsNull_ABNormal = 1 AND [ABNormal] IS NULL) OR ([ABNormal] = @Or"& _ 
-                "iginal_ABNormal)) AND ((@IsNull_LoadCount = 1 AND [LoadCount] IS NULL) OR ([Load"& _ 
-                "Count] = @Original_LoadCount)) AND ((@IsNull_UnloadCount = 1 AND [UnloadCount] I"& _ 
-                "S NULL) OR ([UnloadCount] = @Original_UnloadCount)) AND ((@IsNull_OPNo = 1 AND ["& _ 
-                "OPNo] IS NULL) OR ([OPNo] = @Original_OPNo)) AND ((@IsNull_MagazineNo = 1 AND [M"& _ 
-                "agazineNo] IS NULL) OR ([MagazineNo] = @Original_MagazineNo)) AND ((@IsNull_Self"& _ 
-                "ConVersion = 1 AND [SelfConVersion] IS NULL) OR ([SelfConVersion] = @Original_Se"& _ 
-                "lfConVersion)) AND ((@IsNull_NetVersion = 1 AND [NetVersion] IS NULL) OR ([NetVe"& _ 
-                "rsion] = @Original_NetVersion)) AND ((@IsNull_InputQtyAdjust = 1 AND [InputQtyAd"& _ 
-                "just] IS NULL) OR ([InputQtyAdjust] = @Original_InputQtyAdjust)) AND ((@IsNull_T"& _ 
-                "otalGoodAdjust = 1 AND [TotalGoodAdjust] IS NULL) OR ([TotalGoodAdjust] = @Origi"& _ 
-                "nal_TotalGoodAdjust)) AND ((@IsNull_TotalNGAdjust = 1 AND [TotalNGAdjust] IS NUL"& _ 
-                "L) OR ([TotalNGAdjust] = @Original_TotalNGAdjust)) AND ((@IsNull_DummyQty = 1 AN"& _ 
-                "D [DummyQty] IS NULL) OR ([DummyQty] = @Original_DummyQty)) AND ((@IsNull_OPJudg"& _ 
-                "ement = 1 AND [OPJudgement] IS NULL) OR ([OPJudgement] = @Original_OPJudgement))"& _ 
-                " AND ((@IsNull_Remark = 1 AND [Remark] IS NULL) OR ([Remark] = @Original_Remark)"& _ 
-                "));"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"SELECT MCNo, LotNo, LotStartTime, LotEndTime, Material, ABNormal, LoadCount"& _ 
-                ", UnloadCount, OPNo, MagazineNo, SelfConVersion, NetVersion, InputQtyAdjust, Tot"& _ 
-                "alGoodAdjust, TotalNGAdjust, DummyQty, OPJudgement, Remark FROM PLData WHERE (Lo"& _ 
-                "tNo = @LotNo) AND (LotStartTime = @LotStartTime) AND (MCNo = @MCNo)"
+            Me._adapter.UpdateCommand.CommandText = "UPDATE [PLData] SET [MCNo] = @MCNo, [LotNo] = @LotNo, [LotStartTime] = @LotStartT"& _ 
+                "ime, [LotEndTime] = @LotEndTime, [Material] = @Material, [ABNormal] = @ABNormal,"& _ 
+                " [LoadCount] = @LoadCount, [UnloadCount] = @UnloadCount, [OPNo] = @OPNo, [SelfCo"& _ 
+                "nVersion] = @SelfConVersion, [NetVersion] = @NetVersion, [InputQtyAdjust] = @Inp"& _ 
+                "utQtyAdjust, [TotalGoodAdjust] = @TotalGoodAdjust, [TotalNGAdjust] = @TotalNGAdj"& _ 
+                "ust, [DummyQty] = @DummyQty, [OPJudgement] = @OPJudgement, [Remark] = @Remark, ["& _ 
+                "InputQtyFrameAdjust] = @InputQtyFrameAdjust, [TotalGoodFrameAdjust] = @TotalGood"& _ 
+                "FrameAdjust, [MagazineNo] = @MagazineNo WHERE (([MCNo] = @Original_MCNo) AND ([L"& _ 
+                "otNo] = @Original_LotNo) AND ([LotStartTime] = @Original_LotStartTime) AND ((@Is"& _ 
+                "Null_LotEndTime = 1 AND [LotEndTime] IS NULL) OR ([LotEndTime] = @Original_LotEn"& _ 
+                "dTime)) AND ((@IsNull_Material = 1 AND [Material] IS NULL) OR ([Material] = @Ori"& _ 
+                "ginal_Material)) AND ((@IsNull_ABNormal = 1 AND [ABNormal] IS NULL) OR ([ABNorma"& _ 
+                "l] = @Original_ABNormal)) AND ((@IsNull_LoadCount = 1 AND [LoadCount] IS NULL) O"& _ 
+                "R ([LoadCount] = @Original_LoadCount)) AND ((@IsNull_UnloadCount = 1 AND [Unload"& _ 
+                "Count] IS NULL) OR ([UnloadCount] = @Original_UnloadCount)) AND ((@IsNull_OPNo ="& _ 
+                " 1 AND [OPNo] IS NULL) OR ([OPNo] = @Original_OPNo)) AND ((@IsNull_SelfConVersio"& _ 
+                "n = 1 AND [SelfConVersion] IS NULL) OR ([SelfConVersion] = @Original_SelfConVers"& _ 
+                "ion)) AND ((@IsNull_NetVersion = 1 AND [NetVersion] IS NULL) OR ([NetVersion] = "& _ 
+                "@Original_NetVersion)) AND ((@IsNull_InputQtyAdjust = 1 AND [InputQtyAdjust] IS "& _ 
+                "NULL) OR ([InputQtyAdjust] = @Original_InputQtyAdjust)) AND ((@IsNull_TotalGoodA"& _ 
+                "djust = 1 AND [TotalGoodAdjust] IS NULL) OR ([TotalGoodAdjust] = @Original_Total"& _ 
+                "GoodAdjust)) AND ((@IsNull_TotalNGAdjust = 1 AND [TotalNGAdjust] IS NULL) OR ([T"& _ 
+                "otalNGAdjust] = @Original_TotalNGAdjust)) AND ((@IsNull_DummyQty = 1 AND [DummyQ"& _ 
+                "ty] IS NULL) OR ([DummyQty] = @Original_DummyQty)) AND ((@IsNull_OPJudgement = 1"& _ 
+                " AND [OPJudgement] IS NULL) OR ([OPJudgement] = @Original_OPJudgement)) AND ((@I"& _ 
+                "sNull_Remark = 1 AND [Remark] IS NULL) OR ([Remark] = @Original_Remark)) AND ((@"& _ 
+                "IsNull_InputQtyFrameAdjust = 1 AND [InputQtyFrameAdjust] IS NULL) OR ([InputQtyF"& _ 
+                "rameAdjust] = @Original_InputQtyFrameAdjust)) AND ((@IsNull_TotalGoodFrameAdjust"& _ 
+                " = 1 AND [TotalGoodFrameAdjust] IS NULL) OR ([TotalGoodFrameAdjust] = @Original_"& _ 
+                "TotalGoodFrameAdjust)) AND ((@IsNull_MagazineNo = 1 AND [MagazineNo] IS NULL) OR"& _ 
+                " ([MagazineNo] = @Original_MagazineNo)));"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"SELECT MCNo, LotNo, LotStartTime, Lot"& _ 
+                "EndTime, Material, ABNormal, LoadCount, UnloadCount, OPNo, SelfConVersion, NetVe"& _ 
+                "rsion, InputQtyAdjust, TotalGoodAdjust, TotalNGAdjust, DummyQty, OPJudgement, Re"& _ 
+                "mark, InputQtyFrameAdjust, TotalGoodFrameAdjust, MagazineNo FROM PLData WHERE (L"& _ 
+                "otNo = @LotNo) AND (LotStartTime = @LotStartTime) AND (MCNo = @MCNo)"
             Me._adapter.UpdateCommand.CommandType = Global.System.Data.CommandType.Text
             Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@MCNo", Global.System.Data.SqlDbType.VarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "MCNo", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
             Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@LotNo", Global.System.Data.SqlDbType.VarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "LotNo", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
@@ -5264,7 +5364,6 @@ Namespace DBxDataSetTableAdapters
             Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@LoadCount", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "LoadCount", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
             Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@UnloadCount", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "UnloadCount", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
             Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@OPNo", Global.System.Data.SqlDbType.VarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "OPNo", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@MagazineNo", Global.System.Data.SqlDbType.VarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "MagazineNo", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
             Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@SelfConVersion", Global.System.Data.SqlDbType.VarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "SelfConVersion", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
             Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@NetVersion", Global.System.Data.SqlDbType.VarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "NetVersion", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
             Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@InputQtyAdjust", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "InputQtyAdjust", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
@@ -5273,6 +5372,9 @@ Namespace DBxDataSetTableAdapters
             Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@DummyQty", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "DummyQty", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
             Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@OPJudgement", Global.System.Data.SqlDbType.VarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "OPJudgement", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
             Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Remark", Global.System.Data.SqlDbType.VarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "Remark", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@InputQtyFrameAdjust", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "InputQtyFrameAdjust", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@TotalGoodFrameAdjust", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "TotalGoodFrameAdjust", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@MagazineNo", Global.System.Data.SqlDbType.VarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "MagazineNo", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
             Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_MCNo", Global.System.Data.SqlDbType.VarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "MCNo", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
             Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_LotNo", Global.System.Data.SqlDbType.VarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "LotNo", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
             Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_LotStartTime", Global.System.Data.SqlDbType.DateTime, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "LotStartTime", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
@@ -5288,8 +5390,6 @@ Namespace DBxDataSetTableAdapters
             Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_UnloadCount", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "UnloadCount", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
             Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_OPNo", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "OPNo", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
             Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_OPNo", Global.System.Data.SqlDbType.VarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "OPNo", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_MagazineNo", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "MagazineNo", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_MagazineNo", Global.System.Data.SqlDbType.VarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "MagazineNo", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
             Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_SelfConVersion", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "SelfConVersion", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
             Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_SelfConVersion", Global.System.Data.SqlDbType.VarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "SelfConVersion", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
             Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_NetVersion", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "NetVersion", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
@@ -5306,6 +5406,12 @@ Namespace DBxDataSetTableAdapters
             Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_OPJudgement", Global.System.Data.SqlDbType.VarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "OPJudgement", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
             Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_Remark", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "Remark", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
             Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_Remark", Global.System.Data.SqlDbType.VarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "Remark", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_InputQtyFrameAdjust", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "InputQtyFrameAdjust", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_InputQtyFrameAdjust", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "InputQtyFrameAdjust", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_TotalGoodFrameAdjust", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "TotalGoodFrameAdjust", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_TotalGoodFrameAdjust", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "TotalGoodFrameAdjust", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_MagazineNo", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "MagazineNo", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_MagazineNo", Global.System.Data.SqlDbType.VarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "MagazineNo", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
         End Sub
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
@@ -5321,9 +5427,10 @@ Namespace DBxDataSetTableAdapters
             Me._commandCollection = New Global.System.Data.SqlClient.SqlCommand(0) {}
             Me._commandCollection(0) = New Global.System.Data.SqlClient.SqlCommand()
             Me._commandCollection(0).Connection = Me.Connection
-            Me._commandCollection(0).CommandText = "SELECT MCNo, LotNo, LotStartTime, LotEndTime, Material, ABNormal, LoadCount, Unlo"& _ 
-                "adCount, OPNo, MagazineNo, SelfConVersion, NetVersion, InputQtyAdjust, TotalGood"& _ 
-                "Adjust, TotalNGAdjust, DummyQty, OPJudgement, Remark FROM dbo.PLData"
+            Me._commandCollection(0).CommandText = "SELECT        MCNo, LotNo, LotStartTime, LotEndTime, Material, ABNormal, LoadCoun"& _ 
+                "t, UnloadCount, OPNo, SelfConVersion, NetVersion, InputQtyAdjust, TotalGoodAdjus"& _ 
+                "t, TotalNGAdjust, DummyQty, OPJudgement, Remark, "&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"                         Inpu"& _ 
+                "tQtyFrameAdjust, TotalGoodFrameAdjust, MagazineNo"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"FROM            PLData"
             Me._commandCollection(0).CommandType = Global.System.Data.CommandType.Text
         End Sub
         
@@ -5393,7 +5500,6 @@ Namespace DBxDataSetTableAdapters
                     ByVal Original_LoadCount As Global.System.Nullable(Of Integer),  _
                     ByVal Original_UnloadCount As Global.System.Nullable(Of Integer),  _
                     ByVal Original_OPNo As String,  _
-                    ByVal Original_MagazineNo As String,  _
                     ByVal Original_SelfConVersion As String,  _
                     ByVal Original_NetVersion As String,  _
                     ByVal Original_InputQtyAdjust As Global.System.Nullable(Of Integer),  _
@@ -5401,7 +5507,10 @@ Namespace DBxDataSetTableAdapters
                     ByVal Original_TotalNGAdjust As Global.System.Nullable(Of Integer),  _
                     ByVal Original_DummyQty As Global.System.Nullable(Of Integer),  _
                     ByVal Original_OPJudgement As String,  _
-                    ByVal Original_Remark As String) As Integer
+                    ByVal Original_Remark As String,  _
+                    ByVal Original_InputQtyFrameAdjust As Global.System.Nullable(Of Integer),  _
+                    ByVal Original_TotalGoodFrameAdjust As Global.System.Nullable(Of Integer),  _
+                    ByVal Original_MagazineNo As String) As Integer
             If (Original_MCNo Is Nothing) Then
                 Throw New Global.System.ArgumentNullException("Original_MCNo")
             Else
@@ -5455,68 +5564,82 @@ Namespace DBxDataSetTableAdapters
                 Me.Adapter.DeleteCommand.Parameters(13).Value = CType(0,Object)
                 Me.Adapter.DeleteCommand.Parameters(14).Value = CType(Original_OPNo,String)
             End If
-            If (Original_MagazineNo Is Nothing) Then
+            If (Original_SelfConVersion Is Nothing) Then
                 Me.Adapter.DeleteCommand.Parameters(15).Value = CType(1,Object)
                 Me.Adapter.DeleteCommand.Parameters(16).Value = Global.System.DBNull.Value
             Else
                 Me.Adapter.DeleteCommand.Parameters(15).Value = CType(0,Object)
-                Me.Adapter.DeleteCommand.Parameters(16).Value = CType(Original_MagazineNo,String)
+                Me.Adapter.DeleteCommand.Parameters(16).Value = CType(Original_SelfConVersion,String)
             End If
-            If (Original_SelfConVersion Is Nothing) Then
+            If (Original_NetVersion Is Nothing) Then
                 Me.Adapter.DeleteCommand.Parameters(17).Value = CType(1,Object)
                 Me.Adapter.DeleteCommand.Parameters(18).Value = Global.System.DBNull.Value
             Else
                 Me.Adapter.DeleteCommand.Parameters(17).Value = CType(0,Object)
-                Me.Adapter.DeleteCommand.Parameters(18).Value = CType(Original_SelfConVersion,String)
-            End If
-            If (Original_NetVersion Is Nothing) Then
-                Me.Adapter.DeleteCommand.Parameters(19).Value = CType(1,Object)
-                Me.Adapter.DeleteCommand.Parameters(20).Value = Global.System.DBNull.Value
-            Else
-                Me.Adapter.DeleteCommand.Parameters(19).Value = CType(0,Object)
-                Me.Adapter.DeleteCommand.Parameters(20).Value = CType(Original_NetVersion,String)
+                Me.Adapter.DeleteCommand.Parameters(18).Value = CType(Original_NetVersion,String)
             End If
             If (Original_InputQtyAdjust.HasValue = true) Then
+                Me.Adapter.DeleteCommand.Parameters(19).Value = CType(0,Object)
+                Me.Adapter.DeleteCommand.Parameters(20).Value = CType(Original_InputQtyAdjust.Value,Integer)
+            Else
+                Me.Adapter.DeleteCommand.Parameters(19).Value = CType(1,Object)
+                Me.Adapter.DeleteCommand.Parameters(20).Value = Global.System.DBNull.Value
+            End If
+            If (Original_TotalGoodAdjust.HasValue = true) Then
                 Me.Adapter.DeleteCommand.Parameters(21).Value = CType(0,Object)
-                Me.Adapter.DeleteCommand.Parameters(22).Value = CType(Original_InputQtyAdjust.Value,Integer)
+                Me.Adapter.DeleteCommand.Parameters(22).Value = CType(Original_TotalGoodAdjust.Value,Integer)
             Else
                 Me.Adapter.DeleteCommand.Parameters(21).Value = CType(1,Object)
                 Me.Adapter.DeleteCommand.Parameters(22).Value = Global.System.DBNull.Value
             End If
-            If (Original_TotalGoodAdjust.HasValue = true) Then
+            If (Original_TotalNGAdjust.HasValue = true) Then
                 Me.Adapter.DeleteCommand.Parameters(23).Value = CType(0,Object)
-                Me.Adapter.DeleteCommand.Parameters(24).Value = CType(Original_TotalGoodAdjust.Value,Integer)
+                Me.Adapter.DeleteCommand.Parameters(24).Value = CType(Original_TotalNGAdjust.Value,Integer)
             Else
                 Me.Adapter.DeleteCommand.Parameters(23).Value = CType(1,Object)
                 Me.Adapter.DeleteCommand.Parameters(24).Value = Global.System.DBNull.Value
             End If
-            If (Original_TotalNGAdjust.HasValue = true) Then
+            If (Original_DummyQty.HasValue = true) Then
                 Me.Adapter.DeleteCommand.Parameters(25).Value = CType(0,Object)
-                Me.Adapter.DeleteCommand.Parameters(26).Value = CType(Original_TotalNGAdjust.Value,Integer)
+                Me.Adapter.DeleteCommand.Parameters(26).Value = CType(Original_DummyQty.Value,Integer)
             Else
                 Me.Adapter.DeleteCommand.Parameters(25).Value = CType(1,Object)
                 Me.Adapter.DeleteCommand.Parameters(26).Value = Global.System.DBNull.Value
             End If
-            If (Original_DummyQty.HasValue = true) Then
-                Me.Adapter.DeleteCommand.Parameters(27).Value = CType(0,Object)
-                Me.Adapter.DeleteCommand.Parameters(28).Value = CType(Original_DummyQty.Value,Integer)
-            Else
+            If (Original_OPJudgement Is Nothing) Then
                 Me.Adapter.DeleteCommand.Parameters(27).Value = CType(1,Object)
                 Me.Adapter.DeleteCommand.Parameters(28).Value = Global.System.DBNull.Value
+            Else
+                Me.Adapter.DeleteCommand.Parameters(27).Value = CType(0,Object)
+                Me.Adapter.DeleteCommand.Parameters(28).Value = CType(Original_OPJudgement,String)
             End If
-            If (Original_OPJudgement Is Nothing) Then
+            If (Original_Remark Is Nothing) Then
                 Me.Adapter.DeleteCommand.Parameters(29).Value = CType(1,Object)
                 Me.Adapter.DeleteCommand.Parameters(30).Value = Global.System.DBNull.Value
             Else
                 Me.Adapter.DeleteCommand.Parameters(29).Value = CType(0,Object)
-                Me.Adapter.DeleteCommand.Parameters(30).Value = CType(Original_OPJudgement,String)
+                Me.Adapter.DeleteCommand.Parameters(30).Value = CType(Original_Remark,String)
             End If
-            If (Original_Remark Is Nothing) Then
+            If (Original_InputQtyFrameAdjust.HasValue = true) Then
+                Me.Adapter.DeleteCommand.Parameters(31).Value = CType(0,Object)
+                Me.Adapter.DeleteCommand.Parameters(32).Value = CType(Original_InputQtyFrameAdjust.Value,Integer)
+            Else
                 Me.Adapter.DeleteCommand.Parameters(31).Value = CType(1,Object)
                 Me.Adapter.DeleteCommand.Parameters(32).Value = Global.System.DBNull.Value
+            End If
+            If (Original_TotalGoodFrameAdjust.HasValue = true) Then
+                Me.Adapter.DeleteCommand.Parameters(33).Value = CType(0,Object)
+                Me.Adapter.DeleteCommand.Parameters(34).Value = CType(Original_TotalGoodFrameAdjust.Value,Integer)
             Else
-                Me.Adapter.DeleteCommand.Parameters(31).Value = CType(0,Object)
-                Me.Adapter.DeleteCommand.Parameters(32).Value = CType(Original_Remark,String)
+                Me.Adapter.DeleteCommand.Parameters(33).Value = CType(1,Object)
+                Me.Adapter.DeleteCommand.Parameters(34).Value = Global.System.DBNull.Value
+            End If
+            If (Original_MagazineNo Is Nothing) Then
+                Me.Adapter.DeleteCommand.Parameters(35).Value = CType(1,Object)
+                Me.Adapter.DeleteCommand.Parameters(36).Value = Global.System.DBNull.Value
+            Else
+                Me.Adapter.DeleteCommand.Parameters(35).Value = CType(0,Object)
+                Me.Adapter.DeleteCommand.Parameters(36).Value = CType(Original_MagazineNo,String)
             End If
             Dim previousConnectionState As Global.System.Data.ConnectionState = Me.Adapter.DeleteCommand.Connection.State
             If ((Me.Adapter.DeleteCommand.Connection.State And Global.System.Data.ConnectionState.Open)  _
@@ -5547,7 +5670,6 @@ Namespace DBxDataSetTableAdapters
                     ByVal LoadCount As Global.System.Nullable(Of Integer),  _
                     ByVal UnloadCount As Global.System.Nullable(Of Integer),  _
                     ByVal OPNo As String,  _
-                    ByVal MagazineNo As String,  _
                     ByVal SelfConVersion As String,  _
                     ByVal NetVersion As String,  _
                     ByVal InputQtyAdjust As Global.System.Nullable(Of Integer),  _
@@ -5555,7 +5677,10 @@ Namespace DBxDataSetTableAdapters
                     ByVal TotalNGAdjust As Global.System.Nullable(Of Integer),  _
                     ByVal DummyQty As Global.System.Nullable(Of Integer),  _
                     ByVal OPJudgement As String,  _
-                    ByVal Remark As String) As Integer
+                    ByVal Remark As String,  _
+                    ByVal InputQtyFrameAdjust As Global.System.Nullable(Of Integer),  _
+                    ByVal TotalGoodFrameAdjust As Global.System.Nullable(Of Integer),  _
+                    ByVal MagazineNo As String) As Integer
             If (MCNo Is Nothing) Then
                 Throw New Global.System.ArgumentNullException("MCNo")
             Else
@@ -5597,50 +5722,60 @@ Namespace DBxDataSetTableAdapters
             Else
                 Me.Adapter.InsertCommand.Parameters(8).Value = CType(OPNo,String)
             End If
-            If (MagazineNo Is Nothing) Then
+            If (SelfConVersion Is Nothing) Then
                 Me.Adapter.InsertCommand.Parameters(9).Value = Global.System.DBNull.Value
             Else
-                Me.Adapter.InsertCommand.Parameters(9).Value = CType(MagazineNo,String)
-            End If
-            If (SelfConVersion Is Nothing) Then
-                Me.Adapter.InsertCommand.Parameters(10).Value = Global.System.DBNull.Value
-            Else
-                Me.Adapter.InsertCommand.Parameters(10).Value = CType(SelfConVersion,String)
+                Me.Adapter.InsertCommand.Parameters(9).Value = CType(SelfConVersion,String)
             End If
             If (NetVersion Is Nothing) Then
-                Me.Adapter.InsertCommand.Parameters(11).Value = Global.System.DBNull.Value
+                Me.Adapter.InsertCommand.Parameters(10).Value = Global.System.DBNull.Value
             Else
-                Me.Adapter.InsertCommand.Parameters(11).Value = CType(NetVersion,String)
+                Me.Adapter.InsertCommand.Parameters(10).Value = CType(NetVersion,String)
             End If
             If (InputQtyAdjust.HasValue = true) Then
-                Me.Adapter.InsertCommand.Parameters(12).Value = CType(InputQtyAdjust.Value,Integer)
+                Me.Adapter.InsertCommand.Parameters(11).Value = CType(InputQtyAdjust.Value,Integer)
+            Else
+                Me.Adapter.InsertCommand.Parameters(11).Value = Global.System.DBNull.Value
+            End If
+            If (TotalGoodAdjust.HasValue = true) Then
+                Me.Adapter.InsertCommand.Parameters(12).Value = CType(TotalGoodAdjust.Value,Integer)
             Else
                 Me.Adapter.InsertCommand.Parameters(12).Value = Global.System.DBNull.Value
             End If
-            If (TotalGoodAdjust.HasValue = true) Then
-                Me.Adapter.InsertCommand.Parameters(13).Value = CType(TotalGoodAdjust.Value,Integer)
+            If (TotalNGAdjust.HasValue = true) Then
+                Me.Adapter.InsertCommand.Parameters(13).Value = CType(TotalNGAdjust.Value,Integer)
             Else
                 Me.Adapter.InsertCommand.Parameters(13).Value = Global.System.DBNull.Value
             End If
-            If (TotalNGAdjust.HasValue = true) Then
-                Me.Adapter.InsertCommand.Parameters(14).Value = CType(TotalNGAdjust.Value,Integer)
+            If (DummyQty.HasValue = true) Then
+                Me.Adapter.InsertCommand.Parameters(14).Value = CType(DummyQty.Value,Integer)
             Else
                 Me.Adapter.InsertCommand.Parameters(14).Value = Global.System.DBNull.Value
             End If
-            If (DummyQty.HasValue = true) Then
-                Me.Adapter.InsertCommand.Parameters(15).Value = CType(DummyQty.Value,Integer)
-            Else
-                Me.Adapter.InsertCommand.Parameters(15).Value = Global.System.DBNull.Value
-            End If
             If (OPJudgement Is Nothing) Then
-                Me.Adapter.InsertCommand.Parameters(16).Value = Global.System.DBNull.Value
+                Me.Adapter.InsertCommand.Parameters(15).Value = Global.System.DBNull.Value
             Else
-                Me.Adapter.InsertCommand.Parameters(16).Value = CType(OPJudgement,String)
+                Me.Adapter.InsertCommand.Parameters(15).Value = CType(OPJudgement,String)
             End If
             If (Remark Is Nothing) Then
-                Me.Adapter.InsertCommand.Parameters(17).Value = Global.System.DBNull.Value
+                Me.Adapter.InsertCommand.Parameters(16).Value = Global.System.DBNull.Value
             Else
-                Me.Adapter.InsertCommand.Parameters(17).Value = CType(Remark,String)
+                Me.Adapter.InsertCommand.Parameters(16).Value = CType(Remark,String)
+            End If
+            If (InputQtyFrameAdjust.HasValue = true) Then
+                Me.Adapter.InsertCommand.Parameters(17).Value = CType(InputQtyFrameAdjust.Value,Integer)
+            Else
+                Me.Adapter.InsertCommand.Parameters(17).Value = Global.System.DBNull.Value
+            End If
+            If (TotalGoodFrameAdjust.HasValue = true) Then
+                Me.Adapter.InsertCommand.Parameters(18).Value = CType(TotalGoodFrameAdjust.Value,Integer)
+            Else
+                Me.Adapter.InsertCommand.Parameters(18).Value = Global.System.DBNull.Value
+            End If
+            If (MagazineNo Is Nothing) Then
+                Me.Adapter.InsertCommand.Parameters(19).Value = Global.System.DBNull.Value
+            Else
+                Me.Adapter.InsertCommand.Parameters(19).Value = CType(MagazineNo,String)
             End If
             Dim previousConnectionState As Global.System.Data.ConnectionState = Me.Adapter.InsertCommand.Connection.State
             If ((Me.Adapter.InsertCommand.Connection.State And Global.System.Data.ConnectionState.Open)  _
@@ -5671,7 +5806,6 @@ Namespace DBxDataSetTableAdapters
                     ByVal LoadCount As Global.System.Nullable(Of Integer),  _
                     ByVal UnloadCount As Global.System.Nullable(Of Integer),  _
                     ByVal OPNo As String,  _
-                    ByVal MagazineNo As String,  _
                     ByVal SelfConVersion As String,  _
                     ByVal NetVersion As String,  _
                     ByVal InputQtyAdjust As Global.System.Nullable(Of Integer),  _
@@ -5680,6 +5814,9 @@ Namespace DBxDataSetTableAdapters
                     ByVal DummyQty As Global.System.Nullable(Of Integer),  _
                     ByVal OPJudgement As String,  _
                     ByVal Remark As String,  _
+                    ByVal InputQtyFrameAdjust As Global.System.Nullable(Of Integer),  _
+                    ByVal TotalGoodFrameAdjust As Global.System.Nullable(Of Integer),  _
+                    ByVal MagazineNo As String,  _
                     ByVal Original_MCNo As String,  _
                     ByVal Original_LotNo As String,  _
                     ByVal Original_LotStartTime As Date,  _
@@ -5689,7 +5826,6 @@ Namespace DBxDataSetTableAdapters
                     ByVal Original_LoadCount As Global.System.Nullable(Of Integer),  _
                     ByVal Original_UnloadCount As Global.System.Nullable(Of Integer),  _
                     ByVal Original_OPNo As String,  _
-                    ByVal Original_MagazineNo As String,  _
                     ByVal Original_SelfConVersion As String,  _
                     ByVal Original_NetVersion As String,  _
                     ByVal Original_InputQtyAdjust As Global.System.Nullable(Of Integer),  _
@@ -5697,7 +5833,10 @@ Namespace DBxDataSetTableAdapters
                     ByVal Original_TotalNGAdjust As Global.System.Nullable(Of Integer),  _
                     ByVal Original_DummyQty As Global.System.Nullable(Of Integer),  _
                     ByVal Original_OPJudgement As String,  _
-                    ByVal Original_Remark As String) As Integer
+                    ByVal Original_Remark As String,  _
+                    ByVal Original_InputQtyFrameAdjust As Global.System.Nullable(Of Integer),  _
+                    ByVal Original_TotalGoodFrameAdjust As Global.System.Nullable(Of Integer),  _
+                    ByVal Original_MagazineNo As String) As Integer
             If (MCNo Is Nothing) Then
                 Throw New Global.System.ArgumentNullException("MCNo")
             Else
@@ -5739,110 +5878,113 @@ Namespace DBxDataSetTableAdapters
             Else
                 Me.Adapter.UpdateCommand.Parameters(8).Value = CType(OPNo,String)
             End If
-            If (MagazineNo Is Nothing) Then
+            If (SelfConVersion Is Nothing) Then
                 Me.Adapter.UpdateCommand.Parameters(9).Value = Global.System.DBNull.Value
             Else
-                Me.Adapter.UpdateCommand.Parameters(9).Value = CType(MagazineNo,String)
-            End If
-            If (SelfConVersion Is Nothing) Then
-                Me.Adapter.UpdateCommand.Parameters(10).Value = Global.System.DBNull.Value
-            Else
-                Me.Adapter.UpdateCommand.Parameters(10).Value = CType(SelfConVersion,String)
+                Me.Adapter.UpdateCommand.Parameters(9).Value = CType(SelfConVersion,String)
             End If
             If (NetVersion Is Nothing) Then
-                Me.Adapter.UpdateCommand.Parameters(11).Value = Global.System.DBNull.Value
+                Me.Adapter.UpdateCommand.Parameters(10).Value = Global.System.DBNull.Value
             Else
-                Me.Adapter.UpdateCommand.Parameters(11).Value = CType(NetVersion,String)
+                Me.Adapter.UpdateCommand.Parameters(10).Value = CType(NetVersion,String)
             End If
             If (InputQtyAdjust.HasValue = true) Then
-                Me.Adapter.UpdateCommand.Parameters(12).Value = CType(InputQtyAdjust.Value,Integer)
+                Me.Adapter.UpdateCommand.Parameters(11).Value = CType(InputQtyAdjust.Value,Integer)
+            Else
+                Me.Adapter.UpdateCommand.Parameters(11).Value = Global.System.DBNull.Value
+            End If
+            If (TotalGoodAdjust.HasValue = true) Then
+                Me.Adapter.UpdateCommand.Parameters(12).Value = CType(TotalGoodAdjust.Value,Integer)
             Else
                 Me.Adapter.UpdateCommand.Parameters(12).Value = Global.System.DBNull.Value
             End If
-            If (TotalGoodAdjust.HasValue = true) Then
-                Me.Adapter.UpdateCommand.Parameters(13).Value = CType(TotalGoodAdjust.Value,Integer)
+            If (TotalNGAdjust.HasValue = true) Then
+                Me.Adapter.UpdateCommand.Parameters(13).Value = CType(TotalNGAdjust.Value,Integer)
             Else
                 Me.Adapter.UpdateCommand.Parameters(13).Value = Global.System.DBNull.Value
             End If
-            If (TotalNGAdjust.HasValue = true) Then
-                Me.Adapter.UpdateCommand.Parameters(14).Value = CType(TotalNGAdjust.Value,Integer)
+            If (DummyQty.HasValue = true) Then
+                Me.Adapter.UpdateCommand.Parameters(14).Value = CType(DummyQty.Value,Integer)
             Else
                 Me.Adapter.UpdateCommand.Parameters(14).Value = Global.System.DBNull.Value
             End If
-            If (DummyQty.HasValue = true) Then
-                Me.Adapter.UpdateCommand.Parameters(15).Value = CType(DummyQty.Value,Integer)
-            Else
-                Me.Adapter.UpdateCommand.Parameters(15).Value = Global.System.DBNull.Value
-            End If
             If (OPJudgement Is Nothing) Then
-                Me.Adapter.UpdateCommand.Parameters(16).Value = Global.System.DBNull.Value
+                Me.Adapter.UpdateCommand.Parameters(15).Value = Global.System.DBNull.Value
             Else
-                Me.Adapter.UpdateCommand.Parameters(16).Value = CType(OPJudgement,String)
+                Me.Adapter.UpdateCommand.Parameters(15).Value = CType(OPJudgement,String)
             End If
             If (Remark Is Nothing) Then
-                Me.Adapter.UpdateCommand.Parameters(17).Value = Global.System.DBNull.Value
+                Me.Adapter.UpdateCommand.Parameters(16).Value = Global.System.DBNull.Value
             Else
-                Me.Adapter.UpdateCommand.Parameters(17).Value = CType(Remark,String)
+                Me.Adapter.UpdateCommand.Parameters(16).Value = CType(Remark,String)
+            End If
+            If (InputQtyFrameAdjust.HasValue = true) Then
+                Me.Adapter.UpdateCommand.Parameters(17).Value = CType(InputQtyFrameAdjust.Value,Integer)
+            Else
+                Me.Adapter.UpdateCommand.Parameters(17).Value = Global.System.DBNull.Value
+            End If
+            If (TotalGoodFrameAdjust.HasValue = true) Then
+                Me.Adapter.UpdateCommand.Parameters(18).Value = CType(TotalGoodFrameAdjust.Value,Integer)
+            Else
+                Me.Adapter.UpdateCommand.Parameters(18).Value = Global.System.DBNull.Value
+            End If
+            If (MagazineNo Is Nothing) Then
+                Me.Adapter.UpdateCommand.Parameters(19).Value = Global.System.DBNull.Value
+            Else
+                Me.Adapter.UpdateCommand.Parameters(19).Value = CType(MagazineNo,String)
             End If
             If (Original_MCNo Is Nothing) Then
                 Throw New Global.System.ArgumentNullException("Original_MCNo")
             Else
-                Me.Adapter.UpdateCommand.Parameters(18).Value = CType(Original_MCNo,String)
+                Me.Adapter.UpdateCommand.Parameters(20).Value = CType(Original_MCNo,String)
             End If
             If (Original_LotNo Is Nothing) Then
                 Throw New Global.System.ArgumentNullException("Original_LotNo")
             Else
-                Me.Adapter.UpdateCommand.Parameters(19).Value = CType(Original_LotNo,String)
+                Me.Adapter.UpdateCommand.Parameters(21).Value = CType(Original_LotNo,String)
             End If
-            Me.Adapter.UpdateCommand.Parameters(20).Value = CType(Original_LotStartTime,Date)
+            Me.Adapter.UpdateCommand.Parameters(22).Value = CType(Original_LotStartTime,Date)
             If (Original_LotEndTime.HasValue = true) Then
-                Me.Adapter.UpdateCommand.Parameters(21).Value = CType(0,Object)
-                Me.Adapter.UpdateCommand.Parameters(22).Value = CType(Original_LotEndTime.Value,Date)
+                Me.Adapter.UpdateCommand.Parameters(23).Value = CType(0,Object)
+                Me.Adapter.UpdateCommand.Parameters(24).Value = CType(Original_LotEndTime.Value,Date)
             Else
-                Me.Adapter.UpdateCommand.Parameters(21).Value = CType(1,Object)
-                Me.Adapter.UpdateCommand.Parameters(22).Value = Global.System.DBNull.Value
-            End If
-            If (Original_Material Is Nothing) Then
                 Me.Adapter.UpdateCommand.Parameters(23).Value = CType(1,Object)
                 Me.Adapter.UpdateCommand.Parameters(24).Value = Global.System.DBNull.Value
-            Else
-                Me.Adapter.UpdateCommand.Parameters(23).Value = CType(0,Object)
-                Me.Adapter.UpdateCommand.Parameters(24).Value = CType(Original_Material,String)
             End If
-            If (Original_ABNormal Is Nothing) Then
+            If (Original_Material Is Nothing) Then
                 Me.Adapter.UpdateCommand.Parameters(25).Value = CType(1,Object)
                 Me.Adapter.UpdateCommand.Parameters(26).Value = Global.System.DBNull.Value
             Else
                 Me.Adapter.UpdateCommand.Parameters(25).Value = CType(0,Object)
-                Me.Adapter.UpdateCommand.Parameters(26).Value = CType(Original_ABNormal,String)
+                Me.Adapter.UpdateCommand.Parameters(26).Value = CType(Original_Material,String)
             End If
-            If (Original_LoadCount.HasValue = true) Then
-                Me.Adapter.UpdateCommand.Parameters(27).Value = CType(0,Object)
-                Me.Adapter.UpdateCommand.Parameters(28).Value = CType(Original_LoadCount.Value,Integer)
-            Else
+            If (Original_ABNormal Is Nothing) Then
                 Me.Adapter.UpdateCommand.Parameters(27).Value = CType(1,Object)
                 Me.Adapter.UpdateCommand.Parameters(28).Value = Global.System.DBNull.Value
+            Else
+                Me.Adapter.UpdateCommand.Parameters(27).Value = CType(0,Object)
+                Me.Adapter.UpdateCommand.Parameters(28).Value = CType(Original_ABNormal,String)
             End If
-            If (Original_UnloadCount.HasValue = true) Then
+            If (Original_LoadCount.HasValue = true) Then
                 Me.Adapter.UpdateCommand.Parameters(29).Value = CType(0,Object)
-                Me.Adapter.UpdateCommand.Parameters(30).Value = CType(Original_UnloadCount.Value,Integer)
+                Me.Adapter.UpdateCommand.Parameters(30).Value = CType(Original_LoadCount.Value,Integer)
             Else
                 Me.Adapter.UpdateCommand.Parameters(29).Value = CType(1,Object)
                 Me.Adapter.UpdateCommand.Parameters(30).Value = Global.System.DBNull.Value
             End If
-            If (Original_OPNo Is Nothing) Then
+            If (Original_UnloadCount.HasValue = true) Then
+                Me.Adapter.UpdateCommand.Parameters(31).Value = CType(0,Object)
+                Me.Adapter.UpdateCommand.Parameters(32).Value = CType(Original_UnloadCount.Value,Integer)
+            Else
                 Me.Adapter.UpdateCommand.Parameters(31).Value = CType(1,Object)
                 Me.Adapter.UpdateCommand.Parameters(32).Value = Global.System.DBNull.Value
-            Else
-                Me.Adapter.UpdateCommand.Parameters(31).Value = CType(0,Object)
-                Me.Adapter.UpdateCommand.Parameters(32).Value = CType(Original_OPNo,String)
             End If
-            If (Original_MagazineNo Is Nothing) Then
+            If (Original_OPNo Is Nothing) Then
                 Me.Adapter.UpdateCommand.Parameters(33).Value = CType(1,Object)
                 Me.Adapter.UpdateCommand.Parameters(34).Value = Global.System.DBNull.Value
             Else
                 Me.Adapter.UpdateCommand.Parameters(33).Value = CType(0,Object)
-                Me.Adapter.UpdateCommand.Parameters(34).Value = CType(Original_MagazineNo,String)
+                Me.Adapter.UpdateCommand.Parameters(34).Value = CType(Original_OPNo,String)
             End If
             If (Original_SelfConVersion Is Nothing) Then
                 Me.Adapter.UpdateCommand.Parameters(35).Value = CType(1,Object)
@@ -5900,6 +6042,27 @@ Namespace DBxDataSetTableAdapters
                 Me.Adapter.UpdateCommand.Parameters(49).Value = CType(0,Object)
                 Me.Adapter.UpdateCommand.Parameters(50).Value = CType(Original_Remark,String)
             End If
+            If (Original_InputQtyFrameAdjust.HasValue = true) Then
+                Me.Adapter.UpdateCommand.Parameters(51).Value = CType(0,Object)
+                Me.Adapter.UpdateCommand.Parameters(52).Value = CType(Original_InputQtyFrameAdjust.Value,Integer)
+            Else
+                Me.Adapter.UpdateCommand.Parameters(51).Value = CType(1,Object)
+                Me.Adapter.UpdateCommand.Parameters(52).Value = Global.System.DBNull.Value
+            End If
+            If (Original_TotalGoodFrameAdjust.HasValue = true) Then
+                Me.Adapter.UpdateCommand.Parameters(53).Value = CType(0,Object)
+                Me.Adapter.UpdateCommand.Parameters(54).Value = CType(Original_TotalGoodFrameAdjust.Value,Integer)
+            Else
+                Me.Adapter.UpdateCommand.Parameters(53).Value = CType(1,Object)
+                Me.Adapter.UpdateCommand.Parameters(54).Value = Global.System.DBNull.Value
+            End If
+            If (Original_MagazineNo Is Nothing) Then
+                Me.Adapter.UpdateCommand.Parameters(55).Value = CType(1,Object)
+                Me.Adapter.UpdateCommand.Parameters(56).Value = Global.System.DBNull.Value
+            Else
+                Me.Adapter.UpdateCommand.Parameters(55).Value = CType(0,Object)
+                Me.Adapter.UpdateCommand.Parameters(56).Value = CType(Original_MagazineNo,String)
+            End If
             Dim previousConnectionState As Global.System.Data.ConnectionState = Me.Adapter.UpdateCommand.Connection.State
             If ((Me.Adapter.UpdateCommand.Connection.State And Global.System.Data.ConnectionState.Open)  _
                         <> Global.System.Data.ConnectionState.Open) Then
@@ -5926,7 +6089,6 @@ Namespace DBxDataSetTableAdapters
                     ByVal LoadCount As Global.System.Nullable(Of Integer),  _
                     ByVal UnloadCount As Global.System.Nullable(Of Integer),  _
                     ByVal OPNo As String,  _
-                    ByVal MagazineNo As String,  _
                     ByVal SelfConVersion As String,  _
                     ByVal NetVersion As String,  _
                     ByVal InputQtyAdjust As Global.System.Nullable(Of Integer),  _
@@ -5935,6 +6097,9 @@ Namespace DBxDataSetTableAdapters
                     ByVal DummyQty As Global.System.Nullable(Of Integer),  _
                     ByVal OPJudgement As String,  _
                     ByVal Remark As String,  _
+                    ByVal InputQtyFrameAdjust As Global.System.Nullable(Of Integer),  _
+                    ByVal TotalGoodFrameAdjust As Global.System.Nullable(Of Integer),  _
+                    ByVal MagazineNo As String,  _
                     ByVal Original_MCNo As String,  _
                     ByVal Original_LotNo As String,  _
                     ByVal Original_LotStartTime As Date,  _
@@ -5944,7 +6109,6 @@ Namespace DBxDataSetTableAdapters
                     ByVal Original_LoadCount As Global.System.Nullable(Of Integer),  _
                     ByVal Original_UnloadCount As Global.System.Nullable(Of Integer),  _
                     ByVal Original_OPNo As String,  _
-                    ByVal Original_MagazineNo As String,  _
                     ByVal Original_SelfConVersion As String,  _
                     ByVal Original_NetVersion As String,  _
                     ByVal Original_InputQtyAdjust As Global.System.Nullable(Of Integer),  _
@@ -5952,8 +6116,11 @@ Namespace DBxDataSetTableAdapters
                     ByVal Original_TotalNGAdjust As Global.System.Nullable(Of Integer),  _
                     ByVal Original_DummyQty As Global.System.Nullable(Of Integer),  _
                     ByVal Original_OPJudgement As String,  _
-                    ByVal Original_Remark As String) As Integer
-            Return Me.Update(Original_MCNo, Original_LotNo, Original_LotStartTime, LotEndTime, Material, ABNormal, LoadCount, UnloadCount, OPNo, MagazineNo, SelfConVersion, NetVersion, InputQtyAdjust, TotalGoodAdjust, TotalNGAdjust, DummyQty, OPJudgement, Remark, Original_MCNo, Original_LotNo, Original_LotStartTime, Original_LotEndTime, Original_Material, Original_ABNormal, Original_LoadCount, Original_UnloadCount, Original_OPNo, Original_MagazineNo, Original_SelfConVersion, Original_NetVersion, Original_InputQtyAdjust, Original_TotalGoodAdjust, Original_TotalNGAdjust, Original_DummyQty, Original_OPJudgement, Original_Remark)
+                    ByVal Original_Remark As String,  _
+                    ByVal Original_InputQtyFrameAdjust As Global.System.Nullable(Of Integer),  _
+                    ByVal Original_TotalGoodFrameAdjust As Global.System.Nullable(Of Integer),  _
+                    ByVal Original_MagazineNo As String) As Integer
+            Return Me.Update(Original_MCNo, Original_LotNo, Original_LotStartTime, LotEndTime, Material, ABNormal, LoadCount, UnloadCount, OPNo, SelfConVersion, NetVersion, InputQtyAdjust, TotalGoodAdjust, TotalNGAdjust, DummyQty, OPJudgement, Remark, InputQtyFrameAdjust, TotalGoodFrameAdjust, MagazineNo, Original_MCNo, Original_LotNo, Original_LotStartTime, Original_LotEndTime, Original_Material, Original_ABNormal, Original_LoadCount, Original_UnloadCount, Original_OPNo, Original_SelfConVersion, Original_NetVersion, Original_InputQtyAdjust, Original_TotalGoodAdjust, Original_TotalNGAdjust, Original_DummyQty, Original_OPJudgement, Original_Remark, Original_InputQtyFrameAdjust, Original_TotalGoodFrameAdjust, Original_MagazineNo)
         End Function
     End Class
     

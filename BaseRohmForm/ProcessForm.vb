@@ -122,6 +122,7 @@ Public Class ProcessForm
     Private Sub pbxLogo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbxLogo.Click, MaximizeToolStripMenuItem.Click
         RaiseEvent E_FormFill()
     End Sub
+    Dim syncContext As SynchronizationContext
     Private Sub ProcessForm_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Me.FormBorderStyle = Windows.Forms.FormBorderStyle.None
         lbProcess.Text = My.Settings.ProcessName & " " & My.Settings.MCType
@@ -130,7 +131,7 @@ Public Class ProcessForm
         'If Not My.Settings.TDC_Enable Then
         '    lbSpMode.Text = "!!! TDC DISABLE !!!"
         'End If
-
+        syncContext = WindowsFormsSynchronizationContext.Current
         Dim permission As New AuthenticationUser.AuthenUser
         If OprData.CSConnect = "Disconnect" And My.Settings.CsProtocol_Enable Then
             Me.BackColor = Color.Red
@@ -431,7 +432,7 @@ Public Class ProcessForm
 
         SavePLDataTableBin()
         Try
-            Dim syncContext As SynchronizationContext = WindowsFormsSynchronizationContext.Current
+
             syncContext.Post(New Threading.SendOrPostCallback(Sub() IReportCheck("PL-" & My.Settings.EquipmentNo)), Nothing)
         Catch ex As Exception
 
@@ -642,6 +643,14 @@ Public Class ProcessForm
                         strDataRow.TotalGoodAdjust = CInt(frmCon.tbTotalGood.Text)
                         strDataRow.TotalNGAdjust = CInt(frmCon.tbTotalNG.Text)
 
+                        'Request By P'ตี๋
+                        Try
+                            strDataRow.InputQtyFrameAdjust = strDataRow.InputQtyAdjust \ frmCon._FramePCS
+                            strDataRow.TotalGoodFrameAdjust = strDataRow.TotalGoodAdjust \ frmCon._FramePCS
+                        Catch ex As Exception
+
+                        End Try
+
                         strDataRow.LoadCount = CInt(frmCon.tbTotalInput.Text)
                         strDataRow.UnloadCount = CInt(frmCon.tbTotalGood.Text)
 
@@ -682,11 +691,50 @@ Dummy:
 
                         End SyncLock
                         bgTDC.RunWorkerAsync()
+                        'Dim tdc As New TdcData
+                        'tdc.McNo = "PL-" & My.Settings.EquipmentNo
+                        'tdc.LotNo = strDataRow.LotNo
+                        'tdc.LotStartTime = strDataRow.LotStartTime
+                        'tdc.LotEndTime = strDataRow.LotEndTime
+                        'tdc.TdcStartMode = RunModeType.Normal
+                        'tdc.TdcEndMode = EndModeType.Normal
+                        'tdc.GoodPcs = strDataRow.TotalGoodAdjust
+                        'tdc.NgPcs = strDataRow.TotalNGAdjust
+                        'tdc.OpNo = strDataRow.OPNo
+                        'Try
+                        '    Dim result As EndLotResult = c_IlibraryService.EndLotNoCheckLicenser(tdc.LotNo, tdc.McNo, tdc.OpNo, tdc.GoodPcs, tdc.NgPcs)
+
+                        '    If Not result.IsPass Then
+                        '        Dim type As String = result.Type.ToString
+                        '        Dim url As String
+                        '        Select Case result.Type
+                        '            Case MessageType.ApcsPro
+                        '                url = "http://webserv.thematrix.net/atom"
+                        '            Case MessageType.Apcs
+                        '                url = "http://webserv.thematrix.net/ApcsStaff/Default.aspx"
+                        '            Case MessageType.Unknown
+                        '                url = "http://webserv.thematrix.net/atom"
+                        '        End Select
+                        '        Dim frm As DialogMessage = New DialogMessage("LotNo " & tdc.LotNo & " จบ lot ไม่สมบูรณ์ " & vbCrLf & "กรุณาทำการ End process ในระบบด้วยครับ", "http://webserv.thematrix.net/atom", "แจ้งเตือน")
+                        '        frm.ShowDialog()
+                        '    End If
+
+                        'Catch ex As Exception
+
+                        'End Try
+
                     End If
                 End If
 
             End If
         Next
+
+
+        'For Each removeDataRow As DataRow In removeList
+        '    DBxDataSet.PLData.Rows.Remove(removeDataRow)
+        'Next
+
+
 
         'If bgTDC.IsBusy = False Then
         '    bgTDC.RunWorkerAsync()
@@ -993,8 +1041,40 @@ RepeatSendTdc:
         'Catch ex As Exception
 
         'End Try
+        'Try
+        '    c_IlibraryService.EndLotNoCheckLicenser(tdc.LotNo, tdc.McNo, tdc.OpNo, tdc.GoodPcs, tdc.NgPcs)
+        'Catch ex As Exception
+
+        'End Try
+
         Try
-            c_IlibraryService.EndLotNoCheckLicenser(tdc.LotNo, tdc.McNo, tdc.OpNo, tdc.GoodPcs, tdc.NgPcs)
+            Dim result As EndLotResult = c_IlibraryService.EndLotNoCheckLicenser(tdc.LotNo, tdc.McNo, tdc.OpNo, tdc.GoodPcs, tdc.NgPcs)
+
+            If Not result.IsPass Then
+                Dim type As String = result.Type.ToString
+                Dim url As String = ""
+                Select Case result.Type
+                    Case MessageType.ApcsPro
+                        url = "http://webserv.thematrix.net/atom"
+                    Case MessageType.Apcs
+                        url = "http://webserv.thematrix.net/ApcsStaff/Default.aspx"
+                    Case MessageType.Unknown
+                        url = "http://webserv.thematrix.net/atom"
+                End Select
+
+                'Try
+                '    Dim syncContext As SynchronizationContext = WindowsFormsSynchronizationContext.Current
+                '    syncContext.Post(New Threading.SendOrPostCallback(Sub() OpenDialog(tdc.LotNo, url), Nothing))
+                'Catch ex As Exception
+
+                'End Try
+                Try
+                    syncContext.Post(New Threading.SendOrPostCallback(Sub() OpenDialog(tdc.LotNo, url)), Nothing)
+                Catch ex As Exception
+
+                End Try
+            End If
+
         Catch ex As Exception
 
         End Try
@@ -1003,6 +1083,10 @@ RepeatSendTdc:
         If c_TdcQueue.Count() <> 0 Then
             GoTo RepeatSendTdc
         End If
+    End Sub
+    Private Sub OpenDialog(lotNo As String, url As String)
+        Dim frm As DialogMessage = New DialogMessage("LotNo " & lotNo & " จบ lot ไม่สมบูรณ์ " & vbCrLf & "กรุณาทำการ End process ในระบบด้วยครับ", url, "แจ้งเตือน")
+        frm.ShowDialog()
     End Sub
 
     Public Sub addErrLogfile(ByVal m As String)
@@ -1078,7 +1162,7 @@ RepeatSendTdc:
 
     Private Sub Button3_Click_1(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button3.Click
         MDIParent1.Send_S6F23_PurgeSpool()
-        MDIParent1.Send_S6F23_PurgeSpool()
+        'MDIParent1.Send_S6F23_PurgeSpool()
     End Sub
 
 

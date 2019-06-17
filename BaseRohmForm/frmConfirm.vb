@@ -6,7 +6,7 @@
     Dim _LotStartTime As String
     Dim _LotEndTime As String
     Dim _Magazine As String
-    Dim _FramePCS As Integer
+    Public _FramePCS As Integer
 
     Dim TragetTextbox As TextBox
     Private Sub frmConfirm_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
@@ -174,7 +174,6 @@
                     tbOPJudge.Focus()
                     Exit Sub
                 End If
-
                 Me.DialogResult = Windows.Forms.DialogResult.OK
 
             Else

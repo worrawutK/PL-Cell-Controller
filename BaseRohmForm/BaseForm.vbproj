@@ -132,6 +132,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DBxDataSet.xsd</DependentUpon>
     </Compile>
+    <Compile Include="DialogMessage.Designer.vb">
+      <DependentUpon>DialogMessage.vb</DependentUpon>
+    </Compile>
+    <Compile Include="DialogMessage.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="EquipmentObj\Equipment.vb" />
     <Compile Include="Form1.vb">
       <SubType>Form</SubType>
@@ -314,6 +320,9 @@
     <Compile Include="WorkingSlipQRCode.vb" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="DialogMessage.resx">
+      <DependentUpon>DialogMessage.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.vb</DependentUpon>
     </EmbeddedResource>

@@ -12,7 +12,7 @@ Module ModuleAppGeneral
     Public DIR_STATUS As String = My.Application.Info.DirectoryPath & "\STATUS"
     Public OprData As New CommonData
     Public UserTable As New DataTable
-    Public m_strNetVersion As String = "190212 APCS Pro." '"Ver.170622"
+    Public Const m_strNetVersion As String = "1.9.06.13 APCS Pro." '"Ver.170622"
     Public Sub MakeDirectories()
         Try
             If Not (Directory.Exists(DIR_LOG)) Then
