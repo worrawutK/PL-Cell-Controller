@@ -451,10 +451,10 @@ Public Class ProcessForm
         Dim result As iReportResponse = c_IlibraryService.IRePortCheck(mcNo)
         If result.HasError Then
             LabelIReportMessage.Text = "iReport error:" & result.ErrorMessage
-            TimerIReport.Start()
+            'TimerIReport.Start()
         Else
             LabelIReportMessage.Text = ""
-            TimerIReport.Stop()
+            ' TimerIReport.Stop()
         End If
     End Sub
     Private c_IReportTimer As Boolean
