@@ -28,7 +28,6 @@ Partial Class ProcessForm
         Dim DataGridViewCellStyle10 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle11 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle12 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ProcessForm))
         Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
@@ -36,6 +35,7 @@ Partial Class ProcessForm
         Dim DataGridViewCellStyle7 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle8 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle9 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ProcessForm))
         Me.MenuStrip1 = New System.Windows.Forms.MenuStrip()
         Me.AndonToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.BMRequestToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
@@ -48,6 +48,15 @@ Partial Class ProcessForm
         Me.EqConnectToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.WorkRecordToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.PLDataDataGridView = New System.Windows.Forms.DataGridView()
+        Me.DataGridViewTextBoxColumn2 = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.DataGridViewTextBoxColumn3 = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.DataGridViewTextBoxColumn9 = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.DataGridViewTextBoxColumn7 = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.DataGridViewTextBoxColumn8 = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.DataGridViewTextBoxColumn4 = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.DataGridViewTextBoxColumn10 = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.PLDataBindingSource = New System.Windows.Forms.BindingSource(Me.components)
+        Me.DBxDataSet = New CellController.DBxDataSet()
         Me.pbxAutoM = New System.Windows.Forms.PictureBox()
         Me.pbxLogo = New System.Windows.Forms.PictureBox()
         Me.Label1 = New System.Windows.Forms.Label()
@@ -64,15 +73,6 @@ Partial Class ProcessForm
         Me.Button3 = New System.Windows.Forms.Button()
         Me.LabelIReportMessage = New System.Windows.Forms.Label()
         Me.TimerIReport = New System.Windows.Forms.Timer(Me.components)
-        Me.DataGridViewTextBoxColumn2 = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.DataGridViewTextBoxColumn3 = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.DataGridViewTextBoxColumn9 = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.DataGridViewTextBoxColumn7 = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.DataGridViewTextBoxColumn8 = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.DataGridViewTextBoxColumn4 = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.DataGridViewTextBoxColumn10 = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.PLDataBindingSource = New System.Windows.Forms.BindingSource(Me.components)
-        Me.DBxDataSet = New CellController.DBxDataSet()
         Me.PLAlarmInfoBindingSource = New System.Windows.Forms.BindingSource(Me.components)
         Me.PLAlarmTableBindingSource = New System.Windows.Forms.BindingSource(Me.components)
         Me.PLDataTableAdapter = New CellController.DBxDataSetTableAdapters.PLDataTableAdapter()
@@ -83,10 +83,10 @@ Partial Class ProcessForm
         Me.FrameTableTableAdapter1 = New CellController.DBxDataSetTableAdapters.FrameTableTableAdapter()
         Me.MenuStrip1.SuspendLayout()
         CType(Me.PLDataDataGridView, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.pbxAutoM, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.pbxLogo, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PLDataBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.DBxDataSet, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.pbxAutoM, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.pbxLogo, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PLAlarmInfoBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PLAlarmTableBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
@@ -211,6 +211,108 @@ Partial Class ProcessForm
         Me.PLDataDataGridView.RowTemplate.Height = 35
         Me.PLDataDataGridView.Size = New System.Drawing.Size(898, 468)
         Me.PLDataDataGridView.TabIndex = 54
+        '
+        'DataGridViewTextBoxColumn2
+        '
+        Me.DataGridViewTextBoxColumn2.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells
+        Me.DataGridViewTextBoxColumn2.DataPropertyName = "LotNo"
+        DataGridViewCellStyle3.BackColor = System.Drawing.Color.LightGray
+        DataGridViewCellStyle3.Font = New System.Drawing.Font("Microsoft Sans Serif", 15.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.DataGridViewTextBoxColumn2.DefaultCellStyle = DataGridViewCellStyle3
+        Me.DataGridViewTextBoxColumn2.HeaderText = "LotNo"
+        Me.DataGridViewTextBoxColumn2.Name = "DataGridViewTextBoxColumn2"
+        Me.DataGridViewTextBoxColumn2.ReadOnly = True
+        Me.DataGridViewTextBoxColumn2.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
+        Me.DataGridViewTextBoxColumn2.Width = 66
+        '
+        'DataGridViewTextBoxColumn3
+        '
+        Me.DataGridViewTextBoxColumn3.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells
+        Me.DataGridViewTextBoxColumn3.DataPropertyName = "LotStartTime"
+        DataGridViewCellStyle4.BackColor = System.Drawing.Color.LightGray
+        DataGridViewCellStyle4.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(222, Byte))
+        DataGridViewCellStyle4.ForeColor = System.Drawing.Color.Green
+        Me.DataGridViewTextBoxColumn3.DefaultCellStyle = DataGridViewCellStyle4
+        Me.DataGridViewTextBoxColumn3.HeaderText = "LotStartTime"
+        Me.DataGridViewTextBoxColumn3.Name = "DataGridViewTextBoxColumn3"
+        Me.DataGridViewTextBoxColumn3.ReadOnly = True
+        Me.DataGridViewTextBoxColumn3.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic
+        Me.DataGridViewTextBoxColumn3.Width = 139
+        '
+        'DataGridViewTextBoxColumn9
+        '
+        Me.DataGridViewTextBoxColumn9.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells
+        Me.DataGridViewTextBoxColumn9.DataPropertyName = "OPNo"
+        DataGridViewCellStyle5.BackColor = System.Drawing.Color.LightGray
+        DataGridViewCellStyle5.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(222, Byte))
+        Me.DataGridViewTextBoxColumn9.DefaultCellStyle = DataGridViewCellStyle5
+        Me.DataGridViewTextBoxColumn9.HeaderText = "OPNo"
+        Me.DataGridViewTextBoxColumn9.Name = "DataGridViewTextBoxColumn9"
+        Me.DataGridViewTextBoxColumn9.ReadOnly = True
+        Me.DataGridViewTextBoxColumn9.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
+        Me.DataGridViewTextBoxColumn9.Width = 68
+        '
+        'DataGridViewTextBoxColumn7
+        '
+        Me.DataGridViewTextBoxColumn7.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells
+        Me.DataGridViewTextBoxColumn7.DataPropertyName = "LoadCount"
+        DataGridViewCellStyle6.BackColor = System.Drawing.Color.LightGray
+        DataGridViewCellStyle6.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(222, Byte))
+        DataGridViewCellStyle6.ForeColor = System.Drawing.Color.Teal
+        Me.DataGridViewTextBoxColumn7.DefaultCellStyle = DataGridViewCellStyle6
+        Me.DataGridViewTextBoxColumn7.HeaderText = "Input"
+        Me.DataGridViewTextBoxColumn7.Name = "DataGridViewTextBoxColumn7"
+        Me.DataGridViewTextBoxColumn7.ReadOnly = True
+        Me.DataGridViewTextBoxColumn7.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
+        Me.DataGridViewTextBoxColumn7.Width = 57
+        '
+        'DataGridViewTextBoxColumn8
+        '
+        Me.DataGridViewTextBoxColumn8.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells
+        Me.DataGridViewTextBoxColumn8.DataPropertyName = "UnloadCount"
+        DataGridViewCellStyle7.BackColor = System.Drawing.Color.LightGray
+        DataGridViewCellStyle7.ForeColor = System.Drawing.Color.Navy
+        Me.DataGridViewTextBoxColumn8.DefaultCellStyle = DataGridViewCellStyle7
+        Me.DataGridViewTextBoxColumn8.HeaderText = "Good"
+        Me.DataGridViewTextBoxColumn8.Name = "DataGridViewTextBoxColumn8"
+        Me.DataGridViewTextBoxColumn8.ReadOnly = True
+        Me.DataGridViewTextBoxColumn8.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
+        Me.DataGridViewTextBoxColumn8.Width = 63
+        '
+        'DataGridViewTextBoxColumn4
+        '
+        Me.DataGridViewTextBoxColumn4.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells
+        Me.DataGridViewTextBoxColumn4.DataPropertyName = "LotEndTime"
+        DataGridViewCellStyle8.BackColor = System.Drawing.Color.LightGray
+        DataGridViewCellStyle8.ForeColor = System.Drawing.Color.Black
+        Me.DataGridViewTextBoxColumn4.DefaultCellStyle = DataGridViewCellStyle8
+        Me.DataGridViewTextBoxColumn4.HeaderText = "LotEndTime"
+        Me.DataGridViewTextBoxColumn4.Name = "DataGridViewTextBoxColumn4"
+        Me.DataGridViewTextBoxColumn4.ReadOnly = True
+        Me.DataGridViewTextBoxColumn4.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic
+        Me.DataGridViewTextBoxColumn4.Width = 138
+        '
+        'DataGridViewTextBoxColumn10
+        '
+        Me.DataGridViewTextBoxColumn10.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells
+        Me.DataGridViewTextBoxColumn10.DataPropertyName = "MagazineNo"
+        DataGridViewCellStyle9.BackColor = System.Drawing.Color.LightGray
+        Me.DataGridViewTextBoxColumn10.DefaultCellStyle = DataGridViewCellStyle9
+        Me.DataGridViewTextBoxColumn10.HeaderText = "MagazineNo"
+        Me.DataGridViewTextBoxColumn10.Name = "DataGridViewTextBoxColumn10"
+        Me.DataGridViewTextBoxColumn10.ReadOnly = True
+        Me.DataGridViewTextBoxColumn10.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
+        Me.DataGridViewTextBoxColumn10.Width = 123
+        '
+        'PLDataBindingSource
+        '
+        Me.PLDataBindingSource.DataMember = "PLData"
+        Me.PLDataBindingSource.DataSource = Me.DBxDataSet
+        '
+        'DBxDataSet
+        '
+        Me.DBxDataSet.DataSetName = "DBxDataSet"
+        Me.DBxDataSet.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema
         '
         'pbxAutoM
         '
@@ -368,120 +470,17 @@ Partial Class ProcessForm
         '
         'LabelIReportMessage
         '
-        Me.LabelIReportMessage.AutoSize = True
         Me.LabelIReportMessage.Font = New System.Drawing.Font("Microsoft Sans Serif", 20.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(222, Byte))
         Me.LabelIReportMessage.ForeColor = System.Drawing.Color.Red
         Me.LabelIReportMessage.Location = New System.Drawing.Point(383, 161)
         Me.LabelIReportMessage.Name = "LabelIReportMessage"
-        Me.LabelIReportMessage.Size = New System.Drawing.Size(234, 31)
+        Me.LabelIReportMessage.Size = New System.Drawing.Size(1200, 62)
         Me.LabelIReportMessage.TabIndex = 57
-        Me.LabelIReportMessage.Text = "iReport Message"
+        Me.LabelIReportMessage.Text = "iReport "
         '
         'TimerIReport
         '
         Me.TimerIReport.Interval = 500
-        '
-        'DataGridViewTextBoxColumn2
-        '
-        Me.DataGridViewTextBoxColumn2.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells
-        Me.DataGridViewTextBoxColumn2.DataPropertyName = "LotNo"
-        DataGridViewCellStyle3.BackColor = System.Drawing.Color.LightGray
-        DataGridViewCellStyle3.Font = New System.Drawing.Font("Microsoft Sans Serif", 15.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.DataGridViewTextBoxColumn2.DefaultCellStyle = DataGridViewCellStyle3
-        Me.DataGridViewTextBoxColumn2.HeaderText = "LotNo"
-        Me.DataGridViewTextBoxColumn2.Name = "DataGridViewTextBoxColumn2"
-        Me.DataGridViewTextBoxColumn2.ReadOnly = True
-        Me.DataGridViewTextBoxColumn2.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
-        Me.DataGridViewTextBoxColumn2.Width = 66
-        '
-        'DataGridViewTextBoxColumn3
-        '
-        Me.DataGridViewTextBoxColumn3.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells
-        Me.DataGridViewTextBoxColumn3.DataPropertyName = "LotStartTime"
-        DataGridViewCellStyle4.BackColor = System.Drawing.Color.LightGray
-        DataGridViewCellStyle4.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(222, Byte))
-        DataGridViewCellStyle4.ForeColor = System.Drawing.Color.Green
-        Me.DataGridViewTextBoxColumn3.DefaultCellStyle = DataGridViewCellStyle4
-        Me.DataGridViewTextBoxColumn3.HeaderText = "LotStartTime"
-        Me.DataGridViewTextBoxColumn3.Name = "DataGridViewTextBoxColumn3"
-        Me.DataGridViewTextBoxColumn3.ReadOnly = True
-        Me.DataGridViewTextBoxColumn3.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic
-        Me.DataGridViewTextBoxColumn3.Width = 139
-        '
-        'DataGridViewTextBoxColumn9
-        '
-        Me.DataGridViewTextBoxColumn9.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells
-        Me.DataGridViewTextBoxColumn9.DataPropertyName = "OPNo"
-        DataGridViewCellStyle5.BackColor = System.Drawing.Color.LightGray
-        DataGridViewCellStyle5.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(222, Byte))
-        Me.DataGridViewTextBoxColumn9.DefaultCellStyle = DataGridViewCellStyle5
-        Me.DataGridViewTextBoxColumn9.HeaderText = "OPNo"
-        Me.DataGridViewTextBoxColumn9.Name = "DataGridViewTextBoxColumn9"
-        Me.DataGridViewTextBoxColumn9.ReadOnly = True
-        Me.DataGridViewTextBoxColumn9.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
-        Me.DataGridViewTextBoxColumn9.Width = 68
-        '
-        'DataGridViewTextBoxColumn7
-        '
-        Me.DataGridViewTextBoxColumn7.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells
-        Me.DataGridViewTextBoxColumn7.DataPropertyName = "LoadCount"
-        DataGridViewCellStyle6.BackColor = System.Drawing.Color.LightGray
-        DataGridViewCellStyle6.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(222, Byte))
-        DataGridViewCellStyle6.ForeColor = System.Drawing.Color.Teal
-        Me.DataGridViewTextBoxColumn7.DefaultCellStyle = DataGridViewCellStyle6
-        Me.DataGridViewTextBoxColumn7.HeaderText = "Input"
-        Me.DataGridViewTextBoxColumn7.Name = "DataGridViewTextBoxColumn7"
-        Me.DataGridViewTextBoxColumn7.ReadOnly = True
-        Me.DataGridViewTextBoxColumn7.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
-        Me.DataGridViewTextBoxColumn7.Width = 57
-        '
-        'DataGridViewTextBoxColumn8
-        '
-        Me.DataGridViewTextBoxColumn8.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells
-        Me.DataGridViewTextBoxColumn8.DataPropertyName = "UnloadCount"
-        DataGridViewCellStyle7.BackColor = System.Drawing.Color.LightGray
-        DataGridViewCellStyle7.ForeColor = System.Drawing.Color.Navy
-        Me.DataGridViewTextBoxColumn8.DefaultCellStyle = DataGridViewCellStyle7
-        Me.DataGridViewTextBoxColumn8.HeaderText = "Good"
-        Me.DataGridViewTextBoxColumn8.Name = "DataGridViewTextBoxColumn8"
-        Me.DataGridViewTextBoxColumn8.ReadOnly = True
-        Me.DataGridViewTextBoxColumn8.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
-        Me.DataGridViewTextBoxColumn8.Width = 63
-        '
-        'DataGridViewTextBoxColumn4
-        '
-        Me.DataGridViewTextBoxColumn4.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells
-        Me.DataGridViewTextBoxColumn4.DataPropertyName = "LotEndTime"
-        DataGridViewCellStyle8.BackColor = System.Drawing.Color.LightGray
-        DataGridViewCellStyle8.ForeColor = System.Drawing.Color.Black
-        Me.DataGridViewTextBoxColumn4.DefaultCellStyle = DataGridViewCellStyle8
-        Me.DataGridViewTextBoxColumn4.HeaderText = "LotEndTime"
-        Me.DataGridViewTextBoxColumn4.Name = "DataGridViewTextBoxColumn4"
-        Me.DataGridViewTextBoxColumn4.ReadOnly = True
-        Me.DataGridViewTextBoxColumn4.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic
-        Me.DataGridViewTextBoxColumn4.Width = 138
-        '
-        'DataGridViewTextBoxColumn10
-        '
-        Me.DataGridViewTextBoxColumn10.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells
-        Me.DataGridViewTextBoxColumn10.DataPropertyName = "MagazineNo"
-        DataGridViewCellStyle9.BackColor = System.Drawing.Color.LightGray
-        Me.DataGridViewTextBoxColumn10.DefaultCellStyle = DataGridViewCellStyle9
-        Me.DataGridViewTextBoxColumn10.HeaderText = "MagazineNo"
-        Me.DataGridViewTextBoxColumn10.Name = "DataGridViewTextBoxColumn10"
-        Me.DataGridViewTextBoxColumn10.ReadOnly = True
-        Me.DataGridViewTextBoxColumn10.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
-        Me.DataGridViewTextBoxColumn10.Width = 123
-        '
-        'PLDataBindingSource
-        '
-        Me.PLDataBindingSource.DataMember = "PLData"
-        Me.PLDataBindingSource.DataSource = Me.DBxDataSet
-        '
-        'DBxDataSet
-        '
-        Me.DBxDataSet.DataSetName = "DBxDataSet"
-        Me.DBxDataSet.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema
         '
         'PLAlarmInfoBindingSource
         '
@@ -543,10 +542,10 @@ Partial Class ProcessForm
         Me.MenuStrip1.ResumeLayout(False)
         Me.MenuStrip1.PerformLayout()
         CType(Me.PLDataDataGridView, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.pbxAutoM, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.pbxLogo, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PLDataBindingSource, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.DBxDataSet, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbxAutoM, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbxLogo, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PLAlarmInfoBindingSource, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PLAlarmTableBindingSource, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)

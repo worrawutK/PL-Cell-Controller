@@ -66,7 +66,7 @@
       <Value Profile="(Default)">PL-GL</Value>
     </Setting>
     <Setting Name="UserAdminPass" Type="System.String" Scope="User">
-      <Value Profile="(Default)">admin</Value>
+      <Value Profile="(Default)">ADMIN</Value>
     </Setting>
     <Setting Name="DBxConnectionString" Type="(Connection string)" Scope="Application">
       <DesignTimeValue Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;

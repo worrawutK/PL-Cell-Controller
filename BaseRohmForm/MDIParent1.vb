@@ -4,6 +4,7 @@ Imports XtraLibrary.SecsGem
 Imports Rohm.Apcs.Tdc
 Imports System.ComponentModel
 Imports System.IO
+Imports System.Reflection
 
 Public Class MDIParent1
 #Region "Commomn Define"
@@ -112,72 +113,72 @@ Public Class MDIParent1
             End If
 
             m_Host.LogDirectory = DIR_LOG
-                m_Host.HsmsLogEnabled = True
+            m_Host.HsmsLogEnabled = True
 
-                'Dim hsmsHost As HsmsHost = CType(m_Host, HsmsHost)
+            'Dim hsmsHost As HsmsHost = CType(m_Host, HsmsHost)
 
-                AddHandler m_Host.ReceivedPrimaryMessage, AddressOf m_Host_ReceivedPrimaryMessage
-                AddHandler m_Host.ReceivedSecondaryMessage, AddressOf m_Host_ReceivedSecondaryMessage
-                AddHandler m_Host.HsmsStateChanged, AddressOf m_Host_HsmsStateChanged
-                AddHandler m_Host.ErrorNotification, AddressOf m_Host_ErrorNotification
-                AddHandler m_Host.ConversionErrored, AddressOf m_Host_ConversionErrored
+            AddHandler m_Host.ReceivedPrimaryMessage, AddressOf m_Host_ReceivedPrimaryMessage
+            AddHandler m_Host.ReceivedSecondaryMessage, AddressOf m_Host_ReceivedSecondaryMessage
+            AddHandler m_Host.HsmsStateChanged, AddressOf m_Host_HsmsStateChanged
+            AddHandler m_Host.ErrorNotification, AddressOf m_Host_ErrorNotification
+            AddHandler m_Host.ConversionErrored, AddressOf m_Host_ConversionErrored
 
-                Dim secsParser As SecsMessageParserBase = m_Host.MessageParser
+            Dim secsParser As SecsMessageParserBase = m_Host.MessageParser
 
-                ''Example ==='
-                'Dim msg As SecsMessageBase = m_Host.MessageParser.ToSecsMessage(Nothing)
-                'Dim smlText As String = SmlBuilder.ToSmlString(msg)
-                'm_Host.Send(msg)
-                '============
-
-
-
-                secsParser.RegisterCustomSecsMessage(GetType(S1F4))
-                secsParser.RegisterCustomSecsMessage(GetType(S1F14E))      ' Regis in Recive data from eqiptment for change to class format. 
-                secsParser.RegisterCustomSecsMessage(GetType(S1F18))        '160630 \783 AutoLoad Revise
-                secsParser.RegisterCustomSecsMessage(GetType(S2F34))
-                secsParser.RegisterCustomSecsMessage(GetType(S2F36))
-                secsParser.RegisterCustomSecsMessage(GetType(S2F38))
-                secsParser.RegisterCustomSecsMessage(GetType(S2F14))
-                secsParser.RegisterCustomSecsMessage(GetType(S2F16))
-                secsParser.RegisterCustomSecsMessage(GetType(S2F17))
-                'secsParser.RegisterCustomSecsMessage(GetType(S2F42))
-
-                secsParser.RegisterCustomSecsMessage(GetType(S5F1))
-                secsParser.RegisterCustomSecsMessage(GetType(S5F4))
-                secsParser.RegisterCustomSecsMessage(GetType(S6F11))
-                secsParser.RegisterCustomSecsMessage(GetType(S6F24))
-                secsParser.RegisterCustomSecsMessage(GetType(S7F20))
-                secsParser.RegisterCustomSecsMessage(GetType(S10F1))
+            ''Example ==='
+            'Dim msg As SecsMessageBase = m_Host.MessageParser.ToSecsMessage(Nothing)
+            'Dim smlText As String = SmlBuilder.ToSmlString(msg)
+            'm_Host.Send(msg)
+            '============
 
 
 
-                If DownloadReportSetting() Like "False*" Then      'Load Define Report from server
-                    LoadFrFile()                                   'Load Define Report from file
-                End If
+            secsParser.RegisterCustomSecsMessage(GetType(S1F4))
+            secsParser.RegisterCustomSecsMessage(GetType(S1F14E))      ' Regis in Recive data from eqiptment for change to class format. 
+            secsParser.RegisterCustomSecsMessage(GetType(S1F18))        '160630 \783 AutoLoad Revise
+            secsParser.RegisterCustomSecsMessage(GetType(S2F34))
+            secsParser.RegisterCustomSecsMessage(GetType(S2F36))
+            secsParser.RegisterCustomSecsMessage(GetType(S2F38))
+            secsParser.RegisterCustomSecsMessage(GetType(S2F14))
+            secsParser.RegisterCustomSecsMessage(GetType(S2F16))
+            secsParser.RegisterCustomSecsMessage(GetType(S2F17))
+            'secsParser.RegisterCustomSecsMessage(GetType(S2F42))
 
-                m_Host.Connect()
-                '---------
+            secsParser.RegisterCustomSecsMessage(GetType(S5F1))
+            secsParser.RegisterCustomSecsMessage(GetType(S5F4))
+            secsParser.RegisterCustomSecsMessage(GetType(S6F11))
+            secsParser.RegisterCustomSecsMessage(GetType(S6F24))
+            secsParser.RegisterCustomSecsMessage(GetType(S7F20))
+            secsParser.RegisterCustomSecsMessage(GetType(S10F1))
+
+
+
+            If DownloadReportSetting() Like "False*" Then      'Load Define Report from server
+                LoadFrFile()                                   'Load Define Report from file
+            End If
+
+            m_Host.Connect()
+            '---------
 
 ByPassSecs:
-                If My.Settings.TDC_Enable Then      'TDC ---
-                    m_TdcService = TdcService.GetInstance()
-                    m_TdcService.LogFolder = "Log"
-                End If
+            If My.Settings.TDC_Enable Then      'TDC ---
+                m_TdcService = TdcService.GetInstance()
+                m_TdcService.LogFolder = "Log"
+            End If
 
-                If My.Settings.CsProtocol_Enable Then     'Custom Protocol
-                    CstProtocol = New TcpIpClient
-                    CstProtocol.ReadContinue = True
-                    CstProtocol.Listener_Click(CStr(My.Settings.CsProtocolPort), My.Settings.EquipmentIP)
-                End If
+            If My.Settings.CsProtocol_Enable Then     'Custom Protocol
+                CstProtocol = New TcpIpClient
+                CstProtocol.ReadContinue = True
+                CstProtocol.Listener_Click(CStr(My.Settings.CsProtocolPort), My.Settings.EquipmentIP)
+            End If
 
 
-                If (System.IO.File.Exists(My.Application.Info.DirectoryPath & "\UserLoginSchema.xml")) Then
-                    UserTable.ReadXmlSchema(My.Application.Info.DirectoryPath & "\UserLoginSchema.xml")
-                End If
-                If (System.IO.File.Exists(My.Application.Info.DirectoryPath & "\UserLogin.xml")) Then
-                    UserTable.ReadXml(My.Application.Info.DirectoryPath & "\UserLogin.xml")
-                End If
+            If (System.IO.File.Exists(My.Application.Info.DirectoryPath & "\UserLoginSchema.xml")) Then
+                UserTable.ReadXmlSchema(My.Application.Info.DirectoryPath & "\UserLoginSchema.xml")
+            End If
+            If (System.IO.File.Exists(My.Application.Info.DirectoryPath & "\UserLogin.xml")) Then
+                UserTable.ReadXml(My.Application.Info.DirectoryPath & "\UserLogin.xml")
+            End If
 
         Catch ex As Exception
             SaveCatchLog(ex.ToString, "MDIParent1_Load")
