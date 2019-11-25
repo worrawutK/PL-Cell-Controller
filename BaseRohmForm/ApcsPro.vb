@@ -38,6 +38,14 @@ Public Class ApcsPro
             c_Recipe = value
         End Set
     End Property
-
+    Private c_CarrierInfo As CellController.iLibraryService.CarrierInfo
+    Public Property CarrierInfo() As CellController.iLibraryService.CarrierInfo
+        Get
+            Return c_CarrierInfo
+        End Get
+        Set(ByVal value As CellController.iLibraryService.CarrierInfo)
+            c_CarrierInfo = value
+        End Set
+    End Property
 #End Region
 End Class

@@ -734,16 +734,16 @@ FinalExeLoop:
         End Try
 
         Select Case request.CEID
-            Case 1665600, 1203001600 'MECO-MgzInReady
+            Case 1665600, 1203001600 'MECO-MgzInReady (3)
                 FrmProduct.Event_CountData(m_SelfData.LotName, m_SelfData.ProductCountOut, m_SelfData.ProductCountIn, "MgzInReady")
-            Case 1665700, 1203001700 'MECO-MgzOutReady
+            Case 1665700, 1203001700 'MECO-MgzOutReady (4)
                 FrmProduct.Event_CountData(m_SelfData.LotName, m_SelfData.ProductCountOut, m_SelfData.ProductCountIn, "MgzOutReady")
-            Case 1666500, 1203002700 'MECO-LotEnd
+            Case 1666500, 1203002700 'MECO-LotEnd (5)
                 FrmProduct.Event_LotEnd(m_SelfData.LotName, m_SelfData.ProductCountTotalOut, m_SelfData.ProductCountTotalIn)
-            Case 1666700, 1203002900 'MECO-LotInfo_Rohm
+            Case 1666700, 1203002900 'MECO-LotInfo_Rohm (1)
                 FrmProduct.Event_LotInfo_Rohm(m_SelfData.LotName, m_SelfData.OperatorID, m_SelfData.TrayNumber)
                 Me.Refresh()
-            Case 1666800, 1203003000 'MECO-LotStart
+            Case 1666800, 1203003000 'MECO-LotStart (2)
                 FrmProduct.Event_LotStart(m_SelfData.LotName)
             Case 1666900, 1203003100 'MECO-MgzDoneLoading
                 FrmProduct.Event_MgzDoneLoading(m_SelfData.LotName, m_SelfData.ProductCountIn)

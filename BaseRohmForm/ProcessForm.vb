@@ -56,7 +56,8 @@ Public Class ProcessForm
 #End Region
 
 #Region "Form"
-
+    Public c_ApcsProDatas As List(Of ApcsPro) = New List(Of ApcsPro)
+    Private c_PathApcsDatas As String = Path.Combine(My.Application.Info.DirectoryPath, "ApcsProData.xml")
     Private c_IlibraryService As CellController.iLibraryService.IServiceiLibrary
     Private Sub ProcessForm_FormClosed(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosedEventArgs) Handles Me.FormClosed
         OprData.FRMProductAlive = False
@@ -439,14 +440,45 @@ Public Class ProcessForm
         End Try
 
         'APCS Pro
+
         Try
-            Dim result As SetupLotResult = c_IlibraryService.SetupLotNoCheckLicenser(LotNo, "PL-" & My.Settings.EquipmentNo, OPNo, "PL", "0501")
-            c_IlibraryService.StartLot(LotNo, "PL-" & My.Settings.EquipmentNo, OPNo, result.Recipe)
+            'Dim apcsProData As ApcsPro = New ApcsPro
+            Dim carrierInfo As CarrierInfo = c_IlibraryService.GetCarrierInfo("PL-" & My.Settings.EquipmentNo, LotNo, OPNo)
+            If carrierInfo.LoadCarrier = CarrierInfo.CarrierStatus.Use Then
+                carrierInfo.LoadCarrierNo = carrierInfo.CurrentCarrierNo
+            End If
+            If carrierInfo.RegisterCarrier = CarrierInfo.CarrierStatus.Use Then
+                carrierInfo.RegisterCarrierNo = ""
+            End If
+            If carrierInfo.TransferCarrier = CarrierInfo.CarrierStatus.Use Then
+                carrierInfo.TransferCarrierNo = carrierInfo.NextCarrierNo
+            End If
+
+            Dim setupSpecialParameter As SetupLotSpecialParametersEventArgs = New SetupLotSpecialParametersEventArgs With {
+                .LayerNoApcs = "0501"
+            }
+
+            Dim result As SetupLotResult = c_IlibraryService.SetupLotPhase2(LotNo, "PL-" & My.Settings.EquipmentNo, OPNo, "PL", Licenser.NoCheck, carrierInfo, setupSpecialParameter)
+            'apcsProData.LotNo = LotNo
+            'apcsProData.MachineNo = "PL-" & My.Settings.EquipmentNo
+            'apcsProData.UserCode = OPNo
+            'apcsProData.Recipe = result.Recipe
+            'apcsProData.CarrierInfo = carrierInfo
+            'c_ApcsProDatas.Add(apcsProData)
+            c_IlibraryService.StartLotPhase2(LotNo, "PL-" & My.Settings.EquipmentNo, OPNo, result.Recipe, carrierInfo, Nothing)
+            'WrXml(c_PathApcsDatas, c_ApcsProDatas)
+            'Dim result As SetupLotResult = c_IlibraryService.SetupLotNoCheckLicenser(LotNo, "PL-" & My.Settings.EquipmentNo, OPNo, "PL", "0501")
+            'c_IlibraryService.StartLot(LotNo, "PL-" & My.Settings.EquipmentNo, OPNo, result.Recipe)
         Catch ex As Exception
 
         End Try
         RaiseEvent E_Update_dgvProductionDetail("1666700", LotNo, "MECO-LotInfo_Rohm", "")
     End Sub
+    Private Function SearchApcsData(lotNo As String) As ApcsPro
+
+        Return c_ApcsProDatas.Where(Function(x) x.LotNo = lotNo).ToList()(0)
+    End Function
+
     Private Sub IReportCheck(mcNo As String)
         Dim result As iReportResponse = c_IlibraryService.IRePortCheck(mcNo)
         If result.HasError Then
@@ -636,6 +668,40 @@ Public Class ProcessForm
 
                     End If
 
+                    Dim carrierInfo As CarrierInfo = c_IlibraryService.GetCarrierInfo(strDataRow.MCNo, strDataRow.LotNo, strDataRow.OPNo)
+                    Dim apcsProData As ApcsPro = New ApcsPro
+                    apcsProData.LotNo = strDataRow.LotNo
+                    apcsProData.MachineNo = "PL-" & My.Settings.EquipmentNo
+                    apcsProData.UserCode = strDataRow.OPNo
+                    apcsProData.Recipe = ""
+                    apcsProData.CarrierInfo = carrierInfo
+                    c_ApcsProDatas.Add(apcsProData)
+                    If carrierInfo.EnabledControlCarrier = CarrierInfo.CarrierStatus.Use AndAlso carrierInfo.InControlCarrier = CarrierInfo.CarrierStatus.Use AndAlso carrierInfo.LoadCarrier = CarrierInfo.CarrierStatus.Use Then
+
+                        Dim dialogQrLotSlipInput As InputQrCarrierNo = New InputQrCarrierNo(252, "AssySlip 252 Character" & vbCrLf & "[" & strDataRow.LotNo.Trim.ToUpper & "]", Color.GreenYellow)
+                        If dialogQrLotSlipInput.ShowDialog() = DialogResult.OK Then
+                            If strDataRow.LotNo.Trim.ToUpper <> dialogQrLotSlipInput.QrCarrierNo.Trim.ToUpper.Substring(30, 10) Then
+                                OpenDialogMessage("LotNo. ไม่ตรงกัน [" & strDataRow.LotNo.Trim.ToUpper & "] [" & dialogQrLotSlipInput.QrCarrierNo.Trim.ToUpper.Substring(30, 10) & "]", "LotNo not match")
+                                Return
+                            End If
+                        Else
+                            Return
+                        End If
+
+                        Dim dialogQrCarrierInput As InputQrCarrierNo = New InputQrCarrierNo(11, "Carrier No." & vbCrLf & "[" & carrierInfo.CurrentCarrierNo.Trim.ToUpper & "]", Color.Orange)
+                        If dialogQrCarrierInput.ShowDialog() = DialogResult.OK Then
+                            If carrierInfo.CurrentCarrierNo.Trim.ToUpper <> dialogQrCarrierInput.QrCarrierNo.Trim.ToUpper Then
+                                OpenDialogMessage("Carrier No. [" & dialogQrCarrierInput.QrCarrierNo.Trim.ToUpper & "] นี้ไม่ตรงกับในระบบ [" & carrierInfo.CurrentCarrierNo.Trim.ToUpper & "]", "Carrier Error")
+                                Return
+                            End If
+                            carrierInfo.LoadCarrierNo = dialogQrCarrierInput.QrCarrierNo
+                            _Magazine = carrierInfo.LoadCarrierNo
+
+                        Else
+                            Return
+                        End If
+
+                    End If
                     Dim frmCon As New frmConfirm(_LotNo, _TotalInput, _TotalGood, _LotStartTime, _LotEndTime, _Magazine)
                     If frmCon.ShowDialog = Windows.Forms.DialogResult.OK Then
 
@@ -660,6 +726,36 @@ Public Class ProcessForm
                         If strDataRow.LotNo.Contains("DUM") = True OrElse strDataRow.LotNo.Contains("dum") = True Then
                             GoTo Dummy
                         Else
+
+                            '' Dim apcsData As ApcsPro = SearchApcsData(tdc.LotNo)
+                            'Dim result As EndLotResult = c_IlibraryService.EndLotPhase2(strDataRow.LotNo, strDataRow.MCNo, strDataRow.OPNo, strDataRow.TotalGoodAdjust, strDataRow.TotalNGAdjust, Licenser.NoCheck, carrierInfo, Nothing)
+                            'If Not result.IsPass Then
+                            '    'Dim type As String = result.Type.ToString
+                            '    'Dim url As String = ""
+                            '    'Select Case result.Type
+                            '    '    Case MessageType.ApcsPro
+                            '    '        url = "http://webserv.thematrix.net/atom"
+                            '    '    Case MessageType.Apcs
+                            '    '        url = "http://webserv.thematrix.net/ApcsStaff/Default.aspx"
+                            '    '    Case MessageType.Unknown
+                            '    '        url = "http://webserv.thematrix.net/atom"
+                            '    'End Select
+                            '    'OpenDialog(strDataRow.LotNo, url)
+                            '    OpenDialogMessage(result.Cause)
+                            '    'Try
+                            '    '    Dim syncContext As SynchronizationContext = WindowsFormsSynchronizationContext.Current
+                            '    '    syncContext.Post(New Threading.SendOrPostCallback(Sub() OpenDialog(tdc.LotNo, url), Nothing))
+                            '    'Catch ex As Exception
+
+                            '    'End Try
+                            '    'Try
+                            '    '    syncContext.Post(New Threading.SendOrPostCallback(Sub() OpenDialog(tdc.LotNo, url)), Nothing)
+                            '    'Catch ex As Exception
+
+                            '    'End Try
+                            '    Return
+                            'End If
+
                             If PLDataTableAdapter.Update(strDataRow) <> 1 Then 'เซฟไม่ติด
                                 'backup and update 
                                 Dim Tabledata As New DBxDataSet.PLDataDataTable
@@ -1048,8 +1144,13 @@ RepeatSendTdc:
         'End Try
 
         Try
-            Dim result As EndLotResult = c_IlibraryService.EndLotNoCheckLicenser(tdc.LotNo, tdc.McNo, tdc.OpNo, tdc.GoodPcs, tdc.NgPcs)
 
+            'Dim result As EndLotResult = c_IlibraryService.EndLotNoCheckLicenser(tdc.LotNo, tdc.McNo, tdc.OpNo, tdc.GoodPcs, tdc.NgPcs)
+
+
+            Dim apcsData As ApcsPro = SearchApcsData(tdc.LotNo)
+            Dim result As EndLotResult = c_IlibraryService.EndLotPhase2(tdc.LotNo, tdc.McNo, tdc.OpNo, tdc.GoodPcs, tdc.NgPcs, Licenser.NoCheck, apcsData.CarrierInfo, Nothing)
+            c_ApcsProDatas.Remove(apcsData)
             If Not result.IsPass Then
                 Dim type As String = result.Type.ToString
                 Dim url As String = ""
@@ -1088,7 +1189,10 @@ RepeatSendTdc:
         Dim frm As DialogMessage = New DialogMessage("LotNo " & lotNo & " จบ lot ไม่สมบูรณ์ " & vbCrLf & "กรุณาทำการ End process ในระบบด้วยครับ", url, "แจ้งเตือน")
         frm.ShowDialog()
     End Sub
-
+    Private Sub OpenDialogMessage(message As String, title As String)
+        Dim frm As DialogMessage = New DialogMessage(message, "http://webserv.thematrix.net/atom", title)
+        frm.ShowDialog()
+    End Sub
     Public Sub addErrLogfile(ByVal m As String)
         Dim logfile As String = My.Application.Info.DirectoryPath & "\LOG\ErrLog.txt"
         Try

@@ -176,6 +176,12 @@
     <Compile Include="frmDeleteLot.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="InputQrCarrierNo.Designer.vb">
+      <DependentUpon>InputQrCarrierNo.vb</DependentUpon>
+    </Compile>
+    <Compile Include="InputQrCarrierNo.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="LoginUser.Designer.vb">
       <DependentUpon>LoginUser.vb</DependentUpon>
     </Compile>
@@ -341,6 +347,9 @@
     <EmbeddedResource Include="frmDeleteLot.resx">
       <DependentUpon>frmDeleteLot.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="InputQrCarrierNo.resx">
+      <DependentUpon>InputQrCarrierNo.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="LoginUser.resx">
       <DependentUpon>LoginUser.vb</DependentUpon>
     </EmbeddedResource>
@@ -385,6 +394,9 @@
     </None>
     <None Include="ClassDiagram1.cd" />
     <None Include="Connected Services\iLibraryService\CellController.iLibraryService.CancelLotResult.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\iLibraryService\CellController.iLibraryService.CarrierInfo.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
     <None Include="Connected Services\iLibraryService\CellController.iLibraryService.CheckLotApcsProResult.datasource">
@@ -511,6 +523,9 @@
       <LastGenOutput>Reference.vb</LastGenOutput>
     </None>
     <None Include="Connected Services\iLibraryService\ServiceiLibrary.disco" />
+    <None Include="Resources\PictureBoxWrong.png" />
+    <None Include="Resources\PicturBoxRohmLogo.gif" />
+    <None Include="Resources\PictureBoxQrCode.png" />
     <Content Include="unnamed.ico" />
   </ItemGroup>
   <ItemGroup>
