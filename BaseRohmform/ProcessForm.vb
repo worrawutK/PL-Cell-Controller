@@ -723,53 +723,24 @@ Public Class ProcessForm
                         strDataRow.DummyQty = CInt(frmCon.tbDummy.Text)
                         strDataRow.OPJudgement = frmCon.tbOPJudge.Text
 
-                        If strDataRow.LotNo.Contains("DUM") = True OrElse strDataRow.LotNo.Contains("dum") = True Then
-                            GoTo Dummy
-                        Else
+                        'If strDataRow.LotNo.Contains("DUM") = True OrElse strDataRow.LotNo.Contains("dum") = True Then
+                        '    GoTo Dummy
+                        'Else
 
-                            '' Dim apcsData As ApcsPro = SearchApcsData(tdc.LotNo)
-                            'Dim result As EndLotResult = c_IlibraryService.EndLotPhase2(strDataRow.LotNo, strDataRow.MCNo, strDataRow.OPNo, strDataRow.TotalGoodAdjust, strDataRow.TotalNGAdjust, Licenser.NoCheck, carrierInfo, Nothing)
-                            'If Not result.IsPass Then
-                            '    'Dim type As String = result.Type.ToString
-                            '    'Dim url As String = ""
-                            '    'Select Case result.Type
-                            '    '    Case MessageType.ApcsPro
-                            '    '        url = "http://webserv.thematrix.net/atom"
-                            '    '    Case MessageType.Apcs
-                            '    '        url = "http://webserv.thematrix.net/ApcsStaff/Default.aspx"
-                            '    '    Case MessageType.Unknown
-                            '    '        url = "http://webserv.thematrix.net/atom"
-                            '    'End Select
-                            '    'OpenDialog(strDataRow.LotNo, url)
-                            '    OpenDialogMessage(result.Cause)
-                            '    'Try
-                            '    '    Dim syncContext As SynchronizationContext = WindowsFormsSynchronizationContext.Current
-                            '    '    syncContext.Post(New Threading.SendOrPostCallback(Sub() OpenDialog(tdc.LotNo, url), Nothing))
-                            '    'Catch ex As Exception
-
-                            '    'End Try
-                            '    'Try
-                            '    '    syncContext.Post(New Threading.SendOrPostCallback(Sub() OpenDialog(tdc.LotNo, url)), Nothing)
-                            '    'Catch ex As Exception
-
-                            '    'End Try
-                            '    Return
-                            'End If
-
-                            If PLDataTableAdapter.Update(strDataRow) <> 1 Then 'เซฟไม่ติด
-                                'backup and update 
-                                Dim Tabledata As New DBxDataSet.PLDataDataTable
-                                Tabledata.ImportRow(strDataRow)
-                                Dim pathData As String = My.Application.Info.DirectoryPath & "\DataError\" & strDataRow.LotNo & ".xml"
-                                Using sw As New StreamWriter(pathData, True)
-                                    Tabledata.WriteXml(sw)
-                                End Using
-                            End If
-                        End If
-Dummy:
+                        '    If PLDataTableAdapter.Update(strDataRow) <> 1 Then 'เซฟไม่ติด
+                        '        'backup and update 
+                        '        Dim Tabledata As New DBxDataSet.PLDataDataTable
+                        '        Tabledata.ImportRow(strDataRow)
+                        '        Dim pathData As String = My.Application.Info.DirectoryPath & "\DataError\" & strDataRow.LotNo & ".xml"
+                        '        Using sw As New StreamWriter(pathData, True)
+                        '            Tabledata.WriteXml(sw)
+                        '        End Using
+                        '    End If
+                        'End If
+                        'Dummy:
                         removeList.Add(strDataRow)
-                        SavePLDataTableBin()
-                        SavePLAlarmInfoToDbx()
+                        'SavePLDataTableBin()
+                        'SavePLAlarmInfoToDbx()
 
                         'Send LotSet TDC
                         SyncLock m_Locker
@@ -783,6 +754,7 @@ Dummy:
                             tdc.GoodPcs = strDataRow.TotalGoodAdjust
                             tdc.NgPcs = strDataRow.TotalNGAdjust
                             tdc.OpNo = strDataRow.OPNo
+                            tdc.PLDataRow = strDataRow
                             c_TdcQueue.Enqueue(tdc)
 
                         End SyncLock
@@ -1146,7 +1118,21 @@ RepeatSendTdc:
         Try
 
             'Dim result As EndLotResult = c_IlibraryService.EndLotNoCheckLicenser(tdc.LotNo, tdc.McNo, tdc.OpNo, tdc.GoodPcs, tdc.NgPcs)
-
+            If tdc.PLDataRow.LotNo.Contains("DUM") = True OrElse tdc.PLDataRow.LotNo.Contains("dum") = True Then
+                'Dummy จะไม่เซฟ
+            Else
+                If PLDataTableAdapter.Update(tdc.PLDataRow) <> 1 Then 'เซฟไม่ติด
+                    'backup and update 
+                    Dim Tabledata As New DBxDataSet.PLDataDataTable
+                    Tabledata.ImportRow(tdc.PLDataRow)
+                    Dim pathData As String = My.Application.Info.DirectoryPath & "\DataError\" & tdc.PLDataRow.LotNo & ".xml"
+                    Using sw As New StreamWriter(pathData, True)
+                        Tabledata.WriteXml(sw)
+                    End Using
+                End If
+            End If
+            SavePLDataTableBin()
+            SavePLAlarmInfoToDbx()
 
             Dim apcsData As ApcsPro = SearchApcsData(tdc.LotNo)
             Dim result As EndLotResult = c_IlibraryService.EndLotPhase2(tdc.LotNo, tdc.McNo, tdc.OpNo, tdc.GoodPcs, tdc.NgPcs, Licenser.NoCheck, apcsData.CarrierInfo, Nothing)
