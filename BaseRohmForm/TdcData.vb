@@ -82,4 +82,13 @@ Public Class TdcData
             c_OpNo = value
         End Set
     End Property
+    Private c_PLDataRow As DBxDataSet.PLDataRow
+    Public Property PLDataRow() As DBxDataSet.PLDataRow
+        Get
+            Return c_PLDataRow
+        End Get
+        Set(ByVal value As DBxDataSet.PLDataRow)
+            c_PLDataRow = value
+        End Set
+    End Property
 End Class
