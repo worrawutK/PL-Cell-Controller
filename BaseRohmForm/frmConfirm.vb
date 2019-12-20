@@ -22,16 +22,26 @@
 
         lbMagazine.Text = _Magazine
 
-
-        Select Case lbPackage.Text
-            Case "HSDIP25" 'E Lot
-                lbTotalInput.Text = (_TotalInput * 4).ToString
-                lbTotalGood.Text = (_TotalGood * 4).ToString
-                _FramePCS = 4
-            Case Else
-                lbTotalInput.Text = CalFrameTypeToPcs(_LotNo, _TotalInput).ToString
-                lbTotalGood.Text = CalFrameTypeToPcs(_LotNo, _TotalGood).ToString
-        End Select
+        Dim result = ModuleConcrete.GetPerFrame(lbPackage.Text)
+        If Not result.IsPass Then
+            _FramePCS = 1
+            Using frm As New DialogMessage(result.Reson, Nothing, "แจ้งเตือน")
+                frm.ShowDialog()
+            End Using
+        Else
+            _FramePCS = result.PerFrame
+        End If
+        lbTotalInput.Text = (_TotalInput * _FramePCS).ToString
+        lbTotalGood.Text = (_TotalGood * _FramePCS).ToString
+        'Select Case lbPackage.Text
+        '    Case "HSDIP25" 'E Lot
+        '        lbTotalInput.Text = (_TotalInput * 4).ToString
+        '        lbTotalGood.Text = (_TotalGood * 4).ToString
+        '        _FramePCS = 4
+        '    Case Else
+        '        lbTotalInput.Text = CalFrameTypeToPcs(_LotNo, _TotalInput).ToString
+        '        lbTotalGood.Text = CalFrameTypeToPcs(_LotNo, _TotalGood).ToString
+        'End Select
         lbTotalNG.Text = CStr((CDbl(lbTotalInput.Text) - CDbl(lbTotalGood.Text)))
 
         tbTotalInput.Text = lbTotalInput.Text
@@ -47,21 +57,21 @@
         tbOPJudge.Focus()
     End Sub
 
-    Function CalFrameTypeToPcs(ByVal LotNo As String, ByVal FrameCount As Integer) As Integer
-        Dim ret As Integer = FrameCount
-        Dim PCSPerFrame As Integer
-        Try
+    'Function CalFrameTypeToPcs(ByVal LotNo As String, ByVal FrameCount As Integer) As Integer
+    '    Dim ret As Integer = FrameCount
+    '    Dim PCSPerFrame As Integer
+    '    Try
 
-            PCSPerFrame = CInt(FrameTableTableAdapter.GetPcsPerFrame(LotNo))
-            ret = FrameCount * PCSPerFrame
+    '        PCSPerFrame = CInt(FrameTableTableAdapter.GetPcsPerFrame(LotNo))
+    '        ret = FrameCount * PCSPerFrame
 
-        Catch ex As Exception
-            ret = FrameCount
-        End Try
-        _FramePCS = PCSPerFrame
+    '    Catch ex As Exception
+    '        ret = FrameCount
+    '    End Try
+    '    _FramePCS = PCSPerFrame
 
-        Return ret
-    End Function
+    '    Return ret
+    'End Function
 
     Function GetPackageFromLotNo(ByVal LotNo As String) As String
         Dim ret As String = ""

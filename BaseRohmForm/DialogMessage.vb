@@ -13,6 +13,9 @@
         c_Url = url
         c_Header = header
         'c_UrlName = urlName
+        If String.IsNullOrEmpty(url) Then
+            LinkLabelWeb.Visible = True
+        End If
     End Sub
     Private Sub DialogMessage_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         LabelMessage.Text = c_Message

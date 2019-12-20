@@ -55,6 +55,8 @@ Public Class MDIParent1
 
 
     Private Sub MDIParent1_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        'Dim aaa As String = Format(Assembly.GetExecutingAssembly().GetName().Version.ToString(), "0.0.0.0")
+        m_strNetVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString().Replace("." + Assembly.GetExecutingAssembly().GetName().Version.ToString().Split(CType(".", Char()))(3), "") + " Carrier Control."
         lbVersion.Text = m_strNetVersion
         Try
 
@@ -732,26 +734,30 @@ FinalExeLoop:
         Catch ex As Exception
             SaveCatchLog(ex.ToString, "request.ApplyStatusVariableValue")
         End Try
+        Try
+            Select Case request.CEID
+                Case 1665600, 1203001600 'MECO-MgzInReady (3)
+                    FrmProduct.Event_CountData(m_SelfData.LotName, m_SelfData.ProductCountOut, m_SelfData.ProductCountIn, "MgzInReady")
+                Case 1665700, 1203001700 'MECO-MgzOutReady (4)
+                    FrmProduct.Event_CountData(m_SelfData.LotName, m_SelfData.ProductCountOut, m_SelfData.ProductCountIn, "MgzOutReady")
+                Case 1666500, 1203002700 'MECO-LotEnd (5)
+                    FrmProduct.Event_LotEnd(m_SelfData.LotName, m_SelfData.ProductCountTotalOut, m_SelfData.ProductCountTotalIn)
+                Case 1666700, 1203002900 'MECO-LotInfo_Rohm (1)
+                    FrmProduct.Event_LotInfo_Rohm(m_SelfData.LotName, m_SelfData.OperatorID, m_SelfData.TrayNumber)
+                    Me.Refresh()
+                Case 1666800, 1203003000 'MECO-LotStart (2)
+                    FrmProduct.Event_LotStart(m_SelfData.LotName)
+                Case 1666900, 1203003100 'MECO-MgzDoneLoading
+                    FrmProduct.Event_MgzDoneLoading(m_SelfData.LotName, m_SelfData.ProductCountIn)
+                Case 1667100, 1203003300 'MECO-MgzStartLoading
+                    FrmProduct.Event_MgzStartLoading(m_SelfData.LotName)
+                Case 1668300, 1200011500 'MECO-MachineStatus
+                    FrmProduct.Event_MachineStatus(m_SelfData.LotName)
+            End Select
+        Catch ex As Exception
+            SaveCatchLog(ex.Message.ToString, "Perform_S6F11")
+        End Try
 
-        Select Case request.CEID
-            Case 1665600, 1203001600 'MECO-MgzInReady (3)
-                FrmProduct.Event_CountData(m_SelfData.LotName, m_SelfData.ProductCountOut, m_SelfData.ProductCountIn, "MgzInReady")
-            Case 1665700, 1203001700 'MECO-MgzOutReady (4)
-                FrmProduct.Event_CountData(m_SelfData.LotName, m_SelfData.ProductCountOut, m_SelfData.ProductCountIn, "MgzOutReady")
-            Case 1666500, 1203002700 'MECO-LotEnd (5)
-                FrmProduct.Event_LotEnd(m_SelfData.LotName, m_SelfData.ProductCountTotalOut, m_SelfData.ProductCountTotalIn)
-            Case 1666700, 1203002900 'MECO-LotInfo_Rohm (1)
-                FrmProduct.Event_LotInfo_Rohm(m_SelfData.LotName, m_SelfData.OperatorID, m_SelfData.TrayNumber)
-                Me.Refresh()
-            Case 1666800, 1203003000 'MECO-LotStart (2)
-                FrmProduct.Event_LotStart(m_SelfData.LotName)
-            Case 1666900, 1203003100 'MECO-MgzDoneLoading
-                FrmProduct.Event_MgzDoneLoading(m_SelfData.LotName, m_SelfData.ProductCountIn)
-            Case 1667100, 1203003300 'MECO-MgzStartLoading
-                FrmProduct.Event_MgzStartLoading(m_SelfData.LotName)
-            Case 1668300, 1200011500 'MECO-MachineStatus
-                FrmProduct.Event_MachineStatus(m_SelfData.LotName)
-        End Select
     End Sub
 
 

@@ -422,13 +422,17 @@ Public Class ProcessForm
         Catch ex As Exception
             SaveCatchLog(ex.Message & "  " & CStr(LotNo), "TransactionCheck")
         End Try
+        Try
+            newMecoRow.MCNo = My.Settings.ProcessName & "-" & My.Settings.EquipmentNo
+            newMecoRow.OPNo = OPNo
+            newMecoRow.MagazineNo = Mgz
+            newMecoRow.LotStartTime = Now
+            newMecoRow.NetVersion = m_strNetVersion
+            DBxDataSet.PLData.Rows.Add(newMecoRow)
+        Catch ex As Exception
+            SaveCatchLog(ex.Message.ToString, "Add Data Row")
+        End Try
 
-        newMecoRow.MCNo = My.Settings.ProcessName & "-" & My.Settings.EquipmentNo
-        newMecoRow.OPNo = OPNo
-        newMecoRow.MagazineNo = Mgz
-        newMecoRow.LotStartTime = Now
-        newMecoRow.NetVersion = m_strNetVersion
-        DBxDataSet.PLData.Rows.Add(newMecoRow)
 
 
         SavePLDataTableBin()
@@ -1537,9 +1541,15 @@ RepeatSendTdc:
     '    End Sub
 
     Private Sub bgTDC_RunWorkerCompleted(sender As Object, e As RunWorkerCompletedEventArgs) Handles bgTDC.RunWorkerCompleted
-        For Each removeDataRow As DataRow In removeList
-            DBxDataSet.PLData.Rows.Remove(removeDataRow)
-        Next
+        Try
+            For Each removeDataRow As DataRow In removeList
+                DBxDataSet.PLData.Rows.Remove(removeDataRow)
+            Next
+
+        Catch ex As Exception
+            SaveCatchLog(ex.Message.ToString, "RemoveData")
+        End Try
+
     End Sub
 
 
