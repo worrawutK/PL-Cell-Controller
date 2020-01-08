@@ -189,6 +189,9 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="MecoParameter.vb" />
+    <Compile Include="Model\AlarmData.vb" />
+    <Compile Include="Model\AlarmInfo.vb" />
+    <Compile Include="Model\PLData.vb" />
     <Compile Include="Module\ModuleConcrete.vb" />
     <Compile Include="nSECs%28TempForSMLEdit%29\SECSMSG.vb" />
     <Compile Include="ResultBase.vb" />
@@ -466,6 +469,7 @@
       <Generator>MyApplicationCodeGenerator</Generator>
       <LastGenOutput>Application.Designer.vb</LastGenOutput>
     </None>
+    <None Include="My Project\DataSources\PLData.datasource" />
     <None Include="My Project\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <CustomToolNamespace>My</CustomToolNamespace>

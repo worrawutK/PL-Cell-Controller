@@ -1,6 +1,7 @@
 ﻿Imports System.IO
 Imports System.Reflection
 Imports System.Runtime.Serialization.Formatters.Soap
+Imports System.Xml.Serialization
 
 Module ModuleAppGeneral
 
@@ -117,5 +118,35 @@ Module ModuleAppGeneral
 
     End Function
 
+    Public Sub WriteDataToXmlFile(data As Object, xmlPath As String)
+        Using sw As New StreamWriter(xmlPath, False)
+            Dim bs = New XmlSerializer(data.GetType())
+            bs.Serialize(sw, data)
+        End Using
+    End Sub
+    'Protected T LoadDataFromXmlFile<T>(String fileName)
+    '    {
+    '        If (!File.Exists(fileName))
+    '        {
+    '            Return default(T);
+    '        }
 
+    '        Using (StreamReader fs = New StreamReader(fileName))
+    '        {
+    '            var bs = New XmlSerializer(TypeOf (T));
+    '            T data = (T)bs.Deserialize(fs);
+    '            Return data;
+    '        }
+
+    '    }
+    Public Function LoadDataFromXmlFile(Of T)(fileName As String) As T
+        If Not File.Exists(fileName) Then
+            Return Nothing
+        End If
+        Using fs As StreamReader = New StreamReader(fileName)
+            Dim bs = New XmlSerializer(GetType(T))
+            Dim data As T = CType(bs.Deserialize(fs), T)
+            Return data
+        End Using
+    End Function
 End Module

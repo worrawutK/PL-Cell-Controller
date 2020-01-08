@@ -9,7 +9,7 @@ Imports System.Reflection
 Public Class MDIParent1
 #Region "Commomn Define"
     Dim WithEvents MainControlfrm As New Form1
-    Dim WithEvents FrmProduct As ProcessForm
+    Private FrmProduct As ProcessForm
     Dim WithEvents FrmProdTable As ProductionTable
     Dim WithEvents FrmSetting As Setting
     Dim WithEvents FrmSecs As SecsGemFrm
@@ -59,15 +59,10 @@ Public Class MDIParent1
         m_strNetVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString().Replace("." + Assembly.GetExecutingAssembly().GetName().Version.ToString().Split(CType(".", Char()))(3), "") + " Carrier Control."
         lbVersion.Text = m_strNetVersion
         Try
-
-
             Me.WindowState = FormWindowState.Maximized
             MainControlfrm.MdiParent = Me
             MainControlfrm.Width = Me.Width - 5
             MainControlfrm.Show()
-
-
-
             ' Folder Build ---------------------------------------------------------------------------------
 
             If (Not System.IO.Directory.Exists(PathPicObj)) Then
@@ -75,10 +70,6 @@ Public Class MDIParent1
             End If
 
             '-----------------------------------------------------------------------------------------------
-
-
-
-
 
             If Not My.Settings.SECS_Enable Then
                 GoTo ByPassSecs
@@ -504,7 +495,7 @@ ExitLoop1:
 
 FinalExeLoop:
             If OprData.FRMProductAlive Then
-                FrmProduct.m_Host_ReceivedSecondaryMessage(e)
+                'FrmProduct.m_Host_ReceivedSecondaryMessage(e)
             End If
         Catch ex As Exception
             SaveCatchLog(ex.ToString, "m_Host_ReceivedSecondaryMessage()")
@@ -716,9 +707,9 @@ FinalExeLoop:
         HostReply(request, reply)
 
         If request.AlarmCode >= 128 Then
-            FrmProduct.m_AlarmRecord(CStr(request.AlarmID), 1, request.AlarmText) ' Set Alarm 
+            'FrmProduct.m_AlarmRecord(CStr(request.AlarmID), 1, request.AlarmText) ' Set Alarm 
         Else
-            FrmProduct.m_AlarmRecord(CStr(request.AlarmID), 0, request.AlarmText) ' Clear Alarm
+            'FrmProduct.m_AlarmRecord(CStr(request.AlarmID), 0, request.AlarmText) ' Clear Alarm
         End If
 
     End Sub
@@ -737,22 +728,23 @@ FinalExeLoop:
         Try
             Select Case request.CEID
                 Case 1665600, 1203001600 'MECO-MgzInReady (3)
-                    FrmProduct.Event_CountData(m_SelfData.LotName, m_SelfData.ProductCountOut, m_SelfData.ProductCountIn, "MgzInReady")
+                    'FrmProduct.Event_CountData(m_SelfData.LotName, m_SelfData.ProductCountOut, m_SelfData.ProductCountIn, "MgzInReady")
                 Case 1665700, 1203001700 'MECO-MgzOutReady (4)
-                    FrmProduct.Event_CountData(m_SelfData.LotName, m_SelfData.ProductCountOut, m_SelfData.ProductCountIn, "MgzOutReady")
+                    'FrmProduct.Event_CountData(m_SelfData.LotName, m_SelfData.ProductCountOut, m_SelfData.ProductCountIn, "MgzOutReady")
                 Case 1666500, 1203002700 'MECO-LotEnd (5)
-                    FrmProduct.Event_LotEnd(m_SelfData.LotName, m_SelfData.ProductCountTotalOut, m_SelfData.ProductCountTotalIn)
+                   ' FrmProduct.Event_LotEnd(m_SelfData.LotName, m_SelfData.ProductCountTotalOut, m_SelfData.ProductCountTotalIn)
                 Case 1666700, 1203002900 'MECO-LotInfo_Rohm (1)
                     FrmProduct.Event_LotInfo_Rohm(m_SelfData.LotName, m_SelfData.OperatorID, m_SelfData.TrayNumber)
+                    ' FrmProduct.Event_LotInfo_Rohm(m_SelfData.LotName, m_SelfData.OperatorID, m_SelfData.TrayNumber)
                     Me.Refresh()
                 Case 1666800, 1203003000 'MECO-LotStart (2)
-                    FrmProduct.Event_LotStart(m_SelfData.LotName)
+                   ' FrmProduct.Event_LotStart(m_SelfData.LotName)
                 Case 1666900, 1203003100 'MECO-MgzDoneLoading
-                    FrmProduct.Event_MgzDoneLoading(m_SelfData.LotName, m_SelfData.ProductCountIn)
+                    'FrmProduct.Event_MgzDoneLoading(m_SelfData.LotName, m_SelfData.ProductCountIn)
                 Case 1667100, 1203003300 'MECO-MgzStartLoading
-                    FrmProduct.Event_MgzStartLoading(m_SelfData.LotName)
+                   ' FrmProduct.Event_MgzStartLoading(m_SelfData.LotName)
                 Case 1668300, 1200011500 'MECO-MachineStatus
-                    FrmProduct.Event_MachineStatus(m_SelfData.LotName)
+                    ' FrmProduct.Event_MachineStatus(m_SelfData.LotName)
             End Select
         Catch ex As Exception
             SaveCatchLog(ex.Message.ToString, "Perform_S6F11")
@@ -916,7 +908,7 @@ FinalExeLoop:
     End Sub
 
 
-    Private Sub ConsoleFrm() Handles FrmProduct.E_ConsoleShow, FrmSecs.E_ConsoleShow
+    Public Sub ConsoleFrm() Handles FrmSecs.E_ConsoleShow
         OpenConsole()
     End Sub
 
@@ -988,10 +980,13 @@ FinalExeLoop:
                 FrmProduct.FormBorderStyle = Windows.Forms.FormBorderStyle.None
 
             Else
-                FrmProduct = New ProcessForm
+                FrmProduct = New ProcessForm(Me)
                 FrmProduct.MdiParent = Me
                 FrmProduct.Dock = DockStyle.Fill
                 FrmProduct.Show()
+                If Not CommuniationState Like "COMMUNICATING*" And My.Settings.SECS_Enable Then
+                    FrmProduct.BackColor = Color.Red
+                End If
 
             End If
             If FrmProdTable IsNot Nothing Then
@@ -1099,7 +1094,7 @@ FinalExeLoop:
             MainControlfrm.WindowState = FormWindowState.Minimized
         End If
     End Sub
-    Private Sub MDIMakeAlarmCellCon(ByVal AlarmMessage As String, Optional ByVal Location As String = "", Optional ByVal Status As String = "", Optional ByVal AlarmID As String = "") Handles FrmProduct.E_MakeAlarmCellCon
+    Public Sub MDIMakeAlarmCellCon(ByVal AlarmMessage As String, Optional ByVal Location As String = "", Optional ByVal Status As String = "", Optional ByVal AlarmID As String = "")
         If FrmProdTable Is Nothing Then
             Exit Sub
         End If
@@ -1107,13 +1102,13 @@ FinalExeLoop:
         OprData.AlrmtimerCount = 0
         FrmProdTable.MakeAlarmCellCon(AlarmMessage, Location, Status, AlarmID)
     End Sub
-    Public Sub MDIUpdate_dgvProductionInfo1(ByVal _CarrierID As String, ByVal LotID As String, ByVal Package As String, ByVal Device As String, Optional ByVal Remark As String = "", Optional ByVal StartTime As String = "") Handles FrmProduct.E_Update_dgvProductionInfo1
+    Public Sub MDIUpdate_dgvProductionInfo1(ByVal _CarrierID As String, ByVal LotID As String, ByVal Package As String, ByVal Device As String, Optional ByVal Remark As String = "", Optional ByVal StartTime As String = "")
         If FrmProdTable Is Nothing Then
             Exit Sub
         End If
         'FrmProdTable.Update_dgvProductionInfo1(_CarrierID, LotID, Package, Device, Remark, StartTime)
     End Sub
-    Public Sub MDIUpdate_dgvProductionInfoEnd(ByVal _UnloadCarrierID As String, ByVal lotno As String, Optional ByVal Count As String = "", Optional ByVal Remark As String = "") Handles FrmProduct.E_Update_dgvProductionInfoEnd
+    Public Sub MDIUpdate_dgvProductionInfoEnd(ByVal _UnloadCarrierID As String, ByVal lotno As String, Optional ByVal Count As String = "", Optional ByVal Remark As String = "")
         If FrmProdTable Is Nothing Then
             Exit Sub
         End If
@@ -1121,7 +1116,7 @@ FinalExeLoop:
     End Sub
 
 
-    Public Sub MDIUpdate_dgvProductionDetail(ByVal itemID As String, ByVal type As String, ByVal action As String, Optional ByVal location As String = "") Handles FrmProduct.E_Update_dgvProductionDetail
+    Public Sub MDIUpdate_dgvProductionDetail(ByVal itemID As String, ByVal type As String, ByVal action As String, Optional ByVal location As String = "") 'Handles FrmProduct.E_Update_dgvProductionDetail
         If FrmProdTable Is Nothing Then
             Exit Sub
         End If
@@ -1136,7 +1131,7 @@ FinalExeLoop:
 
     Private m_UIF As UpdateTextDelegate = New UpdateTextDelegate(AddressOf UpdateInformationThreadSafe)
 
-    Private Sub UpdateInformationThreadSafe(ByVal informationText As String) Handles FrmProdTable.E_SlInfo, FrmProduct.E_SlInfo
+    Public Sub UpdateInformationThreadSafe(ByVal informationText As String) Handles FrmProdTable.E_SlInfo
         If Me.InvokeRequired Then
             'http://kristofverbiest.blogspot.com/2007/02/avoid-invoke-prefer-begininvoke.html
             Me.BeginInvoke(m_UIF, informationText)
@@ -1248,7 +1243,7 @@ FinalExeLoop:
 
 #Region "FrmProdTable"
 
-    Private Sub ProductTableFrm() Handles MainControlfrm.ProdTableClick, FrmProduct.E_ProductionTableCall  'Product table Form Load
+    Public Sub ProductTableFrm() Handles MainControlfrm.ProdTableClick ', FrmProduct.E_ProductionTableCall  'Product table Form Load
 
         If FrmProdTable Is Nothing Then
             FrmProdTable = New ProductionTable
@@ -1275,7 +1270,7 @@ show:
     End Sub
 
 
-    Public Sub MDIAlarmTable(ByVal AlarmALCD As Boolean, ByVal AlarmALID As String, ByVal AlarmALTX As String, Optional ByVal AlarmType As String = "0") Handles FrmProduct.E_AlarmTable
+    Public Sub MDIAlarmTable(ByVal AlarmALCD As Boolean, ByVal AlarmALID As String, ByVal AlarmALTX As String, Optional ByVal AlarmType As String = "0") 'Handles FrmProduct.E_AlarmTable
         If FrmProdTable Is Nothing Then
             Exit Sub
         End If
@@ -1285,21 +1280,21 @@ show:
         AlarmTimer.Enabled = False
     End Sub
 
-    Private Sub QR_DataRead() Handles FrmProdTable.E_QRReadSuccess, FrmProduct.E_QRReadSuccess
+    Public Sub QR_DataRead() Handles FrmProdTable.E_QRReadSuccess ', FrmProduct.E_QRReadSuccess
         slMessage.Text = "QR Work Slip Read Success_" & Format(Now, "HH:mm:ss.fff")
 
         If My.Settings.UserAuthenOP = "NOUSE" Then  'Bypass Auten
             OprData.AutoMotiveLot = False
             GoTo BypassAuter
         End If
-        If Not FrmProduct.PermiisionCheck(OprData.QrData, OprData.OPID, My.Settings.UserAuthenOP, My.Settings.UserAuthenGL, My.Settings.ProcessName, My.Settings.EquipmentNo) Then
-            MDIMakeAlarmCellCon(FrmProduct.ErrMesETG, "", "")
-            If FrmProduct.ErrMesETG Like "OP*" Then
-                FrmProdTable.btnOPID.Text = "OPID"
-                'FrmProduct.lbOPID.Text = ""
-            End If
-            GoTo LoopEnd
-        End If
+        'If Not FrmProduct.PermiisionCheck(OprData.QrData, OprData.OPID, My.Settings.UserAuthenOP, My.Settings.UserAuthenGL, My.Settings.ProcessName, My.Settings.EquipmentNo) Then
+        '    MDIMakeAlarmCellCon(FrmProduct.ErrMesETG, "", "")
+        '    If FrmProduct.ErrMesETG Like "OP*" Then
+        '        FrmProdTable.btnOPID.Text = "OPID"
+        '        'FrmProduct.lbOPID.Text = ""
+        '    End If
+        '    GoTo LoopEnd
+        'End If
         If OprData.AutoMotiveLot Then
             'FrmProduct.pbxAutoMLot.Visible = True
             'FrmProduct.lbAutoMLot.Visible = True
@@ -1321,7 +1316,7 @@ LoopEnd:
 
     End Sub
 
-    Private Sub QR_OPIDRead() Handles FrmProdTable.E_QRReadOPIDSuccess, FrmProduct.E_QRReadOPIDSuccess
+    Public Sub QR_OPIDRead() Handles FrmProdTable.E_QRReadOPIDSuccess
         slMessage.Text = "QR OPID Read Success_" & Format(Now, "HH:mm:ss.fff")
         'FrmProduct.lbOPID.Text = OprData.OPID
         If OprData.UserLevel = CommonData.Level.ADMIN Then
@@ -1347,33 +1342,8 @@ LoopEnd:
 
 #Region "FrmProduct"
 
-    Private Sub ProductionFrm() Handles MainControlfrm.ProductionClick
-        If FrmProduct Is Nothing Then
-            FrmProduct = New ProcessForm
-            GoTo show
-        End If
-        If FrmProduct.IsDisposed Then
-            FrmProduct = New ProcessForm
-            GoTo show
-        End If
-        If Not FrmProdTable Is Nothing Then
-            FrmProdTable.Dock = DockStyle.None
 
-        End If
-        FrmProduct.Dock = DockStyle.Fill
-        FrmProduct.FormBorderStyle = Windows.Forms.FormBorderStyle.None
-        FrmProduct.Activate()
-
-        Exit Sub                   'If already open will not open again
-show:
-
-        FrmProduct.MdiParent = Me
-        FrmProduct.Dock = DockStyle.Fill
-        FrmProduct.Show()
-
-    End Sub
-
-    Private Sub FrmProcessFill() Handles FrmProduct.E_FormFill
+    Public Sub FrmProcessFill() 'Handles FrmProduct.E_FormFill
         If Not FrmProdTable Is Nothing Then
             FrmProdTable.Dock = DockStyle.None
         End If
@@ -1382,7 +1352,7 @@ show:
 
     End Sub
 
-    Private Sub EqConnect() Handles FrmProduct.E_EqConnect, FrmSecs.E_EstabComm
+    Private Sub EqConnect() Handles FrmSecs.E_EstabComm
         If My.Settings.CsProtocol_Enable Then     'Custom Protocol
             CstProtocol.ReadContinue = True
             CstProtocol.Listener_Click(CStr(My.Settings.CsProtocolPort), My.Settings.EquipmentIP)
@@ -1589,7 +1559,7 @@ show:
 #Region "Custom Protocol"
 
 
-    Private Sub SendCD(ByVal Msg As String) Handles FrmProduct.E_CD_SendMsg
+    Private Sub SendCD(ByVal Msg As String) ' Handles FrmProduct.E_CD_SendMsg
 
 
         CstProtocol.btnSend_Click(Msg)
@@ -1605,7 +1575,7 @@ show:
     '    data = ""
     'End Sub
 
-    Private Sub LRCheck(ByVal EqNo As String, ByVal LotNo As String) Handles FrmProduct.E_LRCheck
+    Private Sub LRCheck(ByVal EqNo As String, ByVal LotNo As String) 'Handles FrmProduct.E_LRCheck
         LotRequest(EqNo, LotNo)
 
     End Sub
