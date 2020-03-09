@@ -146,6 +146,12 @@
       <DependentUpon>Form1.vb</DependentUpon>
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="FormLoading.Designer.vb">
+      <DependentUpon>FormLoading.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FormLoading.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="frmEditData.Designer.vb">
       <DependentUpon>frmEditData.vb</DependentUpon>
     </Compile>
@@ -189,8 +195,8 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="MecoParameter.vb" />
-    <Compile Include="Model\AlarmData.vb" />
-    <Compile Include="Model\AlarmInfo.vb" />
+    <Compile Include="Model\PLAlarmInfo.vb" />
+    <Compile Include="Model\PLAlarmTable.vb" />
     <Compile Include="Model\PLData.vb" />
     <Compile Include="Module\ModuleConcrete.vb" />
     <Compile Include="nSECs%28TempForSMLEdit%29\SECSMSG.vb" />
@@ -336,6 +342,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormLoading.resx">
+      <DependentUpon>FormLoading.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmEditData.resx">
       <DependentUpon>frmEditData.vb</DependentUpon>
@@ -532,6 +541,7 @@
     <None Include="Resources\PictureBoxWrong.png" />
     <None Include="Resources\PicturBoxRohmLogo.gif" />
     <None Include="Resources\PictureBoxQrCode.png" />
+    <Content Include="Image\Loadding.gif" />
     <Content Include="unnamed.ico" />
   </ItemGroup>
   <ItemGroup>

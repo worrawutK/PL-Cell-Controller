@@ -43,36 +43,33 @@ Partial Class ProcessForm
         Me.EqConnectToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.WorkRecordToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.PLDataDataGridView = New System.Windows.Forms.DataGridView()
-        Me.pbxAutoM = New System.Windows.Forms.PictureBox()
-        Me.pbxLogo = New System.Windows.Forms.PictureBox()
+        Me.OPNo = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.LoadCount = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.UnloadCount = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.lbMcNo = New System.Windows.Forms.Label()
         Me.btDeleteLot = New System.Windows.Forms.Button()
         Me.lbProcess = New System.Windows.Forms.Label()
         Me.Label2 = New System.Windows.Forms.Label()
-        Me.bgTDC = New System.ComponentModel.BackgroundWorker()
         Me.btEndManual = New System.Windows.Forms.Button()
-        Me.Button1 = New System.Windows.Forms.Button()
         Me.lbTime = New System.Windows.Forms.Label()
-        Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
+        Me.TimerTest = New System.Windows.Forms.Timer(Me.components)
         Me.Button2 = New System.Windows.Forms.Button()
         Me.Button3 = New System.Windows.Forms.Button()
         Me.LabelIReportMessage = New System.Windows.Forms.Label()
-        Me.TimerIReport = New System.Windows.Forms.Timer(Me.components)
-        Me.DBxDataSet = New CellController.DBxDataSet()
-        Me.PLDataBindingSource1 = New System.Windows.Forms.BindingSource(Me.components)
+        Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
+        Me.Button1 = New System.Windows.Forms.Button()
+        Me.pbxAutoM = New System.Windows.Forms.PictureBox()
+        Me.pbxLogo = New System.Windows.Forms.PictureBox()
         Me.LotNoDataGridViewTextBoxColumn = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.LotStartTimeDataGridViewTextBoxColumn = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.OpNoDataGridViewTextBoxColumn = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.InputQtyDataGridViewTextBoxColumn = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.GoodQtyDataGridViewTextBoxColumn = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.LotEndTimeDataGridViewTextBoxColumn = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.MagazineNoDataGridViewTextBoxColumn = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.PLDataBindingSource1 = New System.Windows.Forms.BindingSource(Me.components)
         Me.MenuStrip1.SuspendLayout()
         CType(Me.PLDataDataGridView, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.pbxAutoM, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.pbxLogo, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.DBxDataSet, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PLDataBindingSource1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -122,6 +119,7 @@ Partial Class ProcessForm
         '
         'MaximizeToolStripMenuItem
         '
+        Me.MaximizeToolStripMenuItem.Enabled = False
         Me.MaximizeToolStripMenuItem.Name = "MaximizeToolStripMenuItem"
         Me.MaximizeToolStripMenuItem.Size = New System.Drawing.Size(144, 22)
         Me.MaximizeToolStripMenuItem.Text = "Maximize"
@@ -154,6 +152,7 @@ Partial Class ProcessForm
         '
         Me.PLDataDataGridView.AllowUserToAddRows = False
         Me.PLDataDataGridView.AllowUserToDeleteRows = False
+        Me.PLDataDataGridView.AllowUserToResizeRows = False
         DataGridViewCellStyle1.BackColor = System.Drawing.Color.White
         DataGridViewCellStyle1.Font = New System.Drawing.Font("Microsoft Sans Serif", 18.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.PLDataDataGridView.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle1
@@ -171,7 +170,7 @@ Partial Class ProcessForm
         Me.PLDataDataGridView.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle2
         Me.PLDataDataGridView.ColumnHeadersHeight = 40
         Me.PLDataDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing
-        Me.PLDataDataGridView.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.LotNoDataGridViewTextBoxColumn, Me.LotStartTimeDataGridViewTextBoxColumn, Me.OpNoDataGridViewTextBoxColumn, Me.InputQtyDataGridViewTextBoxColumn, Me.GoodQtyDataGridViewTextBoxColumn, Me.LotEndTimeDataGridViewTextBoxColumn, Me.MagazineNoDataGridViewTextBoxColumn})
+        Me.PLDataDataGridView.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.LotNoDataGridViewTextBoxColumn, Me.LotStartTimeDataGridViewTextBoxColumn, Me.OPNo, Me.LoadCount, Me.UnloadCount, Me.LotEndTimeDataGridViewTextBoxColumn, Me.MagazineNoDataGridViewTextBoxColumn})
         Me.PLDataDataGridView.DataSource = Me.PLDataBindingSource1
         DataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
         DataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Window
@@ -182,6 +181,7 @@ Partial Class ProcessForm
         DataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
         Me.PLDataDataGridView.DefaultCellStyle = DataGridViewCellStyle5
         Me.PLDataDataGridView.Location = New System.Drawing.Point(19, 226)
+        Me.PLDataDataGridView.MultiSelect = False
         Me.PLDataDataGridView.Name = "PLDataDataGridView"
         Me.PLDataDataGridView.ReadOnly = True
         DataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
@@ -203,33 +203,32 @@ Partial Class ProcessForm
         Me.PLDataDataGridView.Size = New System.Drawing.Size(898, 468)
         Me.PLDataDataGridView.TabIndex = 54
         '
-        'pbxAutoM
+        'OPNo
         '
-        Me.pbxAutoM.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.pbxAutoM.BackColor = System.Drawing.Color.White
-        Me.pbxAutoM.BackgroundImage = Global.CellController.My.Resources.Resources.HR
-        Me.pbxAutoM.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center
-        Me.pbxAutoM.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
-        Me.pbxAutoM.Image = Global.CellController.My.Resources.Resources.HR
-        Me.pbxAutoM.Location = New System.Drawing.Point(821, 25)
-        Me.pbxAutoM.Name = "pbxAutoM"
-        Me.pbxAutoM.Size = New System.Drawing.Size(96, 66)
-        Me.pbxAutoM.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
-        Me.pbxAutoM.TabIndex = 10
-        Me.pbxAutoM.TabStop = False
-        Me.pbxAutoM.Visible = False
+        Me.OPNo.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells
+        Me.OPNo.DataPropertyName = "OPNo"
+        Me.OPNo.HeaderText = "OPNo"
+        Me.OPNo.Name = "OPNo"
+        Me.OPNo.ReadOnly = True
+        Me.OPNo.Width = 117
         '
-        'pbxLogo
+        'LoadCount
         '
-        Me.pbxLogo.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.pbxLogo.BackgroundImage = CType(resources.GetObject("pbxLogo.BackgroundImage"), System.Drawing.Image)
-        Me.pbxLogo.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
-        Me.pbxLogo.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
-        Me.pbxLogo.Location = New System.Drawing.Point(923, 25)
-        Me.pbxLogo.Name = "pbxLogo"
-        Me.pbxLogo.Size = New System.Drawing.Size(96, 65)
-        Me.pbxLogo.TabIndex = 2
-        Me.pbxLogo.TabStop = False
+        Me.LoadCount.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells
+        Me.LoadCount.DataPropertyName = "LoadCount"
+        Me.LoadCount.HeaderText = "Input"
+        Me.LoadCount.Name = "LoadCount"
+        Me.LoadCount.ReadOnly = True
+        Me.LoadCount.Width = 105
+        '
+        'UnloadCount
+        '
+        Me.UnloadCount.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells
+        Me.UnloadCount.DataPropertyName = "UnloadCount"
+        Me.UnloadCount.HeaderText = "Good"
+        Me.UnloadCount.Name = "UnloadCount"
+        Me.UnloadCount.ReadOnly = True
+        Me.UnloadCount.Width = 109
         '
         'Label1
         '
@@ -300,30 +299,18 @@ Partial Class ProcessForm
         Me.btEndManual.Text = "End Manual"
         Me.btEndManual.UseVisualStyleBackColor = False
         '
-        'Button1
-        '
-        Me.Button1.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Button1.BackgroundImage = Global.CellController.My.Resources.Resources.blue_minimized_icon_32193
-        Me.Button1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
-        Me.Button1.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(222, Byte))
-        Me.Button1.Location = New System.Drawing.Point(826, 25)
-        Me.Button1.Name = "Button1"
-        Me.Button1.Size = New System.Drawing.Size(88, 65)
-        Me.Button1.TabIndex = 56
-        Me.Button1.UseVisualStyleBackColor = True
-        '
         'lbTime
         '
         Me.lbTime.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.lbTime.AutoSize = True
         Me.lbTime.Font = New System.Drawing.Font("Microsoft Sans Serif", 20.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(222, Byte))
-        Me.lbTime.Location = New System.Drawing.Point(731, 161)
+        Me.lbTime.Location = New System.Drawing.Point(738, 150)
         Me.lbTime.Name = "lbTime"
         Me.lbTime.Size = New System.Drawing.Size(95, 31)
         Me.lbTime.TabIndex = 57
         Me.lbTime.Text = "Label3"
         '
-        'Timer1
+        'TimerTest
         '
         '
         'Button2
@@ -338,6 +325,7 @@ Partial Class ProcessForm
         Me.Button2.TabIndex = 55
         Me.Button2.Text = "Edit Data"
         Me.Button2.UseVisualStyleBackColor = False
+        Me.Button2.Visible = False
         '
         'Button3
         '
@@ -356,25 +344,56 @@ Partial Class ProcessForm
         '
         Me.LabelIReportMessage.Font = New System.Drawing.Font("Microsoft Sans Serif", 20.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(222, Byte))
         Me.LabelIReportMessage.ForeColor = System.Drawing.Color.Red
-        Me.LabelIReportMessage.Location = New System.Drawing.Point(383, 161)
+        Me.LabelIReportMessage.Location = New System.Drawing.Point(356, 150)
         Me.LabelIReportMessage.Name = "LabelIReportMessage"
         Me.LabelIReportMessage.Size = New System.Drawing.Size(1200, 62)
         Me.LabelIReportMessage.TabIndex = 57
         Me.LabelIReportMessage.Text = "iReport "
         '
-        'TimerIReport
+        'Timer1
         '
-        Me.TimerIReport.Interval = 500
+        Me.Timer1.Enabled = True
+        Me.Timer1.Interval = 1000
         '
-        'DBxDataSet
+        'Button1
         '
-        Me.DBxDataSet.DataSetName = "DBxDataSet"
-        Me.DBxDataSet.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema
+        Me.Button1.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Button1.BackgroundImage = Global.CellController.My.Resources.Resources.blue_minimized_icon_32193
+        Me.Button1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.Button1.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(222, Byte))
+        Me.Button1.Location = New System.Drawing.Point(826, 25)
+        Me.Button1.Name = "Button1"
+        Me.Button1.Size = New System.Drawing.Size(88, 65)
+        Me.Button1.TabIndex = 56
+        Me.Button1.UseVisualStyleBackColor = True
         '
-        'PLDataBindingSource1
+        'pbxAutoM
         '
-        Me.PLDataBindingSource1.AllowNew = False
-        Me.PLDataBindingSource1.DataSource = GetType(CellController.PLData)
+        Me.pbxAutoM.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.pbxAutoM.BackColor = System.Drawing.Color.White
+        Me.pbxAutoM.BackgroundImage = Global.CellController.My.Resources.Resources.HR
+        Me.pbxAutoM.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center
+        Me.pbxAutoM.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
+        Me.pbxAutoM.Image = Global.CellController.My.Resources.Resources.HR
+        Me.pbxAutoM.Location = New System.Drawing.Point(821, 25)
+        Me.pbxAutoM.Name = "pbxAutoM"
+        Me.pbxAutoM.Size = New System.Drawing.Size(96, 66)
+        Me.pbxAutoM.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
+        Me.pbxAutoM.TabIndex = 10
+        Me.pbxAutoM.TabStop = False
+        Me.pbxAutoM.Visible = False
+        '
+        'pbxLogo
+        '
+        Me.pbxLogo.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.pbxLogo.BackgroundImage = CType(resources.GetObject("pbxLogo.BackgroundImage"), System.Drawing.Image)
+        Me.pbxLogo.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.pbxLogo.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
+        Me.pbxLogo.Location = New System.Drawing.Point(923, 25)
+        Me.pbxLogo.Name = "pbxLogo"
+        Me.pbxLogo.Size = New System.Drawing.Size(96, 65)
+        Me.pbxLogo.TabIndex = 2
+        Me.pbxLogo.TabStop = False
         '
         'LotNoDataGridViewTextBoxColumn
         '
@@ -397,33 +416,6 @@ Partial Class ProcessForm
         Me.LotStartTimeDataGridViewTextBoxColumn.ReadOnly = True
         Me.LotStartTimeDataGridViewTextBoxColumn.Width = 207
         '
-        'OpNoDataGridViewTextBoxColumn
-        '
-        Me.OpNoDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells
-        Me.OpNoDataGridViewTextBoxColumn.DataPropertyName = "OpNo"
-        Me.OpNoDataGridViewTextBoxColumn.HeaderText = "OpNo"
-        Me.OpNoDataGridViewTextBoxColumn.Name = "OpNoDataGridViewTextBoxColumn"
-        Me.OpNoDataGridViewTextBoxColumn.ReadOnly = True
-        Me.OpNoDataGridViewTextBoxColumn.Width = 114
-        '
-        'InputQtyDataGridViewTextBoxColumn
-        '
-        Me.InputQtyDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells
-        Me.InputQtyDataGridViewTextBoxColumn.DataPropertyName = "InputQty"
-        Me.InputQtyDataGridViewTextBoxColumn.HeaderText = "InputQty"
-        Me.InputQtyDataGridViewTextBoxColumn.Name = "InputQtyDataGridViewTextBoxColumn"
-        Me.InputQtyDataGridViewTextBoxColumn.ReadOnly = True
-        Me.InputQtyDataGridViewTextBoxColumn.Width = 151
-        '
-        'GoodQtyDataGridViewTextBoxColumn
-        '
-        Me.GoodQtyDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells
-        Me.GoodQtyDataGridViewTextBoxColumn.DataPropertyName = "GoodQty"
-        Me.GoodQtyDataGridViewTextBoxColumn.HeaderText = "GoodQty"
-        Me.GoodQtyDataGridViewTextBoxColumn.Name = "GoodQtyDataGridViewTextBoxColumn"
-        Me.GoodQtyDataGridViewTextBoxColumn.ReadOnly = True
-        Me.GoodQtyDataGridViewTextBoxColumn.Width = 155
-        '
         'LotEndTimeDataGridViewTextBoxColumn
         '
         Me.LotEndTimeDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells
@@ -444,6 +436,11 @@ Partial Class ProcessForm
         Me.MagazineNoDataGridViewTextBoxColumn.Name = "MagazineNoDataGridViewTextBoxColumn"
         Me.MagazineNoDataGridViewTextBoxColumn.ReadOnly = True
         Me.MagazineNoDataGridViewTextBoxColumn.Width = 201
+        '
+        'PLDataBindingSource1
+        '
+        Me.PLDataBindingSource1.AllowNew = False
+        Me.PLDataBindingSource1.DataSource = GetType(CellController.PLData)
         '
         'ProcessForm
         '
@@ -477,7 +474,6 @@ Partial Class ProcessForm
         CType(Me.PLDataDataGridView, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.pbxAutoM, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.pbxLogo, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.DBxDataSet, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PLDataBindingSource1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
@@ -501,23 +497,24 @@ Partial Class ProcessForm
     Friend WithEvents btDeleteLot As System.Windows.Forms.Button
     Friend WithEvents lbProcess As System.Windows.Forms.Label
     Friend WithEvents Label2 As System.Windows.Forms.Label
-    Friend WithEvents bgTDC As System.ComponentModel.BackgroundWorker
     Friend WithEvents btEndManual As System.Windows.Forms.Button
     Friend WithEvents WorkRecordToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents Button1 As System.Windows.Forms.Button
     Friend WithEvents lbTime As System.Windows.Forms.Label
-    Friend WithEvents Timer1 As System.Windows.Forms.Timer
+    Friend WithEvents TimerTest As System.Windows.Forms.Timer
     Friend WithEvents Button2 As System.Windows.Forms.Button
     Friend WithEvents Button3 As System.Windows.Forms.Button
     Friend WithEvents LabelIReportMessage As Label
-    Friend WithEvents TimerIReport As Timer
     Friend WithEvents PLDataBindingSource1 As BindingSource
-    Friend WithEvents DBxDataSet As DBxDataSet
-    Friend WithEvents LotNoDataGridViewTextBoxColumn As DataGridViewTextBoxColumn
-    Friend WithEvents LotStartTimeDataGridViewTextBoxColumn As DataGridViewTextBoxColumn
     Friend WithEvents OpNoDataGridViewTextBoxColumn As DataGridViewTextBoxColumn
     Friend WithEvents InputQtyDataGridViewTextBoxColumn As DataGridViewTextBoxColumn
     Friend WithEvents GoodQtyDataGridViewTextBoxColumn As DataGridViewTextBoxColumn
+    Friend WithEvents LotNoDataGridViewTextBoxColumn As DataGridViewTextBoxColumn
+    Friend WithEvents LotStartTimeDataGridViewTextBoxColumn As DataGridViewTextBoxColumn
+    Friend WithEvents OPNo As DataGridViewTextBoxColumn
+    Friend WithEvents LoadCount As DataGridViewTextBoxColumn
+    Friend WithEvents UnloadCount As DataGridViewTextBoxColumn
     Friend WithEvents LotEndTimeDataGridViewTextBoxColumn As DataGridViewTextBoxColumn
     Friend WithEvents MagazineNoDataGridViewTextBoxColumn As DataGridViewTextBoxColumn
+    Friend WithEvents Timer1 As Timer
 End Class

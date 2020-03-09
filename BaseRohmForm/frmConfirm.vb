@@ -117,17 +117,22 @@
 
 
 
-    Public Sub New(ByVal LotNo As String, ByVal TotalInput As Integer, ByVal TotalGood As Integer, ByVal LotStartTime As String, ByVal LotEndTime As String, ByVal Magazine As String)
+    Public Sub New(ByVal LotNo As String, ByVal TotalInput As Integer?, ByVal TotalGood As Integer?, ByVal LotStartTime As DateTime?, ByVal LotEndTime As DateTime?, ByVal Magazine As String)
 
         ' This call is required by the Windows Form Designer.
         InitializeComponent()
 
         ' Add any initialization after the InitializeComponent() call.
         _LotNo = LotNo
-        _TotalInput = TotalInput
-        _TotalGood = TotalGood
-        _LotStartTime = LotStartTime
-        _LotEndTime = LotEndTime
+        If TotalInput.HasValue Then
+            _TotalInput = TotalInput.Value
+        End If
+        If TotalGood.HasValue Then
+            _TotalGood = TotalGood.Value
+        End If
+
+        _LotStartTime = LotStartTime.Value.ToString
+        _LotEndTime = LotEndTime.Value.ToString
         _Magazine = Magazine
 
     End Sub

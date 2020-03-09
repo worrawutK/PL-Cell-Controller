@@ -1,12 +1,15 @@
-﻿Public Class frmDeleteLot
-    Private _frmMain As ProcessForm
-    Public Sub New(ByVal frm As ProcessForm)
+﻿Imports System.ComponentModel
+
+Public Class frmDeleteLot
+
+    Private c_PLdata As BindingList(Of PLData)
+    Public Sub New(plDataList As BindingList(Of PLData))
 
         ' This call is required by the Windows Form Designer.
         InitializeComponent()
 
         ' Add any initialization after the InitializeComponent() call.
-        _frmMain = frm
+        c_PLdata = plDataList
 
     End Sub
 
@@ -14,32 +17,30 @@
         'For Each strDataRow As DBxDataSet.PLDataRow In _frmMain.DBxDataSet.PLData.Rows
         '    cbbLotDetele.Items.Add(strDataRow.LotNo)
         'Next
+        For Each pldata As PLData In c_PLdata
+            cbbLotDetele.Items.Add(pldata.LotNo)
+        Next
     End Sub
 
-    'Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button1.Click
-    '    If cbbLotDetele.Text = "" Then
-    '        MsgBox("กรุณาเลือก Lot ที่ต้องการลบ")
-    '        Exit Sub
-    '    End If
+    Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button1.Click
+        Try
+            If cbbLotDetele.Text = "" Then
+                MsgBox("กรุณาเลือก Lot ที่ต้องการลบ")
+                Exit Sub
+            End If
+            Dim data As PLData = c_PLdata.Where(Function(x) x.LotNo = cbbLotDetele.Text.Trim).FirstOrDefault
+            c_PLdata.Remove(data)
+            '_frmMain.SavePLDataTableBin()
+            MsgBox("เรียบร้อย")
 
-    '    Dim removeList As List(Of DataRow) = New List(Of DataRow)
-    '    For Each strData As DBxDataSet.PLDataRow In _frmMain.DBxDataSet.PLData.Rows
-    '        If cbbLotDetele.Text = strData.LotNo Then
-    '            removeList.Add(strData)
-    '        End If
-    '    Next
+            Me.DialogResult = DialogResult.OK
+        Catch ex As Exception
+            MsgBox("Exception:" & ex.Message.ToString)
+        End Try
 
-    '    For Each DataRowRemove As DataRow In removeList
-    '        _frmMain.DBxDataSet.PLData.Rows.Remove(DataRowRemove)
-    '    Next
+    End Sub
 
-    '    '_frmMain.SavePLDataTableBin()
-    '    MsgBox("เรียบร้อย")
-
-    '    Me.Close()
-    'End Sub
-
-    'Private Sub Button2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button2.Click
-    '    Me.Close()
-    'End Sub
+    Private Sub button2_click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button2.Click
+        Me.Close()
+    End Sub
 End Class

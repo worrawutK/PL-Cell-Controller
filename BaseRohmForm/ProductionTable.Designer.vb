@@ -23,15 +23,6 @@ Partial Class ProductionTable
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ProductionTable))
-        Me.tbAlarmCellCon = New System.Windows.Forms.TabPage()
-        Me.lblAlarm = New System.Windows.Forms.Label()
-        Me.btnCellConAlmRst = New System.Windows.Forms.Button()
-        Me.dgvAlarmCellCon = New System.Windows.Forms.DataGridView()
-        Me.DataGridViewTextBoxColumn5 = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.DataGridViewTextBoxColumn9 = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.DataGridViewTextBoxColumn11 = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.DataGridViewTextBoxColumn12 = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.DataGridViewTextBoxColumn13 = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.tbAlarm = New System.Windows.Forms.TabPage()
         Me.dgvAlarm = New System.Windows.Forms.DataGridView()
         Me.DataGridViewTextBoxColumn3 = New System.Windows.Forms.DataGridViewTextBoxColumn()
@@ -59,8 +50,6 @@ Partial Class ProductionTable
         Me.CloseToolStripMenuItem2 = New System.Windows.Forms.ToolStripMenuItem()
         Me.MinimizeToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.tbPageMain = New System.Windows.Forms.TabControl()
-        Me.tbAlarmCellCon.SuspendLayout()
-        CType(Me.dgvAlarmCellCon, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.tbAlarm.SuspendLayout()
         CType(Me.dgvAlarm, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.tbDetail.SuspendLayout()
@@ -71,91 +60,6 @@ Partial Class ProductionTable
         Me.MenuStrip1.SuspendLayout()
         Me.tbPageMain.SuspendLayout()
         Me.SuspendLayout()
-        '
-        'tbAlarmCellCon
-        '
-        Me.tbAlarmCellCon.Controls.Add(Me.lblAlarm)
-        Me.tbAlarmCellCon.Controls.Add(Me.btnCellConAlmRst)
-        Me.tbAlarmCellCon.Controls.Add(Me.dgvAlarmCellCon)
-        Me.tbAlarmCellCon.Location = New System.Drawing.Point(4, 25)
-        Me.tbAlarmCellCon.Name = "tbAlarmCellCon"
-        Me.tbAlarmCellCon.Size = New System.Drawing.Size(756, 163)
-        Me.tbAlarmCellCon.TabIndex = 7
-        Me.tbAlarmCellCon.Text = "AlarmCellCon"
-        Me.tbAlarmCellCon.UseVisualStyleBackColor = True
-        '
-        'lblAlarm
-        '
-        Me.lblAlarm.AutoSize = True
-        Me.lblAlarm.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblAlarm.ForeColor = System.Drawing.Color.Red
-        Me.lblAlarm.Location = New System.Drawing.Point(130, 20)
-        Me.lblAlarm.Name = "lblAlarm"
-        Me.lblAlarm.Size = New System.Drawing.Size(154, 24)
-        Me.lblAlarm.TabIndex = 45
-        Me.lblAlarm.Text = "Alarm Message"
-        '
-        'btnCellConAlmRst
-        '
-        Me.btnCellConAlmRst.Location = New System.Drawing.Point(6, 7)
-        Me.btnCellConAlmRst.Name = "btnCellConAlmRst"
-        Me.btnCellConAlmRst.Size = New System.Drawing.Size(99, 47)
-        Me.btnCellConAlmRst.TabIndex = 44
-        Me.btnCellConAlmRst.Text = "Alarm Reset"
-        Me.btnCellConAlmRst.UseVisualStyleBackColor = True
-        '
-        'dgvAlarmCellCon
-        '
-        Me.dgvAlarmCellCon.AllowUserToDeleteRows = False
-        Me.dgvAlarmCellCon.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-            Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.dgvAlarmCellCon.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.dgvAlarmCellCon.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.DataGridViewTextBoxColumn5, Me.DataGridViewTextBoxColumn9, Me.DataGridViewTextBoxColumn11, Me.DataGridViewTextBoxColumn12, Me.DataGridViewTextBoxColumn13})
-        Me.dgvAlarmCellCon.Location = New System.Drawing.Point(3, 61)
-        Me.dgvAlarmCellCon.Name = "dgvAlarmCellCon"
-        Me.dgvAlarmCellCon.ReadOnly = True
-        Me.dgvAlarmCellCon.Size = New System.Drawing.Size(750, 106)
-        Me.dgvAlarmCellCon.TabIndex = 39
-        '
-        'DataGridViewTextBoxColumn5
-        '
-        Me.DataGridViewTextBoxColumn5.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells
-        Me.DataGridViewTextBoxColumn5.HeaderText = "Time"
-        Me.DataGridViewTextBoxColumn5.Name = "DataGridViewTextBoxColumn5"
-        Me.DataGridViewTextBoxColumn5.ReadOnly = True
-        Me.DataGridViewTextBoxColumn5.Width = 64
-        '
-        'DataGridViewTextBoxColumn9
-        '
-        Me.DataGridViewTextBoxColumn9.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells
-        Me.DataGridViewTextBoxColumn9.HeaderText = "Location"
-        Me.DataGridViewTextBoxColumn9.Name = "DataGridViewTextBoxColumn9"
-        Me.DataGridViewTextBoxColumn9.ReadOnly = True
-        Me.DataGridViewTextBoxColumn9.Width = 84
-        '
-        'DataGridViewTextBoxColumn11
-        '
-        Me.DataGridViewTextBoxColumn11.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells
-        Me.DataGridViewTextBoxColumn11.HeaderText = "Condition"
-        Me.DataGridViewTextBoxColumn11.Name = "DataGridViewTextBoxColumn11"
-        Me.DataGridViewTextBoxColumn11.ReadOnly = True
-        Me.DataGridViewTextBoxColumn11.Width = 89
-        '
-        'DataGridViewTextBoxColumn12
-        '
-        Me.DataGridViewTextBoxColumn12.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells
-        Me.DataGridViewTextBoxColumn12.HeaderText = "AlarmID"
-        Me.DataGridViewTextBoxColumn12.Name = "DataGridViewTextBoxColumn12"
-        Me.DataGridViewTextBoxColumn12.ReadOnly = True
-        Me.DataGridViewTextBoxColumn12.Width = 81
-        '
-        'DataGridViewTextBoxColumn13
-        '
-        Me.DataGridViewTextBoxColumn13.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill
-        Me.DataGridViewTextBoxColumn13.HeaderText = "Alarm Message"
-        Me.DataGridViewTextBoxColumn13.Name = "DataGridViewTextBoxColumn13"
-        Me.DataGridViewTextBoxColumn13.ReadOnly = True
         '
         'tbAlarm
         '
@@ -408,7 +312,6 @@ Partial Class ProductionTable
         Me.tbPageMain.Controls.Add(Me.tbOther)
         Me.tbPageMain.Controls.Add(Me.tbDetail)
         Me.tbPageMain.Controls.Add(Me.tbAlarm)
-        Me.tbPageMain.Controls.Add(Me.tbAlarmCellCon)
         Me.tbPageMain.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tbPageMain.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(222, Byte))
         Me.tbPageMain.Location = New System.Drawing.Point(0, 0)
@@ -430,9 +333,6 @@ Partial Class ProductionTable
         Me.MinimizeBox = False
         Me.Name = "ProductionTable"
         Me.Text = "ProductionTable"
-        Me.tbAlarmCellCon.ResumeLayout(False)
-        Me.tbAlarmCellCon.PerformLayout()
-        CType(Me.dgvAlarmCellCon, System.ComponentModel.ISupportInitialize).EndInit()
         Me.tbAlarm.ResumeLayout(False)
         CType(Me.dgvAlarm, System.ComponentModel.ISupportInitialize).EndInit()
         Me.tbDetail.ResumeLayout(False)
@@ -447,16 +347,6 @@ Partial Class ProductionTable
         Me.ResumeLayout(False)
 
     End Sub
-
-    Friend WithEvents tbAlarmCellCon As TabPage
-    Friend WithEvents lblAlarm As Label
-    Friend WithEvents btnCellConAlmRst As Button
-    Friend WithEvents dgvAlarmCellCon As DataGridView
-    Friend WithEvents DataGridViewTextBoxColumn5 As DataGridViewTextBoxColumn
-    Friend WithEvents DataGridViewTextBoxColumn9 As DataGridViewTextBoxColumn
-    Friend WithEvents DataGridViewTextBoxColumn11 As DataGridViewTextBoxColumn
-    Friend WithEvents DataGridViewTextBoxColumn12 As DataGridViewTextBoxColumn
-    Friend WithEvents DataGridViewTextBoxColumn13 As DataGridViewTextBoxColumn
     Friend WithEvents tbAlarm As TabPage
     Friend WithEvents dgvAlarm As DataGridView
     Friend WithEvents DataGridViewTextBoxColumn3 As DataGridViewTextBoxColumn

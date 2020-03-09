@@ -252,7 +252,7 @@ ByPassSecs:
     End Sub
 
     Private Function ConvertBytesToHexString(ByVal data As Byte()) As String
-        Dim ret As String = ""
+        Dim ret As String
 
         Dim sb As System.Text.StringBuilder = New System.Text.StringBuilder()
 
@@ -707,9 +707,9 @@ FinalExeLoop:
         HostReply(request, reply)
 
         If request.AlarmCode >= 128 Then
-            'FrmProduct.m_AlarmRecord(CStr(request.AlarmID), 1, request.AlarmText) ' Set Alarm 
+            FrmProduct.m_AlarmRecord(CStr(request.AlarmID), 1, request.AlarmText) ' Set Alarm 
         Else
-            'FrmProduct.m_AlarmRecord(CStr(request.AlarmID), 0, request.AlarmText) ' Clear Alarm
+            FrmProduct.m_AlarmRecord(CStr(request.AlarmID), 0, request.AlarmText) ' Clear Alarm
         End If
 
     End Sub
@@ -728,23 +728,21 @@ FinalExeLoop:
         Try
             Select Case request.CEID
                 Case 1665600, 1203001600 'MECO-MgzInReady (3)
-                    'FrmProduct.Event_CountData(m_SelfData.LotName, m_SelfData.ProductCountOut, m_SelfData.ProductCountIn, "MgzInReady")
+                    FrmProduct.Event_CountData(m_SelfData.LotName, m_SelfData.ProductCountOut, m_SelfData.ProductCountIn, "MgzInReady", "1665600")
                 Case 1665700, 1203001700 'MECO-MgzOutReady (4)
-                    'FrmProduct.Event_CountData(m_SelfData.LotName, m_SelfData.ProductCountOut, m_SelfData.ProductCountIn, "MgzOutReady")
+                    FrmProduct.Event_CountData(m_SelfData.LotName, m_SelfData.ProductCountOut, m_SelfData.ProductCountIn, "MgzOutReady", "1665700")
                 Case 1666500, 1203002700 'MECO-LotEnd (5)
-                   ' FrmProduct.Event_LotEnd(m_SelfData.LotName, m_SelfData.ProductCountTotalOut, m_SelfData.ProductCountTotalIn)
+                    FrmProduct.Event_LotEnd(m_SelfData.LotName, m_SelfData.ProductCountTotalOut, m_SelfData.ProductCountTotalIn, "1666500")
                 Case 1666700, 1203002900 'MECO-LotInfo_Rohm (1)
-                    FrmProduct.Event_LotInfo_Rohm(m_SelfData.LotName, m_SelfData.OperatorID, m_SelfData.TrayNumber)
-                    ' FrmProduct.Event_LotInfo_Rohm(m_SelfData.LotName, m_SelfData.OperatorID, m_SelfData.TrayNumber)
-                    Me.Refresh()
+                    FrmProduct.Event_LotInfo_Rohm(m_SelfData.LotName, m_SelfData.OperatorID, m_SelfData.TrayNumber, "1666700")
                 Case 1666800, 1203003000 'MECO-LotStart (2)
-                   ' FrmProduct.Event_LotStart(m_SelfData.LotName)
+                    FrmProduct.Event_LotStart(m_SelfData.LotName, "1666800")
                 Case 1666900, 1203003100 'MECO-MgzDoneLoading
-                    'FrmProduct.Event_MgzDoneLoading(m_SelfData.LotName, m_SelfData.ProductCountIn)
+                    FrmProduct.Event_MgzDoneLoading(m_SelfData.LotName, m_SelfData.ProductCountIn, "1666900")
                 Case 1667100, 1203003300 'MECO-MgzStartLoading
-                   ' FrmProduct.Event_MgzStartLoading(m_SelfData.LotName)
+                    FrmProduct.Event_MgzStartLoading(m_SelfData.LotName, "1667100")
                 Case 1668300, 1200011500 'MECO-MachineStatus
-                    ' FrmProduct.Event_MachineStatus(m_SelfData.LotName)
+                    FrmProduct.Event_MachineStatus(m_SelfData.LotName, "1668300")
             End Select
         Catch ex As Exception
             SaveCatchLog(ex.Message.ToString, "Perform_S6F11")
@@ -780,7 +778,7 @@ FinalExeLoop:
             Case 1
                 Dim s10f2 As S10F2 = New S10F2(ACKC10.Accepted)
                 HostReply(msg, s10f2)
-                Dim CommandS10F1 As New S10F1
+                Dim CommandS10F1 As S10F1
                 CommandS10F1 = CType(msg, S10F1)
                 'S10F1ThreadSafe("Message : " & CommandS10F1.Text & "   Terminal ID : " & CommandS10F1.TIDx)
                 S10F1ThreadSafe(CommandS10F1.Text)
@@ -1094,14 +1092,14 @@ FinalExeLoop:
             MainControlfrm.WindowState = FormWindowState.Minimized
         End If
     End Sub
-    Public Sub MDIMakeAlarmCellCon(ByVal AlarmMessage As String, Optional ByVal Location As String = "", Optional ByVal Status As String = "", Optional ByVal AlarmID As String = "")
-        If FrmProdTable Is Nothing Then
-            Exit Sub
-        End If
-        AlarmTimer.Enabled = True
-        OprData.AlrmtimerCount = 0
-        FrmProdTable.MakeAlarmCellCon(AlarmMessage, Location, Status, AlarmID)
-    End Sub
+    'Public Sub MDIMakeAlarmCellCon(ByVal AlarmMessage As String, Optional ByVal Location As String = "", Optional ByVal Status As String = "", Optional ByVal AlarmID As String = "")
+    '    If FrmProdTable Is Nothing Then
+    '        Exit Sub
+    '    End If
+    '    AlarmTimer.Enabled = True
+    '    OprData.AlrmtimerCount = 0
+    '    FrmProdTable.MakeAlarmCellCon(AlarmMessage, Location, Status, AlarmID)
+    'End Sub
     Public Sub MDIUpdate_dgvProductionInfo1(ByVal _CarrierID As String, ByVal LotID As String, ByVal Package As String, ByVal Device As String, Optional ByVal Remark As String = "", Optional ByVal StartTime As String = "")
         If FrmProdTable Is Nothing Then
             Exit Sub
@@ -1344,15 +1342,15 @@ LoopEnd:
 
 
     Public Sub FrmProcessFill() 'Handles FrmProduct.E_FormFill
-        If Not FrmProdTable Is Nothing Then
-            FrmProdTable.Dock = DockStyle.None
-        End If
+        'If Not FrmProdTable Is Nothing Then
+        '    FrmProdTable.Dock = DockStyle.None
+        'End If
         FrmProduct.FormBorderStyle = Windows.Forms.FormBorderStyle.None
         FrmProduct.Dock = DockStyle.Fill
 
     End Sub
 
-    Private Sub EqConnect() Handles FrmSecs.E_EstabComm
+    Public Sub EqConnect() Handles FrmSecs.E_EstabComm
         If My.Settings.CsProtocol_Enable Then     'Custom Protocol
             CstProtocol.ReadContinue = True
             CstProtocol.Listener_Click(CStr(My.Settings.CsProtocolPort), My.Settings.EquipmentIP)

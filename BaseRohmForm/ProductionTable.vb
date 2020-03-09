@@ -15,34 +15,34 @@ Public Class ProductionTable
         e.Graphics.DrawLine(myPen, 4, 28, Me.Width - 12, 28)
     End Sub
     Public Delegate Sub MakeAlarmCellConDelegate(ByVal AlarmMessage As String, ByVal Location As String, ByVal Status As String, ByVal AlarmID As String)
-    Public Sub MakeAlarmCellCon(ByVal AlarmMessage As String, Optional ByVal Location As String = "", Optional ByVal Status As String = "", Optional ByVal AlarmID As String = "")
-        If Me.InvokeRequired Then
-            Me.Invoke(New MakeAlarmCellConDelegate(AddressOf MakeAlarmCellCon), AlarmMessage, Location, Status, AlarmID)
-        Else
-            Try
-                If AlarmMessage = "AlarmClear" Then   '160712 \783 PrdTable Clear
-                    dgvAlarmCellCon.Rows.Clear()
-                    Exit Sub
-                End If
-                lblAlarm.Text = AlarmMessage
-                If dgvAlarmCellCon.RowCount > 100 Then dgvAlarmCellCon.Rows.Clear()
-                dgvAlarmCellCon.Rows.Add()
-                Dim r As Integer = dgvAlarmCellCon.RowCount - 2
-                dgvAlarmCellCon.Item(0, r).Value = Format(Now, "yyyy/MM/dd HH:mm:ss.fff")
-                dgvAlarmCellCon.Item(1, r).Value = Location
-                dgvAlarmCellCon.Item(2, r).Value = Status
-                dgvAlarmCellCon.Item(3, r).Value = AlarmID
-                dgvAlarmCellCon.Item(4, r).Value = AlarmMessage
-                dgvAlarmCellCon.Sort(dgvAlarmCellCon.Columns.Item(0), ListSortDirection.Descending)
-                tbPageMain.SelectTab("tbAlarmCellCon")
-            Catch ex As Exception
-                SaveCatchLog(ex.Message, "MakeAlarmCellCon()")
-            End Try
+    'Public Sub MakeAlarmCellCon(ByVal AlarmMessage As String, Optional ByVal Location As String = "", Optional ByVal Status As String = "", Optional ByVal AlarmID As String = "")
+    '    If Me.InvokeRequired Then
+    '        Me.Invoke(New MakeAlarmCellConDelegate(AddressOf MakeAlarmCellCon), AlarmMessage, Location, Status, AlarmID)
+    '    Else
+    '        Try
+    '            If AlarmMessage = "AlarmClear" Then   '160712 \783 PrdTable Clear
+    '                dgvAlarmCellCon.Rows.Clear()
+    '                Exit Sub
+    '            End If
+    '            lblAlarm.Text = AlarmMessage
+    '            If dgvAlarmCellCon.RowCount > 100 Then dgvAlarmCellCon.Rows.Clear()
+    '            dgvAlarmCellCon.Rows.Add()
+    '            Dim r As Integer = dgvAlarmCellCon.RowCount - 2
+    '            dgvAlarmCellCon.Item(0, r).Value = Format(Now, "yyyy/MM/dd HH:mm:ss.fff")
+    '            dgvAlarmCellCon.Item(1, r).Value = Location
+    '            dgvAlarmCellCon.Item(2, r).Value = Status
+    '            dgvAlarmCellCon.Item(3, r).Value = AlarmID
+    '            dgvAlarmCellCon.Item(4, r).Value = AlarmMessage
+    '            dgvAlarmCellCon.Sort(dgvAlarmCellCon.Columns.Item(0), ListSortDirection.Descending)
+    '            tbPageMain.SelectTab("tbAlarmCellCon")
+    '        Catch ex As Exception
+    '            SaveCatchLog(ex.Message, "MakeAlarmCellCon()")
+    '        End Try
 
-        End If
+    '    End If
 
 
-    End Sub
+    'End Sub
     Public Delegate Sub AlarmTableDelegate(ByVal AlarmALCD As Boolean, ByVal AlarmALID As String, ByVal AlarmALTX As String, ByVal AlarmType As String)
     Public Sub AlarmTable(ByVal AlarmALCD As Boolean, ByVal AlarmALID As String, ByVal AlarmALTX As String, Optional ByVal AlarmType As String = "0")
 
@@ -200,8 +200,8 @@ Public Class ProductionTable
 
     End Sub
 
-    Private Sub btnCellConAlmRst_Click_1(sender As Object, e As EventArgs) Handles btnCellConAlmRst.Click
-        MakeAlarmCellCon("AlarmClear")
+    Private Sub btnCellConAlmRst_Click_1(sender As Object, e As EventArgs)
+        'MakeAlarmCellCon("AlarmClear")
         tbPageMain.SelectTab("tbDetail")
     End Sub
 End Class
