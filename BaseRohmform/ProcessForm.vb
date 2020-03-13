@@ -145,6 +145,14 @@ Public Class ProcessForm
     Public Sub Event_LotInfo_Rohm(ByVal LotNo As String, ByVal OPNo As String, ByVal Mgz As String, itemID As String)
         Dim plData As PLData = New PLData()
         Try
+            If String.IsNullOrEmpty(LotNo.Trim) Then
+                SaveCatchLog("LotNo is null '" + LotNo + "'", "Event_LotInfo_Rohm")
+                Return
+            End If
+        Catch ex As Exception
+            SaveCatchLog(ex.Message & "  " & CStr(LotNo), "Event_LotInfo_Rohm")
+        End Try
+        Try
             If LotNo.Length > 10 Then
                 plData.LotNo = LotNo.Substring(0, 10).Trim
             Else
