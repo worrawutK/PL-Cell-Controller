@@ -150,7 +150,7 @@ Module ModuleAppGeneral
                 Return data
             End Using
         Catch ex As Exception
-            SaveCatchLog(ex.Message, MethodBase.GetCurrentMethod().Name)
+            SaveCatchLog("Path:" & fileName & ",Exception:" & ex.Message, MethodBase.GetCurrentMethod().Name)
             File.Delete(fileName)
             Return Nothing
         End Try
