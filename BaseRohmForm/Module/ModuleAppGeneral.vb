@@ -140,13 +140,20 @@ Module ModuleAppGeneral
 
     '    }
     Public Function LoadDataFromXmlFile(Of T)(fileName As String) As T
-        If Not File.Exists(fileName) Then
+        Try
+            If Not File.Exists(fileName) Then
+                Return Nothing
+            End If
+            Using fs As StreamReader = New StreamReader(fileName)
+                Dim bs = New XmlSerializer(GetType(T))
+                Dim data As T = CType(bs.Deserialize(fs), T)
+                Return data
+            End Using
+        Catch ex As Exception
+            SaveCatchLog(ex.Message, MethodBase.GetCurrentMethod().Name)
+            File.Delete(fileName)
             Return Nothing
-        End If
-        Using fs As StreamReader = New StreamReader(fileName)
-            Dim bs = New XmlSerializer(GetType(T))
-            Dim data As T = CType(bs.Deserialize(fs), T)
-            Return data
-        End Using
+        End Try
+
     End Function
 End Module
