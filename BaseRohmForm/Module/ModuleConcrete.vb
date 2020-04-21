@@ -174,36 +174,41 @@ Module ModuleConcrete
     End Sub
 
     Public Sub SetAlarmData(plAlarmTable As PLAlarmTable)
-        If plAlarmTable Is Nothing Then
-            SaveCatchLog("plAlarmTable is Nothing", MethodBase.GetCurrentMethod().Name)
-            Return
-        End If
-        Dim recordTime As DateTime = Now
-        For Each plData As PLData In c_PLDataList
-            Dim plAlarmInfo As PLAlarmInfo = New PLAlarmInfo
-            plAlarmInfo.RecordTime = recordTime
-            plAlarmInfo.LotNo = plData.LotNo
-            plAlarmInfo.MCNo = plData.MCNo
-            plAlarmInfo.AlarmID = plAlarmTable.ID
+        Try
+            If plAlarmTable Is Nothing Then
+                SaveCatchLog("plAlarmTable is Nothing", MethodBase.GetCurrentMethod().Name)
+                Return
+            End If
+            Dim recordTime As DateTime = Now
+            For Each plData As PLData In c_PLDataList
+                Dim plAlarmInfo As PLAlarmInfo = New PLAlarmInfo
+                plAlarmInfo.RecordTime = recordTime
+                plAlarmInfo.LotNo = plData.LotNo
+                plAlarmInfo.MCNo = plData.MCNo
+                plAlarmInfo.AlarmID = plAlarmTable.ID
 
-            Using cmd As New SqlCommand
-                cmd.Connection = New SqlConnection(ConnectionStringDBx)
-                cmd.Connection.Open()
-                cmd.CommandType = CommandType.Text
-                cmd.Parameters.Clear()
-                cmd.CommandText = "INSERT INTO [DBx].[dbo].[PLAlarmInfo] ([RecordTime],[AlarmID],[LotNo],[MCNo]) Values (@RecordTime,@AlarmID,@LotNo,@MCNo)"
-                cmd.Parameters.Add("@RecordTime", SqlDbType.DateTime).Value = plAlarmInfo.RecordTime
-                cmd.Parameters.Add("@AlarmID", SqlDbType.Int).Value = plAlarmInfo.AlarmID
-                cmd.Parameters.Add("@LotNo", SqlDbType.VarChar).Value = plAlarmInfo.LotNo
-                cmd.Parameters.Add("@MCNo", SqlDbType.VarChar).Value = plAlarmInfo.MCNo
-                cmd.ExecuteNonQuery()
-                cmd.Connection.Close()
-            End Using
-            c_PLAlarmInfos.Add(plAlarmInfo)
+                Using cmd As New SqlCommand
+                    cmd.Connection = New SqlConnection(ConnectionStringDBx)
+                    cmd.Connection.Open()
+                    cmd.CommandType = CommandType.Text
+                    cmd.Parameters.Clear()
+                    cmd.CommandText = "INSERT INTO [DBx].[dbo].[PLAlarmInfo] ([RecordTime],[AlarmID],[LotNo],[MCNo]) Values (@RecordTime,@AlarmID,@LotNo,@MCNo)"
+                    cmd.Parameters.Add("@RecordTime", SqlDbType.DateTime).Value = plAlarmInfo.RecordTime
+                    cmd.Parameters.Add("@AlarmID", SqlDbType.Int).Value = plAlarmInfo.AlarmID
+                    cmd.Parameters.Add("@LotNo", SqlDbType.VarChar).Value = plAlarmInfo.LotNo
+                    cmd.Parameters.Add("@MCNo", SqlDbType.VarChar).Value = plAlarmInfo.MCNo
+                    cmd.ExecuteNonQuery()
+                    cmd.Connection.Close()
+                End Using
+                c_PLAlarmInfos.Add(plAlarmInfo)
 
-        Next
+            Next
 
-        WriteDataToXmlFile(c_PLAlarmInfos, c_PathPLAlarmInfoes)
+            WriteDataToXmlFile(c_PLAlarmInfos, c_PathPLAlarmInfoes)
+        Catch ex As Exception
+            SaveCatchLog("Exception:" & ex.Message.ToString, MethodBase.GetCurrentMethod().Name)
+        End Try
+
     End Sub
     Public Sub ClearAlarmData(plAlarmTable As PLAlarmTable)
         Try

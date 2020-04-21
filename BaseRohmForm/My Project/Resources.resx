@@ -130,17 +130,20 @@
   <data name="PictureBoxWrong" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\PictureBoxWrong.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="HR" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\HR.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="reliableResize1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\reliableResize1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="AUTOMATIVEBlue" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\AUTOMATIVEBlue.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="inputdata5" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\inputdata5.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="Loadding" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Image\Loadding.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="reliableResize1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\reliableResize1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="UserBlank" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\UserBlank.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="HR" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\HR.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="PictureBoxQrCode" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\PictureBoxQrCode.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -148,10 +151,10 @@
   <data name="datatable" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\datatable.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="UserBlank" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\UserBlank.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="inputdata5" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\inputdata5.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Loadding" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Image\Loadding.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="Loading_please_wait" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Loading_please_wait.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

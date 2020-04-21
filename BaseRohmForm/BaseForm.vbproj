@@ -542,6 +542,7 @@
     <None Include="Resources\PicturBoxRohmLogo.gif" />
     <None Include="Resources\PictureBoxQrCode.png" />
     <Content Include="Image\Loadding.gif" />
+    <None Include="Resources\Loading_please_wait.gif" />
     <Content Include="unnamed.ico" />
   </ItemGroup>
   <ItemGroup>

@@ -92,6 +92,7 @@ Public Class ProcessForm
 
         c_MDIParent1.FrmProcessFill()
         lbMcNo.Text = My.Settings.EquipmentNo
+        c_PLDataList = New BindingList(Of PLData)(c_PLDataList.OrderBy(Function(x) x.LotStartTime).ToList)
         PLDataDataGridView.DataSource = c_PLDataList
         PLDataDataGridView.ClearSelection()
 
@@ -347,9 +348,19 @@ Public Class ProcessForm
         'If Not lotNo Is Nothing Then
         '    LabelIReportMessage.Text = lotNo.ToString
         'End If
+        If e.RowIndex < 0 Then
+            Return
+        End If
+
         Dim pldata As PLData = CType(PLDataDataGridView.SelectedRows(0).DataBoundItem, PLData)
         Try
-
+            For Each data As PLData In c_PLDataList.OrderBy(Function(x) x.LotStartTime).Take(1).ToList()
+                If data.LotNo <> pldata.LotNo Then
+                    Dim frm As DialogMessage = New DialogMessage("กรุณาเลือก Lot no." & data.LotNo & " นี้ก่อน", Nothing, "แจ้งเตือน")
+                    frm.ShowDialog()
+                    Return
+                End If
+            Next
             If Not pldata.LotEndTime.HasValue Then
                 Return
             End If
@@ -444,12 +455,19 @@ Public Class ProcessForm
 
     Private countTest As Integer
     Private Sub BtDeleteLot_Click(sender As Object, e As EventArgs) Handles btDeleteLot.Click
-
+        'Dim plData As PLData = New PLData()
+        'plData.LotNo = "1234A67890"
+        'plData.LotStartTime = Now.AddYears(-3)
+        'plData.MCNo = "PL-M-00"
+        'plData.OPNo = "007567"
+        'plData.InputQtyAdjust = 1000
+        'plData.UnloadCount = 1000
+        'c_PLDataList.Add(plData)
         Dim frmDelete As New frmDeleteLot(c_PLDataList)
         If frmDelete.ShowDialog() = DialogResult.OK Then
             WriteDataToXmlFile(c_PLDataList, c_PathPLDataList)
         End If
-         PLDataDataGridView.ClearSelection()
+        PLDataDataGridView.ClearSelection()
     End Sub
 
     Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles TimerTest.Tick
