@@ -55,6 +55,12 @@
             Timer1.Enabled = False
         End If
         tbOPJudge.Focus()
+        If Not SerialPort1.IsOpen Then
+            SerialPort1.PortName = My.Settings.PortName '"COM4"
+            SerialPort1.Open()
+        End If
+
+
     End Sub
 
     'Function CalFrameTypeToPcs(ByVal LotNo As String, ByVal FrameCount As Integer) As Integer
@@ -164,7 +170,12 @@
     Private Sub tbOPJudge_KeyPress(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles tbOPJudge.KeyPress
         If e.KeyChar = Chr(13) Then
             If tbOPJudge.Text.Length = 6 Then
-
+                If GroupBox3.Enabled = False Then
+                    MsgBox("กรุณาใส่เก็บ frame dummy ด้วยครับ")
+                    tbOPJudge.Text = ""
+                    tbOPJudge.Focus()
+                    Exit Sub
+                End If
                 If tbTotalInput.Text = "" OrElse tbTotalGood.Text = "" OrElse tbTotalNG.Text = "" OrElse tbDummy.Text = "" Then
                     MsgBox("กรุณากรอกจำนวนการผลิตให้ครบด้วยครับ")
                     tbOPJudge.Text = ""
@@ -209,6 +220,58 @@
             gbMessage.BackColor = Color.Yellow
         Else
             gbMessage.BackColor = Color.Wheat
+        End If
+    End Sub
+    Private Sub SerialPort1_DataReceived(sender As Object, e As IO.Ports.SerialDataReceivedEventArgs) Handles SerialPort1.DataReceived
+        DataReceived()
+    End Sub
+    'Protected Overridable Sub SerialPortDataReceived(ByVal sender As Object, ByVal e As System.IO.Ports.SerialDataReceivedEventArgs) Handles c_SerialPort.DataReceived
+    '    DataReceived()
+    'End Sub
+    Private c_Buffer As String
+    Private Delegate Sub SerialPortDataReceivedDelegate()
+
+    Private Sub DataReceived()
+        If Me.InvokeRequired Then
+            Me.Invoke(New SerialPortDataReceivedDelegate(AddressOf DataReceived))
+            Exit Sub
+        End If
+        Try
+
+            c_Buffer = c_Buffer & SerialPort1.ReadExisting.ToString
+            Dim iret As Integer
+
+            iret = InStr(1, c_Buffer, vbCr)
+            If iret <> 0 Then
+                c_Buffer = c_Buffer.Replace(Chr(0), "")
+                Commlog("Recieve :" & c_Buffer, My.Application.Info.DirectoryPath & "\LOG\Comm.log")
+                'ReceiveCmdBase(c_Buffer)
+                'ReceiveCommand(c_Buffer)
+                InputDummy()
+                c_Buffer = ""
+            End If
+
+        Catch ex As Exception
+            c_Buffer = ""
+            SaveCatchLog(ex.ToString, "SerialPortDataReceived()")
+        End Try
+
+    End Sub
+    Private Sub InputDummy()
+        If String.IsNullOrEmpty(tbDummy.Text) Then
+            tbDummy.Text = "0"
+        End If
+        tbDummy.Text = (Integer.Parse(tbDummy.Text) + 1).ToString
+        If GroupBox3.Enabled = False Then
+            If Integer.Parse(tbDummy.Text) >= 2 Then
+                GroupBox3.Enabled = True
+            End If
+        End If
+    End Sub
+
+    Private Sub FrmConfirm_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
+        If SerialPort1.IsOpen Then
+            SerialPort1.Close()
         End If
     End Sub
 End Class

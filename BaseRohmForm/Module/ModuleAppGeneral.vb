@@ -14,6 +14,7 @@ Module ModuleAppGeneral
     Public OprData As New CommonData
     Public UserTable As New DataTable
     Public m_strNetVersion As String  '"1.9.06.13 APCS Pro." '"Ver.170622"
+    Public m_DummyCheck As Boolean = True
     Public Sub MakeDirectories()
         Try
             If Not (Directory.Exists(DIR_LOG)) Then
