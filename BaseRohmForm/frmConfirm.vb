@@ -55,10 +55,18 @@
             Timer1.Enabled = False
         End If
         tbOPJudge.Focus()
-        If Not SerialPort1.IsOpen Then
-            SerialPort1.PortName = My.Settings.PortName '"COM4"
-            SerialPort1.Open()
+        Try
+            If Not SerialPort1.IsOpen Then
+                SerialPort1.PortName = My.Settings.PortName '"COM4"
+                SerialPort1.Open()
+            End If
+        Catch ex As Exception
+
+        End Try
+        If m_DummyCheck = False Then
+            GroupBox3.Enabled = True
         End If
+
 
 
     End Sub
@@ -206,8 +214,9 @@
     End Sub
 
     Private Sub tbDummy_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tbDummy.TextChanged
-        If tbDummy.Text <> "" Then
-            Dim DummyQty As Integer = CInt(tbDummy.Text) * _FramePCS
+        Dim dummyCount As Integer
+        If tbDummy.Text <> "" And Integer.TryParse(tbDummy.Text, dummyCount) Then
+            Dim DummyQty As Integer = CInt(dummyCount) * _FramePCS
 
             tbTotalInput.Text = CStr(CInt(lbTotalInput.Text) - DummyQty)
             tbTotalGood.Text = (CStr(CInt(lbTotalGood.Text) - DummyQty))
