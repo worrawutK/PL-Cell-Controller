@@ -638,7 +638,6 @@ Partial Class frmConfirm
         'Button17
         '
         Me.Button17.BackColor = System.Drawing.Color.GreenYellow
-        Me.Button17.Enabled = False
         Me.Button17.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(222, Byte))
         Me.Button17.Location = New System.Drawing.Point(188, 58)
         Me.Button17.Name = "Button17"
@@ -649,7 +648,7 @@ Partial Class frmConfirm
         '
         'Button19
         '
-        Me.Button19.BackColor = System.Drawing.Color.GreenYellow
+        Me.Button19.BackColor = System.Drawing.Color.DarkGray
         Me.Button19.Enabled = False
         Me.Button19.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(222, Byte))
         Me.Button19.Location = New System.Drawing.Point(18, 58)
@@ -661,7 +660,7 @@ Partial Class frmConfirm
         '
         'Button18
         '
-        Me.Button18.BackColor = System.Drawing.Color.GreenYellow
+        Me.Button18.BackColor = System.Drawing.Color.DarkGray
         Me.Button18.Enabled = False
         Me.Button18.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(222, Byte))
         Me.Button18.Location = New System.Drawing.Point(104, 58)
