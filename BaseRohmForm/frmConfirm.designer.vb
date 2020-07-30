@@ -83,6 +83,7 @@ Partial Class frmConfirm
         Me.gbMessage = New System.Windows.Forms.GroupBox()
         Me.lbMessageDevice = New System.Windows.Forms.Label()
         Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
+        Me.SerialPort1 = New System.IO.Ports.SerialPort(Me.components)
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.GroupBox4.SuspendLayout()
@@ -571,6 +572,7 @@ Partial Class frmConfirm
         Me.GroupBox3.Controls.Add(Me.Button18)
         Me.GroupBox3.Controls.Add(Me.tbDummy)
         Me.GroupBox3.Controls.Add(Me.Label7)
+        Me.GroupBox3.Enabled = False
         Me.GroupBox3.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(222, Byte))
         Me.GroupBox3.Location = New System.Drawing.Point(10, 238)
         Me.GroupBox3.Name = "GroupBox3"
@@ -636,6 +638,7 @@ Partial Class frmConfirm
         'Button17
         '
         Me.Button17.BackColor = System.Drawing.Color.GreenYellow
+        Me.Button17.Enabled = False
         Me.Button17.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(222, Byte))
         Me.Button17.Location = New System.Drawing.Point(188, 58)
         Me.Button17.Name = "Button17"
@@ -647,6 +650,7 @@ Partial Class frmConfirm
         'Button19
         '
         Me.Button19.BackColor = System.Drawing.Color.GreenYellow
+        Me.Button19.Enabled = False
         Me.Button19.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(222, Byte))
         Me.Button19.Location = New System.Drawing.Point(18, 58)
         Me.Button19.Name = "Button19"
@@ -658,6 +662,7 @@ Partial Class frmConfirm
         'Button18
         '
         Me.Button18.BackColor = System.Drawing.Color.GreenYellow
+        Me.Button18.Enabled = False
         Me.Button18.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(222, Byte))
         Me.Button18.Location = New System.Drawing.Point(104, 58)
         Me.Button18.Name = "Button18"
@@ -728,6 +733,9 @@ Partial Class frmConfirm
         'Timer1
         '
         Me.Timer1.Interval = 1000
+        '
+        'SerialPort1
+        '
         '
         'frmConfirm
         '
@@ -822,4 +830,5 @@ Partial Class frmConfirm
     Friend WithEvents gbMessage As System.Windows.Forms.GroupBox
     Friend WithEvents lbMessageDevice As System.Windows.Forms.Label
     Friend WithEvents Timer1 As System.Windows.Forms.Timer
+    Friend WithEvents SerialPort1 As IO.Ports.SerialPort
 End Class

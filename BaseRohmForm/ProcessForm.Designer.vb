@@ -23,14 +23,14 @@ Partial Class ProcessForm
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle7 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle22 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle23 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle26 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle27 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle28 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle24 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle25 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ProcessForm))
-        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.MenuStrip1 = New System.Windows.Forms.MenuStrip()
         Me.AndonToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.BMRequestToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
@@ -43,9 +43,14 @@ Partial Class ProcessForm
         Me.EqConnectToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.WorkRecordToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.PLDataDataGridView = New System.Windows.Forms.DataGridView()
+        Me.LotNoDataGridViewTextBoxColumn = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.LotStartTimeDataGridViewTextBoxColumn = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.OPNo = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.LoadCount = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.UnloadCount = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.LotEndTimeDataGridViewTextBoxColumn = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.MagazineNoDataGridViewTextBoxColumn = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.PLDataBindingSource1 = New System.Windows.Forms.BindingSource(Me.components)
         Me.Label1 = New System.Windows.Forms.Label()
         Me.lbMcNo = New System.Windows.Forms.Label()
         Me.btDeleteLot = New System.Windows.Forms.Button()
@@ -61,16 +66,14 @@ Partial Class ProcessForm
         Me.Button1 = New System.Windows.Forms.Button()
         Me.pbxAutoM = New System.Windows.Forms.PictureBox()
         Me.pbxLogo = New System.Windows.Forms.PictureBox()
-        Me.LotNoDataGridViewTextBoxColumn = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.LotStartTimeDataGridViewTextBoxColumn = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.LotEndTimeDataGridViewTextBoxColumn = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.MagazineNoDataGridViewTextBoxColumn = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.PLDataBindingSource1 = New System.Windows.Forms.BindingSource(Me.components)
+        Me.DummyCheckToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.CheckToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.NoCheckToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuStrip1.SuspendLayout()
         CType(Me.PLDataDataGridView, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.PLDataBindingSource1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.pbxAutoM, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.pbxLogo, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.PLDataBindingSource1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'MenuStrip1
@@ -78,10 +81,10 @@ Partial Class ProcessForm
         Me.MenuStrip1.BackColor = System.Drawing.Color.Transparent
         Me.MenuStrip1.Dock = System.Windows.Forms.DockStyle.None
         Me.MenuStrip1.ImageScalingSize = New System.Drawing.Size(20, 20)
-        Me.MenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.AndonToolStripMenuItem, Me.BMRequestToolStripMenuItem, Me.PMRepairToolStripMenuItem, Me.APCSStaffToolStripMenuItem, Me.WindowToolStripMenuItem, Me.EqConnectToolStripMenuItem, Me.WorkRecordToolStripMenuItem})
+        Me.MenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.AndonToolStripMenuItem, Me.BMRequestToolStripMenuItem, Me.PMRepairToolStripMenuItem, Me.APCSStaffToolStripMenuItem, Me.WindowToolStripMenuItem, Me.EqConnectToolStripMenuItem, Me.WorkRecordToolStripMenuItem, Me.DummyCheckToolStripMenuItem})
         Me.MenuStrip1.Location = New System.Drawing.Point(1, 98)
         Me.MenuStrip1.Name = "MenuStrip1"
-        Me.MenuStrip1.Size = New System.Drawing.Size(547, 25)
+        Me.MenuStrip1.Size = New System.Drawing.Size(762, 25)
         Me.MenuStrip1.TabIndex = 4
         Me.MenuStrip1.Text = "MenuStrip1"
         '
@@ -153,55 +156,76 @@ Partial Class ProcessForm
         Me.PLDataDataGridView.AllowUserToAddRows = False
         Me.PLDataDataGridView.AllowUserToDeleteRows = False
         Me.PLDataDataGridView.AllowUserToResizeRows = False
-        DataGridViewCellStyle1.BackColor = System.Drawing.Color.White
-        DataGridViewCellStyle1.Font = New System.Drawing.Font("Microsoft Sans Serif", 18.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.PLDataDataGridView.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle1
+        DataGridViewCellStyle22.BackColor = System.Drawing.Color.White
+        DataGridViewCellStyle22.Font = New System.Drawing.Font("Microsoft Sans Serif", 18.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.PLDataDataGridView.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle22
         Me.PLDataDataGridView.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.PLDataDataGridView.AutoGenerateColumns = False
         Me.PLDataDataGridView.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.[Single]
-        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle2.Font = New System.Drawing.Font("Microsoft Sans Serif", 20.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(222, Byte))
-        DataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText
-        DataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.PLDataDataGridView.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle2
+        DataGridViewCellStyle23.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle23.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle23.Font = New System.Drawing.Font("Microsoft Sans Serif", 20.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(222, Byte))
+        DataGridViewCellStyle23.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle23.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle23.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle23.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.PLDataDataGridView.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle23
         Me.PLDataDataGridView.ColumnHeadersHeight = 40
         Me.PLDataDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing
         Me.PLDataDataGridView.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.LotNoDataGridViewTextBoxColumn, Me.LotStartTimeDataGridViewTextBoxColumn, Me.OPNo, Me.LoadCount, Me.UnloadCount, Me.LotEndTimeDataGridViewTextBoxColumn, Me.MagazineNoDataGridViewTextBoxColumn})
         Me.PLDataDataGridView.DataSource = Me.PLDataBindingSource1
-        DataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Window
-        DataGridViewCellStyle5.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(222, Byte))
-        DataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.ControlText
-        DataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.PLDataDataGridView.DefaultCellStyle = DataGridViewCellStyle5
+        DataGridViewCellStyle26.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle26.BackColor = System.Drawing.SystemColors.Window
+        DataGridViewCellStyle26.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(222, Byte))
+        DataGridViewCellStyle26.ForeColor = System.Drawing.SystemColors.ControlText
+        DataGridViewCellStyle26.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle26.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle26.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.PLDataDataGridView.DefaultCellStyle = DataGridViewCellStyle26
         Me.PLDataDataGridView.Location = New System.Drawing.Point(19, 226)
         Me.PLDataDataGridView.MultiSelect = False
         Me.PLDataDataGridView.Name = "PLDataDataGridView"
         Me.PLDataDataGridView.ReadOnly = True
-        DataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle6.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(222, Byte))
-        DataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.WindowText
-        DataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.PLDataDataGridView.RowHeadersDefaultCellStyle = DataGridViewCellStyle6
+        DataGridViewCellStyle27.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle27.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle27.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(222, Byte))
+        DataGridViewCellStyle27.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle27.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle27.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle27.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.PLDataDataGridView.RowHeadersDefaultCellStyle = DataGridViewCellStyle27
         Me.PLDataDataGridView.RowHeadersVisible = False
         Me.PLDataDataGridView.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing
-        DataGridViewCellStyle7.BackColor = System.Drawing.Color.PowderBlue
-        DataGridViewCellStyle7.Font = New System.Drawing.Font("Microsoft Sans Serif", 20.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(222, Byte))
-        Me.PLDataDataGridView.RowsDefaultCellStyle = DataGridViewCellStyle7
+        DataGridViewCellStyle28.BackColor = System.Drawing.Color.PowderBlue
+        DataGridViewCellStyle28.Font = New System.Drawing.Font("Microsoft Sans Serif", 20.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(222, Byte))
+        Me.PLDataDataGridView.RowsDefaultCellStyle = DataGridViewCellStyle28
         Me.PLDataDataGridView.RowTemplate.Height = 60
         Me.PLDataDataGridView.RowTemplate.ReadOnly = True
         Me.PLDataDataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
         Me.PLDataDataGridView.Size = New System.Drawing.Size(898, 468)
         Me.PLDataDataGridView.TabIndex = 54
+        '
+        'LotNoDataGridViewTextBoxColumn
+        '
+        Me.LotNoDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells
+        Me.LotNoDataGridViewTextBoxColumn.DataPropertyName = "LotNo"
+        Me.LotNoDataGridViewTextBoxColumn.HeaderText = "LotNo"
+        Me.LotNoDataGridViewTextBoxColumn.Name = "LotNoDataGridViewTextBoxColumn"
+        Me.LotNoDataGridViewTextBoxColumn.ReadOnly = True
+        Me.LotNoDataGridViewTextBoxColumn.Width = 117
+        '
+        'LotStartTimeDataGridViewTextBoxColumn
+        '
+        Me.LotStartTimeDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells
+        Me.LotStartTimeDataGridViewTextBoxColumn.DataPropertyName = "LotStartTime"
+        DataGridViewCellStyle24.Format = "G"
+        DataGridViewCellStyle24.NullValue = Nothing
+        Me.LotStartTimeDataGridViewTextBoxColumn.DefaultCellStyle = DataGridViewCellStyle24
+        Me.LotStartTimeDataGridViewTextBoxColumn.HeaderText = "LotStartTime"
+        Me.LotStartTimeDataGridViewTextBoxColumn.Name = "LotStartTimeDataGridViewTextBoxColumn"
+        Me.LotStartTimeDataGridViewTextBoxColumn.ReadOnly = True
+        Me.LotStartTimeDataGridViewTextBoxColumn.Width = 207
         '
         'OPNo
         '
@@ -229,6 +253,32 @@ Partial Class ProcessForm
         Me.UnloadCount.Name = "UnloadCount"
         Me.UnloadCount.ReadOnly = True
         Me.UnloadCount.Width = 109
+        '
+        'LotEndTimeDataGridViewTextBoxColumn
+        '
+        Me.LotEndTimeDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells
+        Me.LotEndTimeDataGridViewTextBoxColumn.DataPropertyName = "LotEndTime"
+        DataGridViewCellStyle25.Format = "G"
+        DataGridViewCellStyle25.NullValue = Nothing
+        Me.LotEndTimeDataGridViewTextBoxColumn.DefaultCellStyle = DataGridViewCellStyle25
+        Me.LotEndTimeDataGridViewTextBoxColumn.HeaderText = "LotEndTime"
+        Me.LotEndTimeDataGridViewTextBoxColumn.Name = "LotEndTimeDataGridViewTextBoxColumn"
+        Me.LotEndTimeDataGridViewTextBoxColumn.ReadOnly = True
+        Me.LotEndTimeDataGridViewTextBoxColumn.Width = 195
+        '
+        'MagazineNoDataGridViewTextBoxColumn
+        '
+        Me.MagazineNoDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells
+        Me.MagazineNoDataGridViewTextBoxColumn.DataPropertyName = "MagazineNo"
+        Me.MagazineNoDataGridViewTextBoxColumn.HeaderText = "MagazineNo"
+        Me.MagazineNoDataGridViewTextBoxColumn.Name = "MagazineNoDataGridViewTextBoxColumn"
+        Me.MagazineNoDataGridViewTextBoxColumn.ReadOnly = True
+        Me.MagazineNoDataGridViewTextBoxColumn.Width = 201
+        '
+        'PLDataBindingSource1
+        '
+        Me.PLDataBindingSource1.AllowNew = False
+        Me.PLDataBindingSource1.DataSource = GetType(CellController.PLData)
         '
         'Label1
         '
@@ -395,52 +445,26 @@ Partial Class ProcessForm
         Me.pbxLogo.TabIndex = 2
         Me.pbxLogo.TabStop = False
         '
-        'LotNoDataGridViewTextBoxColumn
+        'DummyCheckToolStripMenuItem
         '
-        Me.LotNoDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells
-        Me.LotNoDataGridViewTextBoxColumn.DataPropertyName = "LotNo"
-        Me.LotNoDataGridViewTextBoxColumn.HeaderText = "LotNo"
-        Me.LotNoDataGridViewTextBoxColumn.Name = "LotNoDataGridViewTextBoxColumn"
-        Me.LotNoDataGridViewTextBoxColumn.ReadOnly = True
-        Me.LotNoDataGridViewTextBoxColumn.Width = 117
+        Me.DummyCheckToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.CheckToolStripMenuItem, Me.NoCheckToolStripMenuItem})
+        Me.DummyCheckToolStripMenuItem.Name = "DummyCheckToolStripMenuItem"
+        Me.DummyCheckToolStripMenuItem.Size = New System.Drawing.Size(95, 21)
+        Me.DummyCheckToolStripMenuItem.Text = "DummyCheck"
         '
-        'LotStartTimeDataGridViewTextBoxColumn
+        'CheckToolStripMenuItem
         '
-        Me.LotStartTimeDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells
-        Me.LotStartTimeDataGridViewTextBoxColumn.DataPropertyName = "LotStartTime"
-        DataGridViewCellStyle3.Format = "G"
-        DataGridViewCellStyle3.NullValue = Nothing
-        Me.LotStartTimeDataGridViewTextBoxColumn.DefaultCellStyle = DataGridViewCellStyle3
-        Me.LotStartTimeDataGridViewTextBoxColumn.HeaderText = "LotStartTime"
-        Me.LotStartTimeDataGridViewTextBoxColumn.Name = "LotStartTimeDataGridViewTextBoxColumn"
-        Me.LotStartTimeDataGridViewTextBoxColumn.ReadOnly = True
-        Me.LotStartTimeDataGridViewTextBoxColumn.Width = 207
+        Me.CheckToolStripMenuItem.Checked = True
+        Me.CheckToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.CheckToolStripMenuItem.Name = "CheckToolStripMenuItem"
+        Me.CheckToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
+        Me.CheckToolStripMenuItem.Text = "Check"
         '
-        'LotEndTimeDataGridViewTextBoxColumn
+        'NoCheckToolStripMenuItem
         '
-        Me.LotEndTimeDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells
-        Me.LotEndTimeDataGridViewTextBoxColumn.DataPropertyName = "LotEndTime"
-        DataGridViewCellStyle4.Format = "G"
-        DataGridViewCellStyle4.NullValue = Nothing
-        Me.LotEndTimeDataGridViewTextBoxColumn.DefaultCellStyle = DataGridViewCellStyle4
-        Me.LotEndTimeDataGridViewTextBoxColumn.HeaderText = "LotEndTime"
-        Me.LotEndTimeDataGridViewTextBoxColumn.Name = "LotEndTimeDataGridViewTextBoxColumn"
-        Me.LotEndTimeDataGridViewTextBoxColumn.ReadOnly = True
-        Me.LotEndTimeDataGridViewTextBoxColumn.Width = 195
-        '
-        'MagazineNoDataGridViewTextBoxColumn
-        '
-        Me.MagazineNoDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells
-        Me.MagazineNoDataGridViewTextBoxColumn.DataPropertyName = "MagazineNo"
-        Me.MagazineNoDataGridViewTextBoxColumn.HeaderText = "MagazineNo"
-        Me.MagazineNoDataGridViewTextBoxColumn.Name = "MagazineNoDataGridViewTextBoxColumn"
-        Me.MagazineNoDataGridViewTextBoxColumn.ReadOnly = True
-        Me.MagazineNoDataGridViewTextBoxColumn.Width = 201
-        '
-        'PLDataBindingSource1
-        '
-        Me.PLDataBindingSource1.AllowNew = False
-        Me.PLDataBindingSource1.DataSource = GetType(CellController.PLData)
+        Me.NoCheckToolStripMenuItem.Name = "NoCheckToolStripMenuItem"
+        Me.NoCheckToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
+        Me.NoCheckToolStripMenuItem.Text = "NoCheck"
         '
         'ProcessForm
         '
@@ -472,9 +496,9 @@ Partial Class ProcessForm
         Me.MenuStrip1.ResumeLayout(False)
         Me.MenuStrip1.PerformLayout()
         CType(Me.PLDataDataGridView, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.PLDataBindingSource1, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.pbxAutoM, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.pbxLogo, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.PLDataBindingSource1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -517,4 +541,7 @@ Partial Class ProcessForm
     Friend WithEvents LotEndTimeDataGridViewTextBoxColumn As DataGridViewTextBoxColumn
     Friend WithEvents MagazineNoDataGridViewTextBoxColumn As DataGridViewTextBoxColumn
     Friend WithEvents Timer1 As Timer
+    Friend WithEvents DummyCheckToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents CheckToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents NoCheckToolStripMenuItem As ToolStripMenuItem
 End Class

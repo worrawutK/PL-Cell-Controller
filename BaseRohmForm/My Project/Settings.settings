@@ -76,5 +76,8 @@
 &lt;/SerializableConnectionString&gt;</DesignTimeValue>
       <Value Profile="(Default)">Data Source=172.16.0.102;Initial Catalog=DBx;User ID=dbxuser</Value>
     </Setting>
+    <Setting Name="PortName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">COM5</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

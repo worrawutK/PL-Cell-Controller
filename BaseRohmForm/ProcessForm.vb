@@ -767,4 +767,57 @@ Public Class ProcessForm
     Private Sub SecsConsoleToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles SecsConsoleToolStripMenuItem.Click
         c_MDIParent1.ConsoleFrm()
     End Sub
+
+    Private Sub DummyCheckToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles DummyCheckToolStripMenuItem.Click
+
+        CheckDummyFrame()
+    End Sub
+
+    Private Sub CheckToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles CheckToolStripMenuItem.Click
+reinputDummyCheck:
+        Dim password As String = InputBox("Input Password", "DummyCheck")
+        'Dim yy As String = Now.Year.ToString()
+        'Dim mm As String = Now.Month.ToString("0#")
+        'Dim dd As String = Now.Day.ToString("0#")
+        If password = "" Then
+            Return
+        End If
+        If password <> Now.Year.ToString() + Now.Month.ToString("0#") + Now.Day.ToString("0#") Then
+            MessageBox.Show("Password ไม่ถุกต้อง")
+            GoTo reinputDummyCheck
+        Else
+            m_DummyCheck = True
+            CheckDummyFrame()
+            MessageBox.Show("DummyCheck open")
+        End If
+
+    End Sub
+
+    Private Sub NoCheckToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles NoCheckToolStripMenuItem.Click
+reinputDummyCheck:
+        Dim password As String = InputBox("Input Password", "DummyCheck")
+        'Dim yy As String = Now.Year.ToString()
+        'Dim mm As String = Now.Month.ToString("0#")
+        'Dim dd As String = Now.Day.ToString("0#")
+        If password = "" Then
+            Return
+        End If
+        If password <> Now.Year.ToString() + Now.Month.ToString("0#") + Now.Day.ToString("0#") Then
+            MessageBox.Show("Password ไม่ถุกต้อง")
+            GoTo reinputDummyCheck
+        Else
+            m_DummyCheck = False
+            CheckDummyFrame()
+            MessageBox.Show("DummyCheck close")
+        End If
+    End Sub
+    Private Sub CheckDummyFrame()
+        If m_DummyCheck = True Then
+            CheckToolStripMenuItem.Checked = True
+            NoCheckToolStripMenuItem.Checked = False
+        Else
+            CheckToolStripMenuItem.Checked = False
+            NoCheckToolStripMenuItem.Checked = True
+        End If
+    End Sub
 End Class
