@@ -146,7 +146,7 @@ Public Class ProcessForm
     Public Sub Event_LotInfo_Rohm(ByVal LotNo As String, ByVal OPNo As String, ByVal Mgz As String, itemID As String)
         Dim plData As PLData = New PLData()
         Try
-            If String.IsNullOrEmpty(LotNo.Trim) Then
+            If String.IsNullOrEmpty(LotNo) Then
                 SaveCatchLog("LotNo is null '" + LotNo + "'", "Event_LotInfo_Rohm")
                 Return
             End If
