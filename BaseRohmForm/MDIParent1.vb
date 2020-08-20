@@ -154,10 +154,10 @@ Public Class MDIParent1
             '---------
 
 ByPassSecs:
-            If My.Settings.TDC_Enable Then      'TDC ---
-                m_TdcService = TdcService.GetInstance()
-                m_TdcService.LogFolder = "Log"
-            End If
+            'If My.Settings.TDC_Enable Then      'TDC ---
+            '    m_TdcService = TdcService.GetInstance()
+            '    m_TdcService.LogFolder = "Log"
+            'End If
 
             If My.Settings.CsProtocol_Enable Then     'Custom Protocol
                 CstProtocol = New TcpIpClient
@@ -878,12 +878,12 @@ FinalExeLoop:
     Dim LotReqS As New Object
     Private Sub LotRequest_Dowork(ByVal sender As Object, ByVal e As DoWorkEventArgs)
         Try
-            SyncLock LotReqS
-                Dim agr As New TDC_Parameter
-                agr = CType(e.Argument, TDC_Parameter)
-                Dim res As TdcLotRequestResponse = m_TdcService.LotRequest(agr.EqNo, agr.LotNo, agr.StartMode)
-                e.Result = res
-            End SyncLock
+            'SyncLock LotReqS
+            '    Dim agr As New TDC_Parameter
+            '    agr = CType(e.Argument, TDC_Parameter)
+            '    Dim res As TdcLotRequestResponse = m_TdcService.LotRequest(agr.EqNo, agr.LotNo, agr.StartMode)
+            '    e.Result = res
+            'End SyncLock
 
 
         Catch ex As Exception

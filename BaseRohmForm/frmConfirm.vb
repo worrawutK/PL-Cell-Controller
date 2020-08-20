@@ -271,11 +271,11 @@
             tbDummy.Text = "0"
         End If
         tbDummy.Text = (Integer.Parse(tbDummy.Text) + 1).ToString
-        If GroupBox3.Enabled = False Then
-            If Integer.Parse(tbDummy.Text) >= 2 Then
-                GroupBox3.Enabled = True
-            End If
-        End If
+        'If GroupBox3.Enabled = False Then
+        '    If Integer.Parse(tbDummy.Text) >= 2 Then
+        '        GroupBox3.Enabled = True
+        '    End If
+        'End If
     End Sub
 
     Private Sub FrmConfirm_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
