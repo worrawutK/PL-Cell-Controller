@@ -180,7 +180,15 @@
     Private Sub tbOPJudge_KeyPress(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles tbOPJudge.KeyPress
         If e.KeyChar = Chr(13) Then
             If tbOPJudge.Text.Length = 6 Then
-                If GroupBox3.Enabled = False Then
+                If IsNumeric(tbDummy.Text) Then
+                    Dim dummyCount As Integer = Integer.Parse(tbDummy.Text)
+                    If dummyCount <> 2 Then
+                        MsgBox("กรุณาใส่เก็บ frame dummy ให้ถูกต้อง [" + dummyCount.ToString() + "]")
+                        tbOPJudge.Text = ""
+                        tbOPJudge.Focus()
+                        Exit Sub
+                    End If
+                Else
                     MsgBox("กรุณาใส่เก็บ frame dummy ด้วยครับ")
                     tbOPJudge.Text = ""
                     tbOPJudge.Focus()
