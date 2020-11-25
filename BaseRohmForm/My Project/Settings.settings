@@ -12,7 +12,7 @@
       <Value Profile="(Default)">10.28.50.76</Value>
     </Setting>
     <Setting Name="EquipmentNo" Type="System.String" Scope="User">
-      <Value Profile="(Default)">M-00</Value>
+      <Value Profile="(Default)">M-04</Value>
     </Setting>
     <Setting Name="DBConnSTR" Type="System.String" Scope="User">
       <Value Profile="(Default)">Data Source=172.16.0.102;Initial Catalog=DBx;Persist Security Info=True;User ID=dbxuser</Value>

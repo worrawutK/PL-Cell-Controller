@@ -572,7 +572,6 @@ Partial Class frmConfirm
         Me.GroupBox3.Controls.Add(Me.Button18)
         Me.GroupBox3.Controls.Add(Me.tbDummy)
         Me.GroupBox3.Controls.Add(Me.Label7)
-        Me.GroupBox3.Enabled = False
         Me.GroupBox3.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(222, Byte))
         Me.GroupBox3.Location = New System.Drawing.Point(10, 238)
         Me.GroupBox3.Name = "GroupBox3"
